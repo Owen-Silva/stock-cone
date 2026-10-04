@@ -9,11 +9,15 @@ can be changed by later data.
     python forward.py --score       score every logged record whose outcome exists
     python forward.py --status      print status + per-horizon summary (the /api/forward body)
     python forward.py --selfcheck   snapshot a PAST date into a temp dir, score it, check it
+                                    (add --momentum-only for just the momentum tilt checks)
 
 Files (data/forward/):
     <asof>.jsonl    one JSON record per (ticker, horizon); appended line by line, so a crash
                     leaves a partial file that the next run finishes (never duplicates)
-    scores.json     the per-horizon summary written by score()
+    mom-<asof>.json the momentum tilt record for that as-of (pre-registered live test, see
+                    research/PLAN.md): eligible stocks' mom_12_1, the top fifth, turnover vs
+                    the previous official month. Separate files, so the cone readers skip them
+    scores.json     the per-horizon summary written by score(), plus the "momentum" section
     state.json      last_run, last_error, and the last snapshot's counts
 
 The cone is built by the same engine steps as /api/forecast (Engine.forecast): the same
@@ -348,11 +352,241 @@ def score(dirpath=FORWARD_DIR, write=True, keep_records=False):
                             "first_asof": a["first_asof"], "last_asof": a["last_asof"],
                             "pending": a["pending"], "next_result": a["next_result"]}
     out = {"scored_at": now_utc(), "cones_logged": logged, "horizons": horizons}
+    try:
+        out["momentum"] = mom_score(dirpath)
+    except Exception as e:  # the cone scores still get written; say why the momentum part broke
+        traceback.print_exc()
+        out["momentum"] = {**EMPTY_MOM, "error": f"{type(e).__name__}: {e}"}
     if write:
         _write_atomic(os.path.join(dirpath, "scores.json"), out)
     if keep_records:
         out["records"] = recs_out
     return out
+
+
+# ---------------------------------------------------------------------------
+# Momentum tilt: a pre-registered live test (research/PLAN.md, "Live test: momentum tilt
+# (pre-registered 2026-10-04)"). The rules below are frozen; do not tune them on results.
+#
+# Per logged as-of date, data/forward/mom-<asof>.json holds the eligible stocks' mom_12_1,
+# the equal-weight top fifth, and the turnover vs the previous official month. Its own file
+# name (not <asof>.jsonl), so the cone readers above never see it. Returns are computed at
+# score time from today's adjusted price cache (ratios, so dividends/splits cancel).
+# ---------------------------------------------------------------------------
+
+MOM_MODEL = "mom_12_1|top_fifth|21d|v1"
+MOM_FILE = re.compile(r"^mom-(\d{4}-\d{2}-\d{2})\.json$")
+MOM_SKIP, MOM_LOOK = 21, 252        # mom_12_1 = log P[t-21] - log P[t-252] (research/xsec.py)
+MOM_MIN_HIST = MOM_LOOK + MOM_SKIP  # a stock with fewer days of history is left out
+MOM_HOLD = 21                       # trading days held
+MOM_QUANT = 0.2                     # top fifth: max(1, round(n * 0.2)), as research/backtest.run
+MOM_COST_BPS = 10.0                 # per side; cost = one-way turnover x 10 bps x 2
+MOM_MIN_MONTHS = 12                 # no t-stat and no verdict before this many official months
+EMPTY_MOM = {"model": MOM_MODEL, "records": 0, "latest_asof": None, "eligible_latest": None,
+             "top_n_latest": None, "official_dates": [], "first_result": None, "next_result": None,
+             "pending_months": 0, "months": [],
+             "official": {"n": 0, "mean_excess_ew": None, "mean_excess_spy": None, "wins_ew": 0,
+                          "wins_spy": 0, "hit_rate_ew": None, "t_stat_ew": None, "t_stat_spy": None},
+             "informational": {"n": 0, "mean_excess_ew": None, "mean_excess_spy": None,
+                               "hit_rate_ew": None},
+             "min_months": MOM_MIN_MONTHS, "too_small": True, "verdict": "too_small",
+             "cost_bps_per_side": MOM_COST_BPS}
+
+
+def _bt():
+    from research import backtest as bt   # Panel: the research calendar (^GSPC u SPY), pff = ffill(limit=5)
+    return bt
+
+
+def mom_signal(panel):
+    """mom_12_1 exactly as research/xsec.py compute_signals: ret(21, 252) on log panel.pff,
+    shifted by calendar rows. Causal: the value at row t uses rows t-252 and t-21 only."""
+    lp = np.log(panel.pff)
+    return lp.shift(MOM_SKIP) - lp.shift(MOM_LOOK)
+
+
+def mom_top(mom):
+    """Equal-weight top fifth by mom_12_1, ties broken by ticker."""
+    order = sorted(mom, key=lambda t: (-mom[t], t))
+    return order[:max(1, int(round(len(order) * MOM_QUANT)))]
+
+
+def mom_turnover(new, old):
+    """One-way turnover between two equal-weight lists: 0.5 * sum |w_new - w_old|.
+    No previous list (the first month) = 1.0, i.e. 20 bps."""
+    if not old:
+        return 1.0
+    wn, wo = 1.0 / len(new), 1.0 / len(old)
+    names = set(new) | set(old)
+    return 0.5 * sum(abs((wn if t in new else 0.0) - (wo if t in old else 0.0)) for t in names)
+
+
+def mom_cost(to):
+    return to * MOM_COST_BPS / 1e4 * 2
+
+
+def mom_files(dirpath):
+    out = []
+    try:
+        names = sorted(os.listdir(dirpath))
+    except OSError:
+        return out
+    for n in names:
+        m = MOM_FILE.match(n)
+        if m:
+            out.append((m.group(1), os.path.join(dirpath, n)))
+    return out
+
+
+def mom_official(dates):
+    """The first as-of date of each calendar month (the scored, non-overlapping series)."""
+    first = {}
+    for d in sorted(dates):
+        first.setdefault(d[:7], d)
+    return sorted(first.values())
+
+
+def mom_record(asof, tickers, created=None):
+    """The as-of's momentum record from prices up to and including the as-of only."""
+    bt = _bt()
+    end = pd.Timestamp(asof)
+    panel = bt.Panel(list(tickers), end=asof)
+    # no look-ahead: not one price after the as-of is in the panel the signal is built from
+    assert panel.cal[-1] <= end and panel.close.index.max() <= end and panel.mkt.index.max() <= end, \
+        f"a price after {asof} reached the momentum signal"
+    if panel.cal[-1] != end:
+        raise ValueError(f"{asof} is not in the price cache's calendar (last day {panel.cal[-1].date()})")
+    sig = mom_signal(panel).iloc[-1]
+    hist = panel.close.notna().sum()
+    entry = panel.pff.iloc[-1]
+    mom, excluded = {}, {}
+    for t in tickers:
+        if t not in panel.close.columns:
+            excluded[t] = "no cached prices"
+        elif int(hist[t]) < MOM_MIN_HIST:
+            excluded[t] = f"{int(hist[t])} days of history by {asof} (needs {MOM_MIN_HIST})"
+        elif not (np.isfinite(sig[t]) and np.isfinite(entry[t])):
+            excluded[t] = "no usable close at the as-of or 21/252 days before"
+        else:
+            mom[t] = float(sig[t])
+    top = mom_top(mom)
+    return {"asof": asof, "model": MOM_MODEL, "created_at": created or now_utc(),
+            "prices_through": panel.cal[-1].date().isoformat(), "universe": len(tickers),
+            "eligible": len(mom), "top_n": len(top), "top": top, "mom": mom, "excluded": excluded}
+
+
+def mom_snapshot(dirpath=FORWARD_DIR, dates=None, tickers=None, say=print):
+    """Write mom-<asof>.json for every as-of in `dates` (default: every logged cone day) that
+    does not have one yet. Idempotent: an existing record is never rewritten."""
+    if dates is None:
+        dates = [d for d, _ in log_files(dirpath)]
+    tickers = list(tickers or scored_tickers())
+    have = {d: p for d, p in mom_files(dirpath)}
+    res = {"added": [], "already": 0, "errors": []}
+    for d in sorted(dates):
+        if d in have:
+            res["already"] += 1
+            continue
+        try:
+            rec = mom_record(d, tickers)
+            off = mom_official(list(have) + [d])
+            prev = [x for x in off if x < d]
+            prev_top = (_read_json(have[prev[-1]]) or {}).get("top") if prev else None
+            rec["official"] = d in off
+            rec["prev_official"] = prev[-1] if prev else None
+            rec["turnover"] = mom_turnover(rec["top"], prev_top)
+            rec["cost"] = mom_cost(rec["turnover"])
+            path = os.path.join(dirpath, f"mom-{d}.json")
+            _write_atomic(path, rec)
+            have[d] = path
+            res["added"].append(d)
+            say(f"momentum record {d}: {rec['eligible']} eligible, top fifth {rec['top_n']}, "
+                f"turnover {rec['turnover']:.3f}{' (official)' if rec['official'] else ''}")
+        except Exception as e:
+            res["errors"].append(f"{d}: {type(e).__name__}: {e}")
+    return res
+
+
+def _mom_summary(rows, tstat):
+    n = len(rows)
+    if not n:
+        return {"n": 0, "mean_excess_ew": None, "mean_excess_spy": None, "wins_ew": 0, "wins_spy": 0,
+                "hit_rate_ew": None, "t_stat_ew": None, "t_stat_spy": None}
+    xe = np.array([r["excess_ew"] for r in rows])
+    xs = np.array([r["excess_spy"] for r in rows])
+
+    def t(x):
+        if not tstat or n < MOM_MIN_MONTHS or x.std(ddof=1) == 0:
+            return None
+        return round(float(x.mean() / (x.std(ddof=1) / np.sqrt(n))), 3)
+    return {"n": n, "mean_excess_ew": round(float(xe.mean()), 6), "mean_excess_spy": round(float(xs.mean()), 6),
+            "wins_ew": int((xe > 0).sum()), "wins_spy": int((xs > 0).sum()),
+            "hit_rate_ew": round(float((xe > 0).mean()), 4), "t_stat_ew": t(xe), "t_stat_spy": t(xs)}
+
+
+def mom_score(dirpath=FORWARD_DIR):
+    """The momentum section of scores.json / /api/forward. No stock names: not a picks list."""
+    recs = [r for r in (_read_json(p) for _, p in mom_files(dirpath)) if r and r.get("top")]
+    if not recs:
+        return dict(EMPTY_MOM)
+    recs.sort(key=lambda r: r["asof"])
+    bt = _bt()
+    panel = bt.Panel(sorted({t for r in recs for t in r["mom"]}))
+    P, M, cal = panel.pff, panel.mkt, panel.cal
+    dates = [r["asof"] for r in recs]
+    off = mom_official(dates)
+    tops = {r["asof"]: r["top"] for r in recs}
+    rows_off, rows_all, pend = [], [], []
+    first_result = None
+    for r in recs:
+        d = r["asof"]
+        i = int(cal.searchsorted(pd.Timestamp(d), side="left"))
+        if i >= len(cal) or cal[i] != pd.Timestamp(d):
+            raise ValueError(f"momentum as-of {d} is not in the price cache's calendar")
+        j = i + MOM_HOLD
+        if j < len(cal):
+            end, done = cal[j].date().isoformat(), True
+        else:
+            end = E.project_trading_days(cal[-1].date(), j - (len(cal) - 1))[-1].isoformat()
+            done = False
+        if d == off[0]:
+            first_result = end
+        if not done:
+            if d in off:
+                pend.append(end)
+            continue
+        win = P.iloc[i:j + 1].ffill()          # a stock that stops trading keeps its last close
+        ret = win.iloc[-1] / win.iloc[0] - 1.0
+        top_ret = float(ret[r["top"]].mean())
+        ew_ret = float(ret[list(r["mom"])].mean())
+        spy_ret = float(M.iloc[j] / M.iloc[i] - 1.0)
+        prev = [x for x in off if x < d]
+        to = mom_turnover(r["top"], tops[prev[-1]] if prev else None)
+        cost = mom_cost(to)
+        row = {"asof": d, "end_date": end, "eligible": r["eligible"], "top_n": r["top_n"],
+               "top_ret": round(top_ret, 6), "ew_ret": round(ew_ret, 6), "spy_ret": round(spy_ret, 6),
+               "turnover": round(to, 6), "cost": round(cost, 6),
+               "excess_ew": round(top_ret - cost - ew_ret, 6), "excess_spy": round(top_ret - cost - spy_ret, 6)}
+        row["beat_ew"] = row["excess_ew"] > 0
+        rows_all.append(row)
+        if d in off:
+            rows_off.append(row)
+    n = len(rows_off)
+    if n >= MOM_MIN_MONTHS:   # the kill rule reads the first 12 official months, then is final
+        first12 = float(np.mean([x["excess_ew"] for x in rows_off[:MOM_MIN_MONTHS]]))
+        verdict = "dead" if first12 <= 0 else "alive"
+    else:
+        verdict = "too_small"
+    info = _mom_summary(rows_all, tstat=False)
+    last = recs[-1]
+    return {"model": MOM_MODEL, "records": len(recs), "latest_asof": last["asof"],
+            "eligible_latest": last["eligible"], "top_n_latest": last["top_n"],
+            "official_dates": off, "first_result": first_result,
+            "next_result": min(pend) if pend else None, "pending_months": len(pend),
+            "months": rows_off, "official": _mom_summary(rows_off, tstat=True),
+            "informational": {k: info[k] for k in ("n", "mean_excess_ew", "mean_excess_spy", "hit_rate_ew")},
+            "min_months": MOM_MIN_MONTHS, "too_small": n < MOM_MIN_MONTHS, "verdict": verdict,
+            "cost_bps_per_side": MOM_COST_BPS}
 
 
 # ---------------------------------------------------------------------------
@@ -389,6 +623,8 @@ def status(dirpath=FORWARD_DIR):
         "last_snapshot": STATE["last_snapshot"],
         "scored_at": sc.get("scored_at"),
         "horizons": hz,
+        "momentum": {**EMPTY_MOM, **(sc.get("momentum") or {}),
+                     "records": max(len(mom_files(dirpath)), (sc.get("momentum") or {}).get("records") or 0)},
     }
 
 
@@ -410,10 +646,21 @@ def run_once(eng, dirpath=FORWARD_DIR, say=print):
         except Exception as e:
             traceback.print_exc()
             errs.append(f"snapshot failed: {type(e).__name__}: {e}")
+        STATE["phase"] = "momentum"
+        try:
+            mres = mom_snapshot(dirpath, say=say)
+            if mres["errors"]:
+                errs.append(f"momentum record: {len(mres['errors'])} day(s) not written, will retry next run "
+                            f"(first: {mres['errors'][0]})")
+        except Exception as e:
+            traceback.print_exc()
+            errs.append(f"momentum record failed: {type(e).__name__}: {e}")
         STATE["phase"] = "score"
         try:
             sc = score(dirpath)
             STATE["last_score"] = sc["scored_at"]
+            if (sc.get("momentum") or {}).get("error"):
+                errs.append(f"momentum score failed: {sc['momentum']['error']}")
         except Exception as e:
             traceback.print_exc()
             errs.append(f"score failed: {type(e).__name__}: {e}")
@@ -446,13 +693,145 @@ def start_loop(eng, every_s=6 * 3600, say=print):
 # Self-check
 # ---------------------------------------------------------------------------
 
-def selfcheck(asof="2026-05-01"):
+def mom_selfcheck(check, dates=("2026-04-01", "2026-04-15", "2026-05-01")):
+    """The momentum tilt at past dates in a temp dir: two official months (Apr 1, May 1) and
+    one informational day in between (Apr 15)."""
+    bt = _bt()
+    tmp = tempfile.mkdtemp(prefix="forward-mom-selfcheck-")
+    try:
+        tickers = scored_tickers()
+        print(f"momentum records as of {', '.join(dates)} for {len(tickers)} stocks into {tmp}")
+        r1 = mom_snapshot(tmp, dates=list(dates), tickers=tickers, say=lambda *a: None)
+        check(r1["added"] == list(dates) and not r1["errors"],
+              f"momentum: {len(r1['added'])} records written, errors {r1['errors'][:2]}")
+        recs = {d: _read_json(os.path.join(tmp, f"mom-{d}.json")) for d in dates}
+        d1, dm, d2 = dates
+        a, b = recs[d1], recs[d2]
+        print(f"  {d1}: {a['eligible']} eligible of {a['universe']}, top fifth {a['top_n']}; "
+              f"{d2}: {b['eligible']} eligible, top fifth {b['top_n']}")
+
+        # 1. the signal equals research/xsec.py's mom_12_1 (its own compute_signals) on 3 tickers
+        from research import xsec
+        for t in ("AAPL", "JPM", "KO"):
+            pan = bt.Panel([t], end=d1)
+            xv = float(xsec.compute_signals(pan)["mom_12_1"][t].iloc[-1])
+            mv = a["mom"].get(t)
+            check(mv is not None and abs(mv - xv) < 1e-12, f"momentum: {t} mom_12_1 at {d1} = {mv} vs xsec {xv:.12f}")
+        srt = sorted(a["mom"], key=lambda t: (-a["mom"][t], t))
+        check(a["top"] == srt[:a["top_n"]] and a["top_n"] == max(1, int(round(a["eligible"] * 0.2))),
+              f"momentum: top fifth = the {a['top_n']} highest mom_12_1 of {a['eligible']} (ties by ticker)")
+        short = []
+        for t in a["mom"]:
+            dfc = pd.read_csv(E._cache_file(t), index_col=0, parse_dates=True)
+            if int((dfc.index <= pd.Timestamp(d1)).sum()) < MOM_MIN_HIST:
+                short.append(t)
+        check(a["eligible"] + len(a["excluded"]) == len(tickers) and not short,
+              f"momentum: eligible + excluded = {len(tickers)}, every eligible stock has >= {MOM_MIN_HIST} closes (short: {short[:3]})")
+
+        # 2. no look-ahead: scramble every price after the as-of (and add a fake future bar); same record
+        orig = bt.read_cached
+        rng = np.random.default_rng(7)
+
+        def scrambled(t):
+            df = orig(t)
+            if df is None:
+                return df
+            df = df.copy()
+            late = df.index > pd.Timestamp(d1)
+            df.loc[late, "close"] = df.loc[late, "close"] * rng.uniform(0.5, 2.0, int(late.sum()))
+            fake = pd.DataFrame({c: [df[c].iloc[-1] * 3] for c in df.columns},
+                                index=[df.index[-1] + pd.Timedelta(days=400)])
+            return pd.concat([df, fake])
+        bt.read_cached = scrambled
+        try:
+            a2 = mom_record(d1, tickers)
+        finally:
+            bt.read_cached = orig
+        check(a2["mom"] == a["mom"] and a2["top"] == a["top"] and a2["excluded"] == a["excluded"],
+              "momentum: no look-ahead (prices after the as-of scrambled + a fake future bar -> identical record)")
+        full = bt.Panel([t for t in tickers if t in a["mom"]][:20])
+        fs = mom_signal(full).loc[pd.Timestamp(d1)]
+        check(all(abs(fs[t] - a["mom"][t]) < 1e-12 for t in fs.index),
+              "momentum: the signal at the as-of is the same with or without later prices in the panel (causal)")
+
+        # 3. turnover and cost by hand (1 - sum of min weights == 0.5 * sum |w2 - w1|)
+        wa, wb = 1.0 / len(a["top"]), 1.0 / len(b["top"])
+        to_hand = 1.0 - sum(min(wa, wb) for t in set(a["top"]) & set(b["top"]))
+        overlap = len(set(a["top"]) & set(b["top"]))
+        print(f"  hand turnover {d1} -> {d2}: overlap {overlap} of {len(b['top'])} -> one-way {to_hand:.6f}, "
+              f"cost {to_hand * 0.002 * 1e4:.2f} bps")
+        check(a["official"] and a["turnover"] == 1.0 and abs(a["cost"] - 0.0020) < 1e-15,
+              f"momentum: first month turnover 1.0, cost 20 bps (got {a['turnover']}, {a['cost']})")
+        check(not recs[dm]["official"] and recs[dm]["prev_official"] == d1,
+              f"momentum: {dm} is informational, its previous official month is {d1}")
+        check(b["official"] and b["prev_official"] == d1 and abs(b["turnover"] - to_hand) < 1e-12
+              and abs(b["cost"] - to_hand * 0.0020) < 1e-15,
+              f"momentum: {d2} turnover {b['turnover']:.6f} == hand {to_hand:.6f}, cost == turnover x 20 bps")
+
+        # 4. month 1 excess by hand, straight from the price CSVs (SPY's dates as the calendar)
+        sc = score(tmp, write=True)
+        m = sc["momentum"]
+        spy = pd.read_csv(E._cache_file("SPY"), index_col=0, parse_dates=True)["close"]
+        sd = [x.date().isoformat() for x in spy.index]
+        i = sd.index(d1)
+        end = sd[i + 21]
+
+        def r21(t):
+            c = pd.read_csv(E._cache_file(t), index_col=0, parse_dates=True)["close"]
+            c.index = c.index.normalize()
+            return float(c.loc[pd.Timestamp(end)] / c.loc[pd.Timestamp(d1)] - 1.0)
+        top_h = float(np.mean([r21(t) for t in a["top"]]))
+        ew_h = float(np.mean([r21(t) for t in a["mom"]]))
+        spy_h = float(spy.iloc[i + 21] / spy.iloc[i] - 1.0)
+        xe_h, xs_h = top_h - 0.0020 - ew_h, top_h - 0.0020 - spy_h
+        row = m["months"][0] if m["months"] else {}
+        print(f"  hand month 1 {d1} -> {end}: top {top_h:+.6f}  EW {ew_h:+.6f}  SPY {spy_h:+.6f}  "
+              f"excess vs EW {xe_h:+.6f}, vs SPY {xs_h:+.6f} (after 20 bps)")
+        check(row.get("end_date") == end and abs(row.get("excess_ew", 9) - xe_h) < 2e-6
+              and abs(row.get("excess_spy", 9) - xs_h) < 2e-6 and abs(row.get("ew_ret", 9) - ew_h) < 2e-6,
+              f"momentum: score() month 1 == hand (end {row.get('end_date')}, excess vs EW {row.get('excess_ew')}, "
+              f"vs SPY {row.get('excess_spy')})")
+        check(m["official_dates"] == [d1, d2] and m["official"]["n"] == 2 and m["informational"]["n"] == 3,
+              f"momentum: official months {m['official_dates']} (n={m['official']['n']}), informational n={m['informational']['n']}")
+        check(m["too_small"] and m["verdict"] == "too_small" and m["official"]["t_stat_ew"] is None
+              and m["first_result"] == end,
+              f"momentum: too small to judge, no t-stat, first result {m['first_result']}")
+        js = json.dumps(m)
+        named = [t for t in tickers if f'"{t}"' in js]
+        check(not named, f"momentum: the score section carries no stock names (found {named[:3]})")
+        b_row = m["months"][1] if len(m["months"]) > 1 else {}
+        check(abs(b_row.get("cost", 9) - round(to_hand * 0.002, 6)) < 1e-9,
+              f"momentum: month 2 charged {b_row.get('cost')} (turnover x 20 bps)")
+
+        # 5. re-running adds nothing and rewrites nothing
+        before = {d: open(os.path.join(tmp, f"mom-{d}.json"), encoding="utf-8").read() for d in dates}
+        r2 = mom_snapshot(tmp, dates=list(dates), tickers=tickers, say=lambda *a: None)
+        after = {d: open(os.path.join(tmp, f"mom-{d}.json"), encoding="utf-8").read() for d in dates}
+        check(not r2["added"] and r2["already"] == len(dates) and before == after,
+              f"momentum: second run adds 0 records (added {r2['added']}, already {r2['already']}), files unchanged")
+        st = status(tmp)
+        check(st["momentum"]["first_result"] == end and st["momentum"]["records"] == 3,
+              f"momentum: status() carries the section (records {st['momentum']['records']}, first result {st['momentum']['first_result']})")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def selfcheck(asof="2026-05-01", momentum_only=False):
     ok = True
 
     def check(cond, msg):
         nonlocal ok
         print(("  ok    " if cond else "  FAIL  ") + msg)
         ok = ok and bool(cond)
+
+    try:
+        mom_selfcheck(check)
+    except Exception as e:
+        traceback.print_exc()
+        check(False, f"momentum self-check crashed: {type(e).__name__}: {e}")
+    if momentum_only:
+        print("PASSED" if ok else "FAILED")
+        return 0 if ok else 1
 
     tmp = tempfile.mkdtemp(prefix="forward-selfcheck-")
     try:
@@ -545,10 +924,11 @@ def main(argv):
     ap.add_argument("--score", action="store_true")
     ap.add_argument("--status", action="store_true")
     ap.add_argument("--selfcheck", action="store_true")
+    ap.add_argument("--momentum-only", action="store_true", help="selfcheck only: just the momentum tilt part")
     ap.add_argument("--asof", help="selfcheck only: the past day to snapshot (default 2026-05-01)")
     a = ap.parse_args(argv)
     if a.selfcheck:
-        return selfcheck(a.asof or "2026-05-01")
+        return selfcheck(a.asof or "2026-05-01", momentum_only=a.momentum_only)
     if a.snapshot:
         eng = E.Engine(quiet=True)
         eng.warm_up()

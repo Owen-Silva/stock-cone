@@ -68,6 +68,13 @@ Accuracy page shows it under "Live test"; `GET /api/forward` returns it. By hand
 `--selfcheck` (logs 2026-05-01 into a temp folder and checks it against real
 prices). Early results are a small, correlated sample: give it months.
 
+The live test also runs one pre-registered direction check (rules frozen in
+`research/PLAN.md`, 2026-10-04): an equal-weight top fifth of the 155 stocks by 12-1 month
+momentum, held a month, scored after costs against all 155 and SPY
+(`data/forward/mom-<asof>.json`; the `momentum` section of `/api/forward`). No verdict
+before 12 monthly results; if the average after-cost lead over all 155 is not above zero
+by then, the tilt is declared dead.
+
 ## How the cone works now (v2, since 2026-10-04)
 
 The cone is `cone_model.py`, a frozen copy of the research model `cone2_f_conf_dev`,

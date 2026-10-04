@@ -190,7 +190,7 @@ files and a directory listing; it never waits on the logging.
 ```jsonc
 {
   "status": "building",          // "building" (first run in progress) | "running" | "ready" | "empty"
-  "phase": "snapshot",           // "snapshot" | "score" while running, else null
+  "phase": "snapshot",           // "snapshot" | "momentum" | "score" while running, else null
   "progress": [48, 155],         // stocks done / to do in the current snapshot, else null
   "since": "2026-10-02",         // first as-of date logged (null before the first one)
   "latest": "2026-10-02",        // last as-of date logged
@@ -216,6 +216,34 @@ files and a directory listing; it never waits on the logging.
       "next_result": "2026-10-09"              // earliest target date among pending cones
     },
     "21": { ... }, "63": { ... }
+  },
+  "momentum": {                  // the pre-registered momentum tilt (research/PLAN.md, 2026-10-04)
+    "model": "mom_12_1|top_fifth|21d|v1",
+    "records": 1,                // data/forward/mom-<asof>.json files
+    "latest_asof": "2026-10-02",
+    "eligible_latest": 155,      // stocks with >= 273 days of history at the latest as-of
+    "top_n_latest": 31,          // size of the top fifth (max(1, round(eligible x 0.2)))
+    "official_dates": ["2026-10-02"],   // first logged as-of of each calendar month
+    "first_result": "2026-11-02",       // when the first official month is scored (as-of + 21 trading days)
+    "next_result": "2026-11-02",        // earliest end date among pending official months, else null
+    "pending_months": 1,
+    "months": [                  // one row per scored official month, oldest first (empty until the first arrives)
+      // {"asof", "end_date", "eligible", "top_n", "top_ret", "ew_ret", "spy_ret",
+      //  "turnover",            // one-way, vs the previous official month (1.0 for the first)
+      //  "cost",                // turnover x 10 bps x 2 (0.002 the first month)
+      //  "excess_ew", "excess_spy",   // top_ret - cost - ew_ret / spy_ret
+      //  "beat_ew"}             // excess_ew > 0
+    ],
+    "official": {"n": 0, "mean_excess_ew": null, "mean_excess_spy": null, "wins_ew": 0, "wins_spy": 0,
+                 "hit_rate_ew": null,   // share of official months with excess_ew > 0
+                 "t_stat_ew": null, "t_stat_spy": null},   // null until n >= 12
+    "informational": {"n": 0, "mean_excess_ew": null, "mean_excess_spy": null, "hit_rate_ew": null},
+                                 // every logged as-of, overlapping 21-day windows: not the test
+    "min_months": 12,
+    "too_small": true,           // true until 12 official months are scored: too few to judge
+    "verdict": "too_small",      // "too_small" | "alive" | "dead" (kill rule on the first 12 official months)
+    "cost_bps_per_side": 10.0
+    // "error": "why"            // only when scoring the momentum part failed (the cone scores still stand)
   }
 }
 ```
@@ -232,4 +260,12 @@ files and a directory listing; it never waits on the logging.
   asof + horizon trading days) applied to the logged `last_close`, so dividends and splits
   after the log date cancel out. A cone is scored once the price file has `horizon`
   trading days after its as-of date.
-- CLI: `python forward.py --snapshot | --score | --status | --selfcheck`.
+- Momentum tilt: after each snapshot, `data/forward/mom-<asof>.json` is written for every
+  logged as-of that lacks one (a separate file name, so the cone readers never see it):
+  `asof, model, created_at, prices_through` (always == asof: built from prices up to the
+  as-of only, asserted), `universe, eligible, top_n, top` (the top-fifth tickers), `mom`
+  (ticker -> mom_12_1), `excluded` (ticker -> reason), `official, prev_official, turnover,
+  cost`. Never rewritten. Returns are scored from the current adjusted price cache (ratio of
+  the as-of close and the close 21 trading days later; a stock that stops trading keeps its
+  last close). The API carries no stock names: it is a test, not a picks list.
+- CLI: `python forward.py --snapshot | --score | --status | --selfcheck [--momentum-only]`.

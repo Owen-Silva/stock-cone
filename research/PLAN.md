@@ -103,3 +103,39 @@ flatters own-mean centres, and an own-mean centre would bake a hot young stock's
 into its live cone, which is the opposite of what a real-money user needs. TEST #2 will
 report both, but the choice above stands whatever TEST says. The event add-on joins the
 product only if it wins on VAL without losing on DEV.
+
+## Live test: momentum tilt (pre-registered 2026-10-04)
+
+Written before any result exists; the rules below are frozen. The only direction signal
+that survived the research is 12-1 month momentum. Its honest edge is small (about 2-3%
+a year expected), the backtest is biased because the stock list is survivors, and both
+locked TEST opens are spent, so the only clean check left is forward. It runs inside the
+live-test logger (`forward.py`, model key `mom_12_1|top_fifth|21d|v1`); the cone records
+are unchanged.
+
+- **Signal:** `mom_12_1` exactly as `research/xsec.py` defines it: `ret(21, 252)`, the log
+  return from 252 to 21 trading days ago on adjusted closes (`research/backtest.Panel`
+  calendar, `pff` = closes forward-filled up to 5 days). `forward.py --selfcheck` shows the
+  logged value equals xsec's on AAPL, JPM and KO at 2026-04-01.
+- **Universe:** the 155 scored tickers the live test already uses. A stock with fewer than
+  252 + 21 days of history by the as-of is left out.
+- **Portfolio per as-of date:** equal-weight top fifth by `mom_12_1` (max(1, round(n x 0.2))
+  names, ties by ticker), held 21 trading days from the as-of close.
+- **Benchmarks:** the equal-weight average of all eligible stocks, and SPY.
+- **Costs:** 10 bps per side on monthly turnover: one-way turnover between this month's top
+  fifth and the previous official month's x 10 bps x 2. The first month pays 20 bps.
+- **Official scored dates:** the first logged as-of date of each calendar month
+  (non-overlapping 21-day windows). Every logged date is also kept as an informational
+  overlapping series; it is not the test.
+- **No look-ahead:** each as-of's record (`data/forward/mom-<asof>.json`) is built from
+  prices up to and including the as-of only (asserted in code; the self-check scrambles
+  every later price and gets the identical record). Returns are scored later from the
+  adjusted price cache as close-to-close ratios.
+- **Report:** per official month, the top-fifth return, EW return, SPY return and the
+  after-cost excess vs EW and vs SPY. Cumulatively: n months, mean monthly excess, hit rate
+  (months beating EW). A t-stat only once n >= 12; before that the UI and API say plainly
+  the sample is too small to judge.
+- **Kill rule:** after 12 official months, if the mean after-cost excess vs EW over those
+  12 months is <= 0, the tilt is declared dead. The verdict is final either way.
+- **First record:** as-of 2026-10-02 (backfilled from prices up to that date only); first
+  official result due 2026-11-02.

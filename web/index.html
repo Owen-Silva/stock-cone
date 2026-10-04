@@ -449,6 +449,8 @@ details.analogs summary .count { font-weight: 450; color: var(--muted); }
 .live-rows .hz { font-weight: 650; color: var(--ink); }
 .live-rows b { font-weight: 650; color: var(--ink); }
 .live-rows .n { color: var(--muted); }
+.live-mom { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--hair); }
+.live-mom p:first-child { margin-top: 0; }
 
 details.acc-skip { margin-top: 26px; }
 .skip-list { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); column-gap: 32px; }
@@ -2200,7 +2202,44 @@ function mockLive(kind) {
   }
   if (kind === 'error') base.last_error = { at: '2026-10-04T18:00:00Z', message: 'snapshot 2026-10-02: 3 stock(s) not logged, will retry next run (first: OPEN: Yahoo Finance unreachable while fetching OPEN: timed out)' };
   if (kind === 'building') { base.status = 'building'; base.since = null; base.days_logged = 0; base.progress = [37, 155]; }
+  // momentum tilt (forward.py mom_score): no stock names, only the monthly scores
+  const mm = (n, xe, xs, wins, t, verdict) => ({ records: n * 21, first_result: '2026-11-02', next_result: '2026-12-02', pending_months: 1,
+    official: { n: n, mean_excess_ew: xe, mean_excess_spy: xs, wins_ew: wins, wins_spy: wins - 1, hit_rate_ew: n ? wins / n : null, t_stat_ew: t, t_stat_spy: t == null ? null : t - 0.4 },
+    months: [], min_months: 12, too_small: n < 12, verdict: verdict });
+  base.momentum = kind === 'building' ? { records: 0, first_result: null, official: { n: 0 }, too_small: true, verdict: 'too_small' }
+    : { records: 1, first_result: '2026-11-02', next_result: '2026-11-02', pending_months: 1, official: { n: 0 }, months: [], min_months: 12, too_small: true, verdict: 'too_small' };
+  if (kind === 'results') base.momentum = mm(3, 0.0041, -0.0012, 2, null, 'too_small');
+  if (kind === 'mom12') base.momentum = mm(14, 0.0023, 0.0009, 9, 1.37, 'alive');
+  if (kind === 'momdead') base.momentum = mm(12, -0.0018, -0.0031, 5, -0.82, 'dead');
+  if (kind === 'error') base.momentum.error = 'ValueError: momentum as-of 2026-10-02 is not in the price cache calendar';
   return base;
+}
+
+function renderMom(m) {
+  if (!m || typeof m !== 'object') return '';
+  const o = m.official || {};
+  const n = fnum(o.n) ? o.n : 0;
+  const out = ['<p><b>Momentum tilt</b> (top fifth by 12-month strength vs all 155 and vs SPY, after costs).'];
+  if (!n) {
+    out[0] += m.first_result ? ' First result on <b>' + esc(fmtDate(m.first_result)) + '</b>.' : ' Starts with the next logged day.';
+    out[0] += '</p>';
+  } else {
+    out[0] += '</p>';
+    let line = '<b>' + int(n) + '</b> ' + (n === 1 ? 'month' : 'months') + ' · average per month <b>' + pctS(o.mean_excess_ew, 2) + '</b> vs all 155, <b>'
+      + pctS(o.mean_excess_spy, 2) + '</b> vs SPY · beat all 155 in <b>' + int(o.wins_ew) + ' of ' + int(n) + '</b>';
+    const tf = (v) => fnum(v) ? (v < 0 ? '−' : '') + Math.abs(+v).toFixed(2) : '—';
+    if (!m.too_small && fnum(o.t_stat_ew)) line += ' <span class="n">· t ' + tf(o.t_stat_ew) + ' vs all, ' + tf(o.t_stat_spy) + ' vs SPY</span>';
+    out.push('<p>' + line + '.</p>');
+  }
+  if (m.too_small !== false) {
+    out.push('<p class="k">Set up in advance with fixed rules; one result a month. Too few months to judge until 12 are in' + (n ? ' (' + int(n) + ' so far)' : '') + ': before that, any lead or lag is mostly luck. The research expects only a small edge, about 2–3% a year.</p>');
+  } else if (m.verdict === 'dead') {
+    out.push('<p class="k">Failed the rule set in advance: after 12 months its average lead over all 155, after costs, was zero or below, so the tilt is declared dead.</p>');
+  } else if (m.verdict === 'alive') {
+    out.push('<p class="k">Passed the rule set in advance: after 12 months its average lead over all 155, after costs, was above zero. A small edge can still be luck; the t-stat says how sure.</p>');
+  }
+  if (m.error) out.push('<p class="err">Couldn’t score the momentum tilt: ' + esc(m.error) + '</p>');
+  return '<div class="live-mom">' + out.join('') + '</div>';
 }
 
 async function loadLive(force) {
@@ -2263,6 +2302,7 @@ function renderLive() {
     out.push('<ul class="live-rows">' + rows.join('') + '</ul>');
     out.push('<p class="k">The first weeks are a small sample, and stocks tend to move together: one market swing pushes most of them the same way on the same day, so these numbers can jump around a lot until months of days are in.</p>');
   }
+  if (d.since && d.momentum) out.push(renderMom(d.momentum));
   if (d.last_error && d.last_error.message) {
     let when = '';
     try { when = d.last_error.at ? new Date(d.last_error.at).toLocaleString() : ''; } catch (e) { when = ''; }
