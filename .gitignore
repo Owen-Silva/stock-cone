@@ -4,3 +4,16 @@ web/_shots/
 research/results/partial/
 research/results/*.npz
 research/results/cone2_analog/
+
+# backup safety block (never push secrets or local state)
+.env*
+*.log
+logs/
+node_modules/
+*-profile/
+*.pickle
+*.session
+*.pem
+*.key
+*credential*
+*token*
