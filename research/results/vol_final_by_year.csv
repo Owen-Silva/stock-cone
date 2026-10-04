@@ -1,0 +1,43 @@
+h,model,year,cov80
+5,"naive0 (sd63, Gaussian, zero drift)",2012,0.8121
+5,"naive0 (sd63, Gaussian, zero drift)",2013,0.8116689819408612
+5,"naive0 (sd63, Gaussian, zero drift)",2014,0.7920054200542005
+5,"naive0 (sd63, Gaussian, zero drift)",2015,0.8239040839265642
+5,"naive0 (sd63, Gaussian, zero drift)",2016,0.8291480230115971
+5,"naive0 (sd63, Gaussian, zero drift)",2017,0.8211346136826267
+5,"naive0 (sd63, Gaussian, zero drift)",2018,0.7931634339392886
+5,har_mx_QLr z=zero,2012,0.8036
+5,har_mx_QLr z=zero,2013,0.8230799761857511
+5,har_mx_QLr z=zero,2014,0.8089430894308943
+5,har_mx_QLr z=zero,2015,0.8235294117647058
+5,har_mx_QLr z=zero,2016,0.8138069582686512
+5,har_mx_QLr z=zero,2017,0.8395433224179131
+5,har_mx_QLr z=zero,2018,0.791249891275985
+21,"naive0 (sd63, Gaussian, zero drift)",2012,0.8056
+21,"naive0 (sd63, Gaussian, zero drift)",2013,0.7949990077396308
+21,"naive0 (sd63, Gaussian, zero drift)",2014,0.782520325203252
+21,"naive0 (sd63, Gaussian, zero drift)",2015,0.8122892469089547
+21,"naive0 (sd63, Gaussian, zero drift)",2016,0.8194685416856908
+21,"naive0 (sd63, Gaussian, zero drift)",2017,0.7648464465881937
+21,"naive0 (sd63, Gaussian, zero drift)",2018,0.8120980520085749
+21,har_mx_QLr z=zero,2012,0.8026
+21,har_mx_QLr z=zero,2013,0.811371303830125
+21,har_mx_QLr z=zero,2014,0.8066202090592335
+21,har_mx_QLr z=zero,2015,0.8042337954289996
+21,har_mx_QLr z=zero,2016,0.8152680120536937
+21,har_mx_QLr z=zero,2017,0.819276042127622
+21,har_mx_QLr z=zero,2018,0.8134029266474042
+63,"naive0 (sd63, Gaussian, zero drift)",2012,0.7827
+63,"naive0 (sd63, Gaussian, zero drift)",2013,0.75927763445128
+63,"naive0 (sd63, Gaussian, zero drift)",2014,0.7776809910956253
+63,"naive0 (sd63, Gaussian, zero drift)",2015,0.8281191457474709
+63,"naive0 (sd63, Gaussian, zero drift)",2016,0.7723495571180714
+63,"naive0 (sd63, Gaussian, zero drift)",2017,0.7007699796442163
+63,"naive0 (sd63, Gaussian, zero drift)",2018,0.81302113078241
+63,har_mx_QLr z=zero,2012,0.8006
+63,har_mx_QLr z=zero,2013,0.8142488589005755
+63,har_mx_QLr z=zero,2014,0.8278164924506388
+63,har_mx_QLr z=zero,2015,0.8111652304233795
+63,har_mx_QLr z=zero,2016,0.8043101086658753
+63,har_mx_QLr z=zero,2017,0.8118417559076024
+63,har_mx_QLr z=zero,2018,0.8113078241005139
