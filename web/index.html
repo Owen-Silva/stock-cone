@@ -295,6 +295,27 @@ button:disabled { cursor: default; }
 .track.wait { color: var(--muted); }
 .track.err { color: var(--down); }
 .hint-off { margin: 0; font-size: 14px; color: var(--muted); }
+.event { margin: 4px 0 0; font-size: 13.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.event b { font-weight: 600; color: var(--ink-2); }
+
+/* position risk */
+.risk { margin: 14px 0 0; max-width: 720px; border: 1px solid var(--hair); border-radius: 10px; padding: 12px 14px 12px; background: var(--surface); }
+.risk-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.risk-t { margin: 0 4px 0 0; font-size: 12px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.risk-in { display: inline-flex; align-items: center; height: 34px; padding: 0 10px; border: 1px solid var(--hair-2); border-radius: 8px; background: var(--bg); }
+.risk-in:focus-within { border-color: var(--accent); }
+.risk-pre { color: var(--muted); font-size: 14px; margin-right: 3px; }
+.risk-pre:empty { display: none; }
+.risk-in input { width: 9ch; border: 0; padding: 0; background: transparent; color: var(--ink); font: inherit; font-size: 14.5px; font-weight: 600; font-variant-numeric: tabular-nums; outline: none; }
+.risk-seg button { height: 30px; min-width: 0; padding: 0 10px; }
+.risk-eq { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.risk-rows { display: grid; grid-template-columns: max-content 1fr; gap: 3px 16px; margin: 12px 0 0; font-size: 14px; line-height: 1.5; }
+.risk-rows dt { color: var(--muted); }
+.risk-rows dd { margin: 0; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.risk-rows b { font-weight: 650; color: var(--ink); }
+.risk-stop { margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--hair); font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+.risk-stop b { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.risk-bad { color: var(--down); }
 
 details.analogs { margin-top: 18px; border-top: 1px solid var(--hair); }
 details.analogs summary { list-style: none; cursor: pointer; padding: 14px 0 4px; font-size: 14px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
@@ -550,6 +571,14 @@ details.rs[open] summary .chev { transform: rotate(90deg); }
   .odds .sep, .track .sep { display: none; }
   .replay .hint { flex-basis: 100%; }
   .replay .grow { display: none; }
+  .risk { padding: 12px; }
+  .risk-t { flex-basis: 100%; }
+  .risk-eq { flex-basis: 100%; }
+  .risk-rows { gap: 4px 12px; font-size: 13.5px; }
+}
+@media (max-width: 380px) {
+  .risk-rows { grid-template-columns: 1fr; gap: 0; }
+  .risk-rows dd { margin-bottom: 6px; }
 }
 @media (max-width: 360px) {
   .future { padding-left: 12px; gap: 9px; }
@@ -649,7 +678,24 @@ details.rs[open] summary .chev { transform: rotate(90deg); }
     <p id="hintOff" class="hint-off">Flip <b>Future</b> to see how far the price could move from here.</p>
     <div id="oddsWrap" hidden>
       <p id="odds" class="odds"></p>
+      <p id="event" class="event" hidden></p>
       <p id="agree" class="agree"></p>
+      <div id="risk" class="risk" hidden>
+        <div class="risk-head">
+          <h2 class="risk-t">Position risk</h2>
+          <label class="risk-in" for="riskAmt"><span class="sr">Position size</span>
+            <span id="riskPre" class="risk-pre" aria-hidden="true">$</span>
+            <input id="riskAmt" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="1,000">
+          </label>
+          <div id="riskMode" class="seg risk-seg" role="group" aria-label="Size in">
+            <button type="button" data-m="usd" aria-pressed="true">Dollars</button>
+            <button type="button" data-m="shares" aria-pressed="false">Shares</button>
+          </div>
+          <span id="riskEq" class="risk-eq"></span>
+        </div>
+        <dl id="riskRows" class="risk-rows"></dl>
+        <p id="riskStop" class="risk-stop"></p>
+      </div>
       <p id="track" class="track"></p>
     </div>
   </section>
@@ -888,7 +934,11 @@ async function mockForecast(t, h, asof) {
   if (qs.get('mocktrack') === 'late' && !mockServed.has(k)) track = null;
   mockServed.add(k);
   const sc = Math.sqrt(h / H);
+  // event: live only (contract), null when it falls outside this horizon. ?mockevent=0 tests it absent.
+  let event = null;
+  if (!asof && M.event && qs.get('mockevent') !== '0' && M.event.date <= future.dates[h - 1]) event = Object.assign({}, M.event, { in_window: true });
   return {
+    event: event,
     ticker: M.ticker, name: M.name, asof: lastD, horizon: h, last_close: last,
     history: full.slice(s, cut + 1), future: future,
     odds: Object.assign({}, M.odds, { median_ret: ret('p50'), p10_ret: ret('p10'), p90_ret: ret('p90') }),
@@ -1387,6 +1437,18 @@ function renderReading() {
   $('agree').textContent = ag;
   $('agree').hidden = !ag;
 
+  // scheduled event inside the window (live forecasts only, per the contract)
+  const ev = d.event;
+  const evOn = !S.replay.on && !!ev && ev.in_window === true && typeof ev.date === 'string';
+  $('event').hidden = !evOn;
+  if (evOn) {
+    const kind = ev.type === 'earnings' ? 'Earnings' : String(ev.type || 'An event').replace(/^./, (c) => c.toUpperCase());
+    const wid = Number(ev.widen);
+    $('event').innerHTML = esc(kind) + ' expected <b>' + esc(fmtDate(ev.date, { year: false })) + '</b>: inside this window' +
+      (isFinite(wid) && wid > 1.005 ? ', <span class="chunk">cone widened <b>×' + wid.toFixed(2) + '</b></span>' : '');
+  }
+  renderRisk(d, hz);
+
   const tr = $('track');
   const t = d.track, tk = esc(d.ticker || S.ticker);
   tr.className = 'track';
@@ -1412,6 +1474,93 @@ function renderAnalogs(d, hz) {
   $('anNote').textContent = 'The cone takes a small part of its shape from setups like these. What happened in the ' + hz.long + ' after each one, nearest match first. A sample, not the odds.';
   $('anList').innerHTML = a.map((x) => '<li><span class="an-t">' + esc(x.ticker) + '</span><span class="an-d">' + (x.date ? fmtDate(x.date) : '') + '</span><span class="an-r ' + tone(x.ret) + '">' + pctS(x.ret) + '</span></li>').join('');
 }
+
+/* ---------- position risk (sizing from the cone's ranges; the ranges are what the track record backs) ---------- */
+const RISK_KEY = 'stockcone.position';
+const POS = (() => {
+  let p = null;
+  try { p = JSON.parse(store.get(RISK_KEY) || 'null'); } catch (e) { p = null; }
+  if (!p || (p.mode !== 'usd' && p.mode !== 'shares') || !(Number(p.v) > 0) || !isFinite(Number(p.v))) p = { mode: 'usd', v: 1000 };
+  return { mode: p.mode, v: Number(p.v) };
+})();
+function savePos() { store.set(RISK_KEY, JSON.stringify(POS)); }
+// whole dollars unless the position is small; one precision for the whole box so rows line up in kind
+let moneyDp = 0;
+function money(v, signed, dpIn) {
+  const a = Math.abs(v), dp = dpIn != null ? dpIn : moneyDp;
+  const s = '$' + a.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  if (!signed || +a.toFixed(dp) === 0) return s;
+  return (v > 0 ? '+' : '−') + s;
+}
+const moneyB = (v) => '<b class="' + (v > 0 ? 'up' : v < 0 ? 'down' : '') + '">' + money(v, true) + '</b>';
+function fmtQty(v, mode) {
+  if (mode === 'usd') return v.toLocaleString('en-US', { maximumFractionDigits: Number.isInteger(v) ? 0 : 2 });
+  return v.toLocaleString('en-US', { maximumFractionDigits: v >= 100 ? 2 : 4 });
+}
+function parseQty(s) {
+  const v = parseFloat(String(s).replace(/[$,\s]/g, ''));
+  return isFinite(v) && v > 0 ? v : null;
+}
+function riskBase() {
+  const d = current();
+  if (!d || S.replay.on || !coneWanted()) return null;
+  const f = d.future, L = Number(d.last_close);
+  if (!f || !(L > 0) || !QUANTS.every((q) => Array.isArray(f[q]) && f[q].length)) return null;
+  return d;
+}
+function renderRisk(d, hz) {
+  const box = $('risk');
+  // live only: a replay's position risk would be about a past day, which is not what this box is for
+  const ok = !!riskBase();
+  box.hidden = !ok;
+  if (!ok) return;
+  const f = d.future, L = Number(d.last_close), n = f.p10.length - 1;
+  const end = (q) => Number(f[q][n]);
+  const shares = POS.mode === 'usd' ? POS.v / L : POS.v;
+  const pnl = (q) => shares * (end(q) - L);
+  moneyDp = shares * L >= 500 ? 0 : 2;
+  const by = (f.dates && f.dates[n]) ? fmtDate(f.dates[n], { year: false }) : 'the end of ' + hz.long;
+
+  const inp = $('riskAmt');
+  if (document.activeElement !== inp) { inp.value = fmtQty(POS.v, POS.mode); inp.removeAttribute('aria-invalid'); }
+  $('riskPre').textContent = POS.mode === 'usd' ? '$' : '';
+  inp.setAttribute('aria-label', POS.mode === 'usd' ? 'Position size in dollars' : 'Position size in shares');
+  $('riskMode').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === POS.mode)));
+  $('riskEq').textContent = POS.mode === 'usd'
+    ? '≈ ' + fmtQty(shares, 'shares') + ' shares at $' + fmtPrice(L)
+    : '= ' + money(shares * L) + ' at $' + fmtPrice(L);
+
+  const p10 = pnl('p10'), p25 = pnl('p25'), p75 = pnl('p75'), p90 = pnl('p90');
+  $('riskRows').innerHTML =
+    '<dt>8 in 10 outcomes</dt><dd>' + moneyB(p10) + ' to ' + moneyB(p90) + ' by ' + esc(by) + '</dd>' +
+    '<dt>1 in 10 worse than</dt><dd>' + moneyB(p10) + '</dd>' +
+    '<dt>Half of outcomes within</dt><dd>' + moneyB(p25) + ' to ' + moneyB(p75) + '</dd>';
+  const stopTip = 'Reflection-principle estimate for a random walk: the chance of touching a level at some point is about twice the chance of ending below it. ' +
+    'It uses daily closes, so it misses touches inside a day, and a gap down can fill a stop below its price.';
+  $('riskStop').innerHTML = 'A stop at <b>$' + fmtPrice(end('p10')) + '</b> <span class="dim">(the cone’s lower edge, ' + money(p10, true) + ' on this position)</span> ends below it in about <b>1 in 10</b> outcomes by ' + esc(by) +
+    '; touching it at some point before then is more likely <span title="' + esc(stopTip) + '">(roughly <b>1 in 5</b>)</span>.';
+}
+$('riskAmt').addEventListener('input', () => {
+  const inp = $('riskAmt'), v = parseQty(inp.value);
+  if (v == null) { inp.setAttribute('aria-invalid', 'true'); return; }
+  inp.removeAttribute('aria-invalid');
+  POS.v = v; savePos();
+  const d = riskBase(); if (d) renderRisk(d, HZ[d.horizon] || { long: d.horizon + ' trading days' });
+});
+$('riskAmt').addEventListener('blur', () => {
+  const d = riskBase(); if (d) renderRisk(d, HZ[d.horizon] || { long: d.horizon + ' trading days' });
+});
+$('riskMode').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-m]');
+  if (!b || b.dataset.m === POS.mode) return;
+  const d = riskBase(), L = d ? Number(d.last_close) : 0;
+  if (L > 0) {
+    // keep the same exposure when switching units
+    POS.v = b.dataset.m === 'shares' ? Math.max(0.0001, Math.round(POS.v / L * 100) / 100) : Math.max(1, Math.round(POS.v * L));
+  } else POS.v = b.dataset.m === 'shares' ? 10 : 1000;
+  POS.mode = b.dataset.m; savePos();
+  if (d) renderRisk(d, HZ[d.horizon] || { long: d.horizon + ' trading days' });
+});
 
 function renderFoot() {
   const d = current();
