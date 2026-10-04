@@ -34,6 +34,12 @@ quantiles (q = 0.05 .. 0.95) of the h-day log return r = ln(close[p+h] / close[p
 
 Every input is causal: bars <= p for the stock, basket bars and market bars dated <= the
 as-of day, own and basket residuals only from windows whose outcome is known by then.
+
+Live forecasts only: when a scheduled earnings reaction falls inside the window, the
+engine widens Q around its mean by event_widen(h, kbar) (EVENT below; research
+research/models_event_oracle.py, report research/reports/event-02-known-dates.md) and
+draws the extra variance from the event day on (daily_paths with event_step). The
+functions above are unchanged by it; replays and the track record never call it.
 """
 
 import math
@@ -386,20 +392,80 @@ def end_quantiles(S, B, positions, h, qdev):
     return np.sort(Q, axis=1)
 
 
-def daily_paths(Q, h, qs_idx=IDX5):
+def daily_paths(Q, h, qs_idx=IDX5, event_step=None, widen=1.0):
     """Log-return paths for days 1..h from the end-of-horizon quantiles Q (19,).
 
     The model is defined at the horizon end only. In between, each band follows a random
     walk with drift: day d = m*d + (Q_h - m*h) * sqrt(d/h), with m = mean(Q_h) / h (the
     cone's mean daily drift; for the plain cone this is exactly the centre, because z has
-    mean 0). Bands stay ordered on every day, and day h equals Q_h exactly."""
+    mean 0). Bands stay ordered on every day, and day h equals Q_h exactly.
+
+    Known earnings day (live forecasts only): Q is the WIDENED cone (widen_quantiles(Q0, f))
+    and event_step (1..h) is the trading day of the earnings reaction. The event's extra
+    variance (f^2 - 1) * h * s^2 is added from that day on, so days before it are the plain
+    cone's path and day h is Q exactly:
+        day d = m*d + (Q_h - m*h) / f * sqrt((d + [d >= event_step] * (f^2 - 1) * h) / h)."""
     Q = np.asarray(Q, float)
     m = float(np.mean(Q)) / h
     d = np.arange(1, h + 1, dtype=float)
     q = Q[list(qs_idx)]
-    out = m * d[None, :] + (q[:, None] - m * h) * np.sqrt(d / h)[None, :]
+    if event_step is None or widen == 1.0:
+        out = m * d[None, :] + (q[:, None] - m * h) * np.sqrt(d / h)[None, :]
+    else:
+        g = d + np.where(d >= event_step, (widen ** 2 - 1.0) * h, 0.0)
+        out = m * d[None, :] + ((q[:, None] - m * h) / widen) * np.sqrt(g / h)[None, :]
     out[:, -1] = q                                     # exact at the horizon end
     return out
+
+
+# ---------------------------------------------------------------------------
+# Known earnings date (LIVE forecasts only; replays and the track record never use it)
+# ---------------------------------------------------------------------------
+# Frozen copy of research/models_event_oracle.py (KBAR, FROZEN; report
+# research/reports/event-02-known-dates.md). When a scheduled earnings reaction falls inside
+# the window, the cone's spread is scaled around its mean by
+#     f = sqrt(1 + C[h] * (kbar - 1) / h)
+# kbar = the stock's shrunk mean earnings-day variance ratio r_e^2 / s_e^2 over its last 8
+# reactions dated <= as-of (s_e^2 = robust variance of the 63 bars before the reaction),
+# shrunk toward the pool ratio with 4 pseudo-events. C fitted on DEV (2002-2011), confirmed
+# on VAL (2012-2018). At 63 days nearly every window holds an earnings day and the cone is
+# already calibrated on such windows, so C[63] = 0 (no change).
+EVENT = {"C": {5: 0.80, 21: 0.62, 63: 0.0},
+         "n_last": 8, "n0": 4.0, "k_pool": 6.3, "cap": 40.0, "win": 63}
+
+
+def event_kbar(day, logc, reactions, asof_day, ev=EVENT):
+    """(kbar, n_used) from earnings reaction days (int days since epoch) dated <= asof_day.
+    day / logc: the stock's bar days and log closes (bars after asof_day are never read)."""
+    day = np.asarray(day, np.int64)
+    R = np.sort(np.asarray([x for x in reactions if x <= asof_day], np.int64))[-ev["n_last"]:]
+    ks = []
+    if len(R):
+        p = int(np.searchsorted(day, asof_day, "right")) - 1
+        lc = np.asarray(logc, float)[: p + 1]
+        r = np.concatenate([[np.nan], np.diff(lc)])
+        s2 = (pd.Series(r).pow(2).rolling(ev["win"], min_periods=int(ev["win"] * 0.65)).median()
+              .shift(1) / 0.455).to_numpy()
+        for x in R:
+            e = int(np.searchsorted(day[: p + 1], x, "left"))
+            if e > p:
+                continue
+            k = r[e] ** 2 / max(s2[e], 1e-12) if np.isfinite(s2[e]) and np.isfinite(r[e]) else np.nan
+            ks.append(min(k, ev["cap"]) if np.isfinite(k) else ev["k_pool"])
+    n = len(ks)
+    return (float(np.sum(ks)) + ev["n0"] * ev["k_pool"]) / (n + ev["n0"]), n
+
+
+def event_widen(h, kbar, ev=EVENT):
+    """Spread factor for a window holding a known earnings reaction."""
+    return float(math.sqrt(1.0 + ev["C"][h] * max(kbar - 1.0, 0.0) / h))
+
+
+def widen_quantiles(Q, f):
+    """Scale the 19 end quantiles around their mean by f (order and mean are kept)."""
+    Q = np.asarray(Q, float)
+    m = float(np.mean(Q))
+    return m + f * (Q - m)
 
 
 # ---------------------------------------------------------------------------

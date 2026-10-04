@@ -1,0 +1,28 @@
+OK   lookahead event2_cal   KO    asof=2008-10-10 q05/q50/q95(h21)=-0.1867/+0.0200/+0.1981 
+OK   lookahead event2_cal   AAPL  asof=2015-06-12 q05/q50/q95(h21)=-0.0882/+0.0124/+0.1024 
+OK   lookahead event2_cal   NVDA  asof=2011-03-04 q05/q50/q95(h21)=-0.2523/+0.0163/+0.2592 
+OK   lookahead event2_cal   SMCI  asof=2018-02-02 q05/q50/q95(h21)=-0.1902/+0.0145/+0.1962 
+OK   lookahead event2_cal   IBM   asof=1987-10-30 q05/q50/q95(h21)=-0.2808/+0.0127/+0.2776 
+HARNESS PROOFS PASSED
+train: {'AAPL': True, 'MSFT': True, 'KO': True, 'NVDA': True, 'INTC': True}
+AAPL 2015-07-17 h= 5 width80 base 0.0767 event2 0.1317 ratio 1.717
+AAPL 2015-07-17 h=21 width80 base 0.1542 event2 0.1798 ratio 1.166
+AAPL 2015-07-17 h=63 width80 base 0.2763 event2 0.2763 ratio 1.000
+MSFT 2016-04-18 h= 5 width80 base 0.0771 event2 0.1387 ratio 1.799
+MSFT 2016-04-18 h=21 width80 base 0.1708 event2 0.2030 ratio 1.189
+MSFT 2016-04-18 h=63 width80 base 0.3097 event2 0.3097 ratio 1.000
+KO 2008-10-10 h= 5 width80 base 0.1668 event2 0.2363 ratio 1.416
+KO 2008-10-10 h=21 width80 base 0.2647 event2 0.2882 ratio 1.089
+KO 2008-10-10 h=63 width80 base 0.3863 event2 0.3863 ratio 1.000
+NVDA 2011-05-10 h= 5 width80 base 0.1539 event2 0.2292 ratio 1.489
+NVDA 2011-05-10 h=21 width80 base 0.3275 event2 0.3624 ratio 1.107
+NVDA 2011-05-10 h=63 width80 base 0.5627 event2 0.5627 ratio 1.000
+INTC 2014-07-14 h= 5 width80 base 0.0593 event2 0.0846 ratio 1.426
+INTC 2014-07-14 h=21 width80 base 0.1171 event2 0.1278 ratio 1.091
+INTC 2014-07-14 h=63 width80 base 0.2324 event2 0.2324 ratio 1.000
+OK   lookahead event2_cal   AAPL  asof=2015-07-17 q05/q50/q95(h21)=-0.1135/+0.0134/+0.1238 
+OK   lookahead event2_cal   MSFT  asof=2016-04-18 q05/q50/q95(h21)=-0.1303/+0.0133/+0.1387 
+OK   lookahead event2_cal   KO    asof=2008-10-10 q05/q50/q95(h21)=-0.1867/+0.0200/+0.1981 
+OK   lookahead event2_cal   NVDA  asof=2011-05-10 q05/q50/q95(h21)=-0.2368/+0.0123/+0.2388 
+OK   lookahead event2_cal   INTC  asof=2014-07-14 q05/q50/q95(h21)=-0.0768/+0.0119/+0.0920 
+EXTRA LOOKAHEAD PASSED

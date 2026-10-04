@@ -17,6 +17,13 @@ find the K past days (across T's own history and a fixed basket of large caps)
 whose setup looked most like T's setup on D, and take what happened to each of
 them over the next `horizon` trading days.
 
+Known earnings dates (since 2026-10-04, research/reports/event-02-known-dates.md): for
+the LIVE forecast only (as-of = the latest bar), the next earnings date is looked up on
+Yahoo once per ticker per New York day (cached in data/events/). If its reaction day
+falls inside the window, the cone's spread is widened by cone_model.event_widen from that
+day on, and the response carries `event` (CONTRACT.md). Replays and the track record
+never use it: past report dates are not known point-in-time.
+
 Run `python engine.py --selfcheck` to prove there is no look-ahead.
 """
 
@@ -40,6 +47,10 @@ DATA_DIR = os.path.join(ROOT, "data")
 PRICE_DIR = os.path.join(DATA_DIR, "prices")
 NAMES_PATH = os.path.join(DATA_DIR, "names.json")
 TRACK_PATH = os.path.join(DATA_DIR, "track_cache.json")
+EVENTS_DIR = os.path.join(DATA_DIR, "events")   # Yahoo earnings dates, one file per ticker, refreshed daily
+EARN_LIMIT = 16         # one Yahoo request returns the next dates plus the last ~12 reports
+EARN_RETRY_S = 3600     # a failed lookup is retried after an hour; a good one once per New York day
+EARN_WAIT_S = 3.0       # a live request waits at most this long for a first lookup of the day
 
 # ---------------------------------------------------------------------------
 # Parameters (chosen a priori; see README for the reasoning)
@@ -109,6 +120,7 @@ FEATURE_WEIGHT = {f: 1.0 for f in FEATURES}
 FEATURE_CLIP = 4.0      # clip standardised features to +-4 (bad ticks, splits)
 
 NY = ZoneInfo("America/New_York")
+EPOCH_DATE = dt.date(1970, 1, 1)
 BIG_DAY = np.iinfo(np.int64).max
 
 
@@ -411,6 +423,19 @@ def project_trading_days(after, n):
     return out
 
 
+def is_trading_day(d):
+    return d.weekday() < 5 and d not in nyse_holidays(d.year)
+
+
+def reaction_day(d, hour):
+    """Trading day an earnings report moves the price: after the close (hour >= 16, New York
+    time) -> the next trading day; otherwise the report day itself (or the next trading day
+    if the market is closed then). Same rule as research/models_event_oracle.reaction_days."""
+    if hour >= 16.0 or not is_trading_day(d):
+        return project_trading_days(d, 1)[0]
+    return d
+
+
 def sig6(x):
     return float(f"{x:.6g}")
 
@@ -451,6 +476,9 @@ class Engine:
         self.basket = None      # cone_model.Basket (basket drift + conformal sums), built in warm_up
         self.cone_series = {}   # ticker -> cone_model.TickerSeries (tied to one TickerData)
         self.cone_lock = threading.Lock()
+        self.earn = {}          # ticker -> earnings-date record (see earnings_info)
+        self.earn_threads = {}
+        self.earn_fetch_lock = threading.Lock()   # one Yahoo earnings request at a time
         self.version = 0
         if raw is None:
             self._load_json_caches()
@@ -667,6 +695,120 @@ class Engine:
             th.join(wait)
         return self.names.get(t, t)
 
+    # ----- known earnings dates (live forecasts only) ------------------------
+
+    @staticmethod
+    def _earn_path(t):
+        return os.path.join(EVENTS_DIR, re.sub(r"[^A-Za-z0-9._-]", "_", t) + ".json")
+
+    @staticmethod
+    def _earn_fresh(rec, today):
+        if not isinstance(rec, dict) or rec.get("day") != today:
+            return False
+        return not rec.get("error") or time.time() - float(rec.get("fetched_at", 0)) < EARN_RETRY_S
+
+    def _fetch_earnings(self, t, today):
+        rec = {"ticker": t, "day": today, "fetched_at": time.time(), "events": [], "error": None}
+        try:
+            with self.earn_fetch_lock:                     # sequential: one request at a time
+                import yfinance as yf
+                df = yf.Ticker(t).get_earnings_dates(limit=EARN_LIMIT)
+            if df is None or len(df) == 0:
+                rec["error"] = f"Yahoo lists no earnings dates for {t}"
+            else:
+                for ts in df.index:
+                    ts = pd.Timestamp(ts)
+                    if ts.tzinfo is not None:
+                        ts = ts.tz_convert(NY)
+                    rec["events"].append({"date": ts.date().isoformat(),
+                                          "hour": round(ts.hour + ts.minute / 60.0, 3)})
+        except Exception as e:                             # network, unknown symbol, Yahoo change
+            rec["error"] = f"{type(e).__name__}: {e}"[:200] or "lookup failed"
+        finally:
+            rec["fetched_at"] = time.time()
+            self.earn[t] = rec
+            try:
+                os.makedirs(EVENTS_DIR, exist_ok=True)
+                self._save_json(self._earn_path(t), rec)
+            except Exception as e:
+                log(f"earnings cache write for {t} failed: {e}")
+            self.earn_threads.pop(t, None)
+
+    def earnings_info(self, t, wait=0.0):
+        """Yahoo earnings dates for t: {"day", "fetched_at", "events": [{"date", "hour"}],
+        "error"}, cached in memory and under data/events/ per ticker per New York day.
+        The lookup runs in a background thread; callers wait at most `wait` seconds and get
+        None while it is still running. Never raises. Offline engines never look anything up."""
+        if self.raw is not None:
+            return {"day": None, "events": [], "error": "offline engine (no lookups)"}
+        today = dt.datetime.now(NY).date().isoformat()
+        rec = self.earn.get(t)
+        if rec is None:
+            try:
+                with open(self._earn_path(t), encoding="utf-8") as fh:
+                    rec = json.load(fh)
+            except (OSError, ValueError):
+                rec = None
+        if self._earn_fresh(rec, today):
+            self.earn[t] = rec
+            return rec
+        with self.lock:
+            th = self.earn_threads.get(t)
+            if th is None:
+                th = threading.Thread(target=self._fetch_earnings, args=(t, today), daemon=True)
+                self.earn_threads[t] = th
+                th.start()
+        if wait > 0:
+            th.join(wait)
+        rec = self.earn.get(t)
+        return rec if self._earn_fresh(rec, today) else None
+
+    def live_event(self, td, p, h, wait=0.0):
+        """Known-earnings adjustment for the LIVE forecast (p must be the latest bar).
+        Returns (event, widen, step, note): event is the contract's dict or None; widen the
+        spread factor (1.0 = no change); step the reaction's trading day 1..h; note an
+        explanation for `notes` or None. Replays and the track record never call this."""
+        t = td.ticker
+        rec = self.earnings_info(t, wait=wait)
+        if rec is None:
+            return None, 1.0, None, ("The next earnings date is still being looked up on Yahoo, so this "
+                                     "cone has no earnings adjustment yet; reload in a few seconds.")
+        if rec.get("error"):
+            return None, 1.0, None, f"No earnings adjustment: {rec['error']}."
+        D = EPOCH_DATE + dt.timedelta(days=int(td.day[p]))
+        evs = {}
+        for e in rec.get("events") or []:
+            try:
+                d, hr = dt.date.fromisoformat(e["date"]), float(e.get("hour") or 0.0)
+            except (KeyError, TypeError, ValueError):
+                continue
+            evs.setdefault(reaction_day(d, hr), (d, hr))   # one report per reaction day
+        upcoming = sorted(R for R in evs if R > D)
+        if not upcoming:
+            return None, 1.0, None, f"No earnings adjustment: Yahoo lists no upcoming earnings date for {t}."
+        fut = project_trading_days(D, h)
+        R = upcoming[0]
+        if R > fut[-1]:
+            return None, 1.0, None, None                  # next report falls after this window
+        d, hr = evs[R]
+        step = fut.index(R) + 1
+        past = [(x - EPOCH_DATE).days for x in evs if x <= D]
+        kbar, n = CM.event_kbar(td.day, td.logc, past, int(td.day[p]))
+        f = CM.event_widen(h, kbar)
+        event = {"type": "earnings", "date": d.isoformat(), "in_window": True, "widen": r4(f)}
+        when = "after the close" if hr >= 16 else ("before the open" if hr < 9.5 else "during the day")
+        moves = (f"this stock's earnings days have carried about {kbar:.1f}x a normal day's variance (its "
+                 f"last {n} reports, shrunk toward the typical {CM.EVENT['k_pool']:.1f}x)" if n else
+                 f"no past reports are listed, so the typical {CM.EVENT['k_pool']:.1f}x a normal day's "
+                 f"variance is assumed")
+        if f == 1.0:
+            note = (f"Earnings due {d} ({when}, Yahoo calendar) fall inside this window. The 3-month cone "
+                    f"already allows for one earnings day, so it is not widened further.")
+        else:
+            note = (f"Earnings due {d} ({when}, Yahoo calendar) fall inside this window, so the cone's spread "
+                    f"is widened x{f:.2f} from {R} on: {moves}.")
+        return event, f, step, note
+
     # ----- analog search + cone ----------------------------------------------
 
     def _select(self, pool, q, d2_all, D_day, h, pre=None):
@@ -745,7 +887,10 @@ class Engine:
             when = day_str(td.day[first_ok[0]]) if first_ok.size else "n/a"
             raise ForecastError(400, f"Not enough history before {day_str(td.day[p])} to describe the setup "
                                      f"(needs about a year). Earliest usable asof for {t}: {when}.")
-        out = self._forecast_at(td, p, h)
+        event = None
+        if p == last_pos and self.raw is None:     # LIVE only: past report dates are not known point-in-time
+            event = self.live_event(td, p, h, wait=max(0.0, EARN_WAIT_S - (time.time() - t0)))
+        out = self._forecast_at(td, p, h, event=event)
         out["name"] = self.get_name(t, wait=max(0.0, 2.0 - (time.time() - t0)) if name_wait else 0.0)
         out["track"] = self.get_track(t, h, wait=max(0.0, 4.0 - (time.time() - t0)))
         if out["track"] is None:
@@ -767,13 +912,20 @@ class Engine:
         return {"Q": Q, "n_analogs": int(len(sel)), "pool": pool, "sel": sel, "w": w,
                 "raw": raw[:, 0], "scaled": scaled[:, 0], "ratio": ratio}
 
-    def _forecast_at(self, td, p, h):
+    def _forecast_at(self, td, p, h, event=None):
+        """The response for bar p. `event` = live_event(...) output for the LIVE forecast only
+        (None for replays, the self-check and anything walk-forward: they never see it)."""
         D = td.day[p]
         last = td.close[p]
         sig_now = td.sig[p]
         cone = self.cone_at(td, p, h)
         Q, pool, sel = cone["Q"], cone["pool"], cone["sel"]
-        qlog = CM.daily_paths(Q, h)                     # (5, h) log returns; day h == the model
+        ev_out, ev_f, ev_step, ev_note = event if event is not None else (None, 1.0, None, None)
+        if ev_out is not None and ev_f != 1.0:
+            Q = CM.widen_quantiles(Q, ev_f)             # spread x f around the mean at the horizon end
+            qlog = CM.daily_paths(Q, h, event_step=ev_step, widen=ev_f)   # extra variance from the event day on
+        else:
+            qlog = CM.daily_paths(Q, h)                 # (5, h) log returns; day h == the model
         naive_w = last * (math.exp(Z_QS[4] * sig_now * math.sqrt(h)) - math.exp(Z_QS[0] * sig_now * math.sqrt(h)))
         prices = last * np.exp(qlog)
 
@@ -815,6 +967,8 @@ class Engine:
             notes.append(f"Only {len(sel)} comparable past setups existed by this date (normally {K}).")
         if td.note:
             notes.append(td.note)
+        if ev_note:
+            notes.append(ev_note)
 
         return {
             "ticker": td.ticker,
@@ -840,6 +994,7 @@ class Engine:
             "track": None,
             "analogs_sample": sample,
             "notes": notes,
+            "event": ev_out,                            # live only; null for replays (CONTRACT.md)
         }
 
     # ----- walk-forward (track record + calibration) -------------------------
@@ -1069,8 +1224,88 @@ def selfcheck():
             print(f"{status} {t:5s} asof={a['asof']} h={h:2d}  p50_end={a['future']['p50'][-1]}  "
                   f"p_up={a['odds']['p_up']}  n={a['odds']['n_analogs']}  wf_dates={len(wa)}  "
                   f"history_end={a['history'][-1][0]}")
+    failures += event_selfcheck(full)
     print("SELF-CHECK", "PASSED" if failures == 0 else f"FAILED ({failures} mismatches)")
     return failures == 0
+
+
+def event_selfcheck(full):
+    """The known-earnings add-on (live forecasts only). Offline part: a synthetic event on a
+    past bar must (1) leave every day before the event exactly on the plain cone's path,
+    (2) put day h exactly on the widened model quantiles (spread x f around the mean),
+    (3) keep the bands ordered, (4) be absent from the same call without an event, and
+    (5) give the research kbar (models_event_oracle.kbar_at) on cached Yahoo history.
+    Live part (network, one request per ticker per day): print the real event for a few
+    tickers; a failed lookup must come back as event None plus a note, never an exception."""
+    bad = 0
+    td = full.get_ticker("NVDA")
+    p = td.pos_on_or_before((dt.date(2024, 6, 14) - EPOCH_DATE).days)
+    for h, step, kbar in ((5, 3, 9.0), (21, 1, 6.3), (21, 21, 15.0)):
+        f = CM.event_widen(h, kbar)
+        ev = ({"type": "earnings", "date": "2024-06-18", "in_window": True, "widen": r4(f)}, f, step, "note")
+        a = full._forecast_at(td, p, h)
+        b = full._forecast_at(td, p, h, event=ev)
+        Q0 = full.cone_at(td, p, h)["Q"]
+        Qw = CM.widen_quantiles(Q0, f)
+        plain, wide = CM.daily_paths(Q0, h), CM.daily_paths(Qw, h, event_step=step, widen=f)
+        errs = []
+        if step > 1 and np.max(np.abs(plain[:, : step - 1] - wide[:, : step - 1])) > 1e-12:
+            errs.append("pre_event_path")
+        if np.max(np.abs(wide[:, -1] - Qw[CM.IDX5])) > 0 or abs(np.mean(Qw) - np.mean(Q0)) > 1e-12:
+            errs.append("day_h")
+        if np.any(np.diff(wide, axis=0) < 0):
+            errs.append("bands_cross")
+        w0, w1 = Q0[CM.I90] - Q0[CM.I10], Qw[CM.I90] - Qw[CM.I10]
+        if abs(w1 / w0 - f) > 1e-9:
+            errs.append("spread_factor")
+        endq = np.log(np.array([b["future"][q][-1] for q in ("p10", "p25", "p50", "p75", "p90")]) / b["last_close"])
+        if np.max(np.abs(endq - Qw[CM.IDX5])) > 2e-5:
+            errs.append("served_day_h")
+        if a["event"] is not None or b["event"] != ev[0] or "note" not in b["notes"]:
+            errs.append("event_field")
+        bad += 1 if errs else 0
+        print(f"{'OK  ' if not errs else 'FAIL ' + ','.join(errs)} event-path NVDA h={h:2d} step={step:2d} "
+              f"kbar={kbar:4.1f} widen={f:.3f}  p10/p90 end {a['future']['p10'][-1]}/{a['future']['p90'][-1]} -> "
+              f"{b['future']['p10'][-1]}/{b['future']['p90'][-1]}")
+    # (5) kbar parity with the research code, on the cached research history (if present)
+    try:
+        sys.path.insert(0, ROOT)
+        from research import models_event_oracle as MO
+        for t, asof in (("AAPL", "2015-07-17"), ("KO", "2008-10-10"), ("MSFT", "2016-04-18")):
+            d, hr = MO.load_history(t)
+            if not len(d):
+                print(f"skip  kbar parity {t}: no cached research history")
+                continue
+            tdx = full.get_ticker(t)
+            px = tdx.pos_on_or_before((dt.date.fromisoformat(asof) - EPOCH_DATE).days)
+            R = MO.reaction_days(d, hr)
+            Rk = R[R <= tdx.day[-1]]
+            _, k = MO.event_k(tdx.day, tdx.logc, Rk)
+            kr, _ = MO.kbar_at(Rk, k, np.array([tdx.day[px]]))
+            ke, n = CM.event_kbar(tdx.day, tdx.logc, [int(x) for x in R], int(tdx.day[px]))
+            ok = abs(float(kr[0]) - ke) < 1e-9 and MO.KBAR["k_pool"] == CM.EVENT["k_pool"] \
+                and all(abs(MO.FROZEN["C"][hh] - CM.EVENT["C"][hh]) < 1e-12 for hh in HORIZONS)
+            bad += 0 if ok else 1
+            print(f"{'OK  ' if ok else 'FAIL'} kbar parity {t} {asof}: research {float(kr[0]):.6f} engine {ke:.6f} (n={n})")
+    except ImportError as e:
+        print(f"skip  kbar parity: {e}")
+    # live lookups (network): structure only; Yahoo being down is not a failure
+    for t in ("AAPL", "MSFT", "SPY"):
+        try:
+            tdl = full.get_ticker(t)
+            pl = len(tdl.day) - 1
+            for h in (5, 21):
+                ev, f, step, note = full.live_event(tdl, pl, h, wait=20.0)
+                okl = (ev is None and f == 1.0) or (isinstance(ev, dict) and ev.get("type") == "earnings"
+                                                     and ev.get("in_window") is True and ev.get("widen") == r4(f)
+                                                     and 1 <= step <= h and f >= 1.0)
+                bad += 0 if okl else 1
+                print(f"{'OK  ' if okl else 'FAIL'} live-event {t} asof={day_str(tdl.day[pl])} h={h:2d} "
+                      f"event={ev} step={step} note={note!r}")
+        except Exception as e:
+            bad += 1
+            print(f"FAIL live-event {t}: raised {type(e).__name__}: {e}")
+    return bad
 
 
 def fit_scales():
