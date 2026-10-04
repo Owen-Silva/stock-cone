@@ -1,0 +1,80 @@
+{
+ "placebo_weekly_dev": {
+  "iid_t_sd": 1.1314062789889419,
+  "iid_share_abs_t_gt2": 0.06666666666666667,
+  "persistent_t_sd": 1.0877854666991162,
+  "persistent_share_abs_t_gt2": 0.1,
+  "persistent_t_absmax": 2.241592482009495
+ },
+ "placebo_weekly_val": {
+  "iid_t_sd": 0.7277867585464862,
+  "iid_share_abs_t_gt2": 0.0,
+  "persistent_t_sd": 1.2140588957965963,
+  "persistent_share_abs_t_gt2": 0.13333333333333333,
+  "persistent_t_absmax": 3.917220989054834
+ },
+ "placebo_monthly_dev": {
+  "iid_t_sd": 0.9760219745385875,
+  "iid_share_abs_t_gt2": 0.06666666666666667,
+  "persistent_t_sd": 0.9848767314251515,
+  "persistent_share_abs_t_gt2": 0.06666666666666667,
+  "persistent_t_absmax": 2.214762292097576
+ },
+ "placebo_monthly_val": {
+  "iid_t_sd": 0.7726006683147244,
+  "iid_share_abs_t_gt2": 0.0,
+  "persistent_t_sd": 1.2795540507105971,
+  "persistent_share_abs_t_gt2": 0.1,
+  "persistent_t_absmax": 3.0866757240822036
+ },
+ "drift_weekly_dev": {
+  "ic_mean": 0.0028899184132288144,
+  "ic_t": 0.383603524892542,
+  "excess_ann": -0.03507736574488174,
+  "excess_t": -0.397103206885411
+ },
+ "drift_weekly_val": {
+  "ic_mean": 0.054304685293176815,
+  "ic_t": 3.589847352260766,
+  "excess_ann": 0.13382932191616526,
+  "excess_t": 2.781603421426095
+ },
+ "drift_monthly_dev": {
+  "ic_mean": 0.0049357000800715175,
+  "ic_t": 0.32099556413583114,
+  "excess_ann": -0.008302661860291938,
+  "excess_t": 0.2657903508133005
+ },
+ "drift_monthly_val": {
+  "ic_mean": 0.09701051388806967,
+  "ic_t": 3.4696998580682163,
+  "excess_ann": 0.13540975625261908,
+  "excess_t": 2.923501088672644
+ },
+ "mom_minus_drift_weekly_dev": {
+  "ic_mean": 0.025312341700625896,
+  "ic_t": 3.1972255785350563,
+  "excess_ann": -0.02639700572134318,
+  "excess_t": -0.11873450541805476
+ },
+ "mom_minus_drift_weekly_val": {
+  "ic_mean": 0.029022468194223088,
+  "ic_t": 2.189865454038999,
+  "excess_ann": 0.051542704524588645,
+  "excess_t": 1.1618251796636199
+ },
+ "mom_minus_drift_monthly_dev": {
+  "ic_mean": 0.016102578734846117,
+  "ic_t": 0.9612671368886212,
+  "excess_ann": -0.02910419819214982,
+  "excess_t": -0.19032706981898065
+ },
+ "mom_minus_drift_monthly_val": {
+  "ic_mean": 0.02693969695233954,
+  "ic_t": 1.1480666881250412,
+  "excess_ann": 0.07502932665490913,
+  "excess_t": 1.7146924442947264
+ },
+ "rankcorr_mom_vs_drift_dev": 0.16158111052273647,
+ "rankcorr_mom_vs_drift_val": 0.4361791642622925
+}
