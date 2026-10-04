@@ -544,11 +544,17 @@ V0_CASES = [("KO", "2008-10-10"), ("AAPL", "2015-06-12"), ("MSFT", "2003-01-17")
             ("NEM", "2016-09-30"), ("SMCI", "2017-05-05")]
 
 
+PRODUCT_MODEL = "cone2_f_conf_dev"   # what engine.py serves since 099d52f (v2 cone)
+
+
 def check_v0_matches_engine(cases=V0_CASES, full=None):
-    """(c) v0's q10/q25/q50/q75/q90 must equal the live engine's own forecast
-    (_forecast_at: rounded to 6 significant digits) and its walk_forward record (exact)."""
-    models = discover_models(["v0"])
-    v0 = models["v0"]
+    """(c) The served model's q10/q25/q50/q75/q90 must equal the live engine's own
+    forecast (_forecast_at: rounded to 6 significant digits) and its walk_forward
+    record (exact). Until 099d52f the engine served v0, so this compared v0; it now
+    compares PRODUCT_MODEL. v0's fast-vs-slow search check went with it, because the
+    slow path was the engine's own walk_forward."""
+    models = discover_models([PRODUCT_MODEL])
+    v0 = models[PRODUCT_MODEL]
     full = full or Context()
     ok = True
     for t, asof in cases:
@@ -566,23 +572,9 @@ def check_v0_matches_engine(cases=V0_CASES, full=None):
             d_wf = float(np.max(np.abs(np.array(wf["aq"]) - mine)))
             good = d_live < 3e-5 and d_wf == 0.0 and wf["p_up"] == P and abs(f["odds"]["p_up"] - P) < 6e-5
             ok &= good
-            print(f"{'OK  ' if good else 'FAIL'} v0==engine {t:5s} asof={f['asof']} h={h:2d} "
-                  f"max|live-v0|={d_live:.2e} (live is sig6-rounded)  max|walk_forward-v0|={d_wf:.1e}  "
-                  f"p_up v0={P:.4f} live={f['odds']['p_up']}")
-        # many dates: the accelerated search must equal Engine.walk_forward's code path
-        split = splits.split_of_day(int(td.day[p]))
-        pos = grid_positions(td, split, STEP_FAST, HORIZONS)[:48]
-        a = v0.predict(full, t, pos, HORIZONS)
-        v0.use_fast = False
-        try:
-            b = v0.predict(full, t, pos, HORIZONS)
-        finally:
-            v0.use_fast = True
-        same = all(np.array_equal(a[h][0], b[h][0], equal_nan=True)
-                   and np.array_equal(a[h][1], b[h][1], equal_nan=True) for h in HORIZONS)
-        ok &= same
-        print(f"{'OK  ' if same else 'FAIL'} v0 fast search == walk_forward path  {t:5s} {split} "
-              f"{len(pos)} dates x 3 horizons, bit-identical={same}")
+            print(f"{'OK  ' if good else 'FAIL'} {PRODUCT_MODEL}==engine {t:5s} asof={f['asof']} h={h:2d} "
+                  f"max|live-model|={d_live:.2e} (live is sig6-rounded)  max|walk_forward-model|={d_wf:.1e}  "
+                  f"p_up model={P:.4f} live={f['odds']['p_up']}")
         full.release(t)
     return ok
 
