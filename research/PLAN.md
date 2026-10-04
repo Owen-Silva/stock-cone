@@ -92,3 +92,14 @@ edge that survives honest testing, and how big is it after costs?**
   otherwise (look-ahead, survivorship, costs, tiny names, one lucky year).
 - If an edge survives TEST, the app gets a Picks/Rankings view with its own honest track
   record. If none survives, the report says so plainly.
+
+## Pre-registered before TEST #2 (00:25, coordinator)
+
+Product cone = **`cone2_f_conf_dev`** (centre shrunk to the basket mean; HAR width with
+walk-forward conformal factors; small drift-fixed analog blend), not `cone2` (own-mean
+centre). The two split DEV vs VAL almost symmetrically; the tie-break is product safety:
+DEV (1987-2011) spans bull and bear markets while VAL (2012-18) is a bull market that
+flatters own-mean centres, and an own-mean centre would bake a hot young stock's run-up
+into its live cone, which is the opposite of what a real-money user needs. TEST #2 will
+report both, but the choice above stands whatever TEST says. The event add-on joins the
+product only if it wins on VAL without losing on DEV.
