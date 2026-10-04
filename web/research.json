@@ -1,0 +1,48 @@
+{
+ "updated": "2026-10-04",
+ "verdict": "Use it for how far a stock could move, not which way.",
+ "items": [
+  {
+   "title": "Price ranges (the cone)",
+   "status": "works",
+   "finding": "The shaded cone is honest about how far prices move. About 8 in 10 real outcomes landed inside the 80% cone at 1 week, 1 month and 3 months ahead, on 2012-2018 data the tuning never used.",
+   "numbers": "2019+ check pending",
+   "pending": true
+  },
+  {
+   "title": "Will this stock go up or down?",
+   "status": "no",
+   "finding": "No model beat simply guessing each stock’s usual direction, on any horizon. The “Chance it ends higher” figure is a lean, not a call.",
+   "numbers": "Tested 1 week, 1 month and 3 months ahead. None beat the usual-direction guess."
+  },
+  {
+   "title": "Which stocks beat the others (momentum)",
+   "status": "small",
+   "finding": "Stocks that rose most over the past year tended to beat the rest, a little. The honest edge is about 2-3% a year among established large caps, not statistically reliable, and nothing on volatile small caps.",
+   "numbers": "The big 2019+ numbers were mostly hindsight in the stock list: today’s list is full of stocks that are in it because they already won."
+  },
+  {
+   "title": "Market timing (200-day average)",
+   "status": "no",
+   "finding": "Stepping out of the market when the S&P 500 drops below its 200-day average cut the worst crashes before 2019, but it gave up too much return since.",
+   "numbers": "2019+: about 8% a year, vs 16% for just holding."
+  },
+  {
+   "title": "Earnings weeks",
+   "status": "small",
+   "finding": "Weeks likely to contain earnings are riskier. From price and volume alone they can only be spotted roughly, so widening the cone for them gained too little to use.",
+   "numbers": "A week flagged as likely held a real earnings-sized move only about 1 time in 7."
+  }
+ ],
+ "use_for": [
+  "Sizing positions",
+  "Setting stops",
+  "Judging option strikes",
+  "Knowing when a stock is unusually jumpy"
+ ],
+ "dont_use_for": [
+  "Picking direction",
+  "Concentrated bets",
+  "Day trading"
+ ]
+}

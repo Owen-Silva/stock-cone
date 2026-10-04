@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stock Cone</title>
-<meta name="description" content="A stock chart with a forward cone built from what happened after the most similar past setups.">
+<meta name="description" content="A stock chart with a calibrated forward cone: how far the price could move, with an honest track record.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 9h6' stroke='%23555' stroke-width='1.6'/%3E%3Cpath d='M7 9l8-6v12z' fill='%233f5f86' fill-opacity='.45'/%3E%3C/svg%3E">
 <style>
 :root {
@@ -421,6 +421,54 @@ details.acc-skip { margin-top: 26px; }
 .skip-list .t { font-weight: 650; color: var(--ink); }
 .skip-list .r { color: var(--muted); }
 
+/* what the research found */
+details.rs { border-bottom: 1px solid var(--hair); }
+details.rs summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 18px 0 16px; }
+details.rs summary::-webkit-details-marker { display: none; }
+details.rs summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+details.rs summary .chev { flex: none; color: var(--muted); transition: transform .15s ease; }
+details.rs[open] summary .chev { transform: rotate(90deg); }
+.rs-h { font-size: 15px; font-weight: 650; color: var(--ink); }
+.rs-meta { margin-left: auto; font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rs-meta.err { color: var(--down); }
+.rs-body { padding: 0 0 26px 20px; }
+.rs-verdict { margin: 0 0 16px; max-width: 46ch; font-size: 19px; line-height: 1.4; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
+.rs-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+.rs-it { display: grid; grid-template-columns: 108px minmax(0, 1.55fr) minmax(0, 1fr); gap: 4px 28px; align-items: baseline; padding: 14px 0 15px; border-bottom: 1px solid var(--hair); }
+.rs-st { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.rs-st i { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid currentColor; }
+.rs-it.works .rs-st { color: var(--accent-ink); }
+.rs-it.works .rs-st i { background: currentColor; }
+.rs-it.small .rs-st { color: var(--ink-2); }
+.rs-it.small .rs-st i { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.rs-it.no .rs-st, .rs-it.unk .rs-st { color: var(--faint); }
+.rs-main h3 { margin: 0; font-size: 14.5px; line-height: 1.4; font-weight: 650; color: var(--ink); }
+.rs-f { margin: 3px 0 0; max-width: 62ch; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+.rs-n { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--muted); font-variant-numeric: tabular-nums; }
+.rs-tag { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; background: var(--warn-soft); color: var(--warn); font-size: 11px; font-weight: 600; line-height: 18px; letter-spacing: .02em; vertical-align: 1px; }
+.rs-use { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; margin-top: 20px; }
+.rs-use h4 { margin: 0 0 6px; font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.rs-use ul { list-style: none; margin: 0; padding: 0; }
+.rs-use li { position: relative; padding: 3px 0 3px 20px; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.rs-use li::before { content: ""; position: absolute; }
+.rs-use .yes li::before { left: 4px; top: .42em; width: 4px; height: 8px; border: solid var(--accent); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+.rs-use .nope li::before { left: 2px; top: calc(3px + .72em); width: 9px; height: 1.5px; background: var(--faint); }
+.rs-wait { margin: 0; font-size: 13.5px; color: var(--muted); }
+.rs-err { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--down); }
+.rs .linkish { border: 0; padding: 0; background: none; color: var(--accent-ink); font-size: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+@media (max-width: 900px) {
+  .rs-it { grid-template-columns: 100px minmax(0, 1fr); }
+  .rs-n { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  .rs-body { padding-left: 0; }
+  .rs-verdict { font-size: 17px; }
+  .rs-it { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 13px 0 14px; }
+  .rs-st { margin-bottom: 2px; }
+  .rs-n { grid-column: auto; margin-top: 2px; }
+  .rs-use { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (max-width: 1060px) {
   .acc-t .c-grp { display: none; }
   .tm { display: inline-block; }
@@ -590,15 +638,15 @@ details.acc-skip { margin-top: 26px; }
       <div id="overlay" class="overlay" hidden></div>
     </div>
     <div id="legend" class="legend" hidden>
-      <span><i class="sw s80"></i>8 in 10 past outcomes</span>
-      <span><i class="sw s50"></i>Half of them</span>
+      <span><i class="sw s80"></i>Where 8 in 10 should land</span>
+      <span><i class="sw s50"></i>Where half should land</span>
       <span><i class="sw sp50"></i>Typical path</span>
       <span id="legAct" hidden><i class="sw sact"></i>What really happened</span>
     </div>
   </section>
 
   <section id="reading" class="reading" aria-live="polite">
-    <p id="hintOff" class="hint-off">Flip <b>Future</b> to see where similar past setups went next.</p>
+    <p id="hintOff" class="hint-off">Flip <b>Future</b> to see how far the price could move from here.</p>
     <div id="oddsWrap" hidden>
       <p id="odds" class="odds"></p>
       <p id="agree" class="agree"></p>
@@ -607,7 +655,7 @@ details.acc-skip { margin-top: 26px; }
   </section>
 
   <details id="analogs" class="analogs" hidden>
-    <summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Similar past setups <span id="anCount" class="count"></span></summary>
+    <summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Closest past setups <span class="count">(part of the cone)</span> <span id="anCount" class="count"></span></summary>
     <p id="anNote" class="an-note"></p>
     <ol id="anList" class="an-list"></ol>
   </details>
@@ -636,7 +684,14 @@ details.acc-skip { margin-top: 26px; }
         </div>
         <div id="accFigs" class="acc-figs"></div>
       </section>
+    </div>
 
+    <details id="research" class="rs">
+      <summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="rs-h">What the research found</span><span id="rsMeta" class="rs-meta"></span></summary>
+      <div id="rsBody" class="rs-body" aria-live="polite"></div>
+    </details>
+
+    <div id="accRest" hidden>
       <section class="acc-tools" aria-label="Filter the table">
         <label class="search">
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.2 9.2L12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -812,7 +867,7 @@ async function mockForecast(t, h, asof) {
   const full = M.history.concat(M.actual || []);
   let cut = full.length - 1;
   if (asof) while (cut >= 0 && full[cut][0] > asof) cut--;
-  if (cut < 252) throw new LoadError('Not enough history before ' + asof + ' to find similar setups (need about a year).', 400);
+  if (cut < 252) throw new LoadError('Not enough history before ' + asof + ' to build a cone (need about a year).', 400);
   const lastD = full[cut][0];
   const startD = shiftMonths(lastD, -60);
   let s = 0; while (full[s][0] < startD) s++;
@@ -1318,17 +1373,16 @@ function renderReading() {
   const o = d.odds, hz = HZ[d.horizon] || { k: d.horizon + 'd', long: d.horizon + ' trading days', ahead: '' };
   const lead = S.replay.on ? 'From ' + fmtDate(d.asof) + ', over ' + hz.long + ':' : (hz.ahead || ('Next ' + hz.long)) + ':';
   const chunks = [];
-  if (o.n_analogs != null) chunks.push('<b>' + Number(o.n_analogs).toLocaleString('en-US') + '</b> similar past setups');
-  if (o.p_up != null) chunks.push('ended higher <b>' + pct0(o.p_up) + '</b> of the time' + (o.base_p_up != null ? ' <span class="dim">(normally ' + pct0(o.base_p_up) + ')</span>' : ''));
+  if (o.p_up != null) chunks.push('<span title="The model’s own chance that the price ends above where it starts. On research data no model beat guessing a stock’s usual direction, so read this as a lean, not a call.">Chance it ends higher <b>' + pct0(o.p_up) + '</b></span>' + (o.base_p_up != null ? ' <span class="dim" title="How often this stock finished up over the same length of time, in its history before this day.">(usual for this stock: ' + pct0(o.base_p_up) + ')</span>' : ''));
   if (o.median_ret != null) chunks.push('typical move <b class="' + tone(o.median_ret) + '">' + pctS(o.median_ret) + '</b>');
-  if (o.p10_ret != null && o.p90_ret != null) chunks.push('8 in 10 landed between <b class="' + tone(o.p10_ret) + '">' + pctS(o.p10_ret) + '</b> and <b class="' + tone(o.p90_ret) + '">' + pctS(o.p90_ret) + '</b>');
+  if (o.p10_ret != null && o.p90_ret != null) chunks.push('8 in 10 land between <b class="' + tone(o.p10_ret) + '">' + pctS(o.p10_ret) + '</b> and <b class="' + tone(o.p90_ret) + '">' + pctS(o.p90_ret) + '</b>');
   $('odds').innerHTML = '<span class="lead">' + esc(lead) + '</span> ' + chunks.map((c) => '<span class="chunk">' + c + '</span>').join(' <span class="sep">·</span> ');
   const w = o.width_vs_naive;
   let ag = '';
   if (w != null && isFinite(w)) {
-    if (w < 0.95) ag = 'Past setups agreed more than usual: the cone is ' + Math.round((1 - w) * 100) + '% narrower than this stock’s normal swings.';
-    else if (w > 1.05) ag = 'Less agreement than usual: the cone is ' + Math.round((w - 1) * 100) + '% wider than this stock’s normal swings.';
-    else ag = 'About as uncertain as usual for this stock.';
+    if (w < 0.95) ag = 'Calmer than its recent swings: the cone is ' + Math.round((1 - w) * 100) + '% narrower than the last 3 months alone would suggest.';
+    else if (w > 1.05) ag = 'Jumpier than its recent swings: the cone is ' + Math.round((w - 1) * 100) + '% wider than the last 3 months alone would suggest.';
+    else ag = 'About as wide as its last 3 months of swings would suggest.';
   }
   $('agree').textContent = ag;
   $('agree').hidden = !ag;
@@ -1337,10 +1391,9 @@ function renderReading() {
   const t = d.track, tk = esc(d.ticker || S.ticker);
   tr.className = 'track';
   if (t) {
-    const dir = (o.base_p_up == null || o.base_p_up >= 0.5) ? 'up' : 'down';
     const edge = t.direction_hit <= t.direction_base ? ' <span class="dim">(no edge on direction)</span>' : '';
     tr.innerHTML = '<span class="chunk"><span class="k">Track record on ' + tk + ', ' + hz.k + ':</span> real price landed inside the shaded cone <b>' + pct0(t.inside_80) + '</b> of the time <span class="dim">(aim:&nbsp;80%)</span></span>' +
-      ' <span class="sep">·</span> <span class="chunk">direction right <b>' + pct0(t.direction_hit) + '</b> vs ' + pct0(t.direction_base) + ' by always guessing ' + dir + edge + '</span>' +
+      ' <span class="sep">·</span> <span class="chunk" title="On each tested date, the guess is whichever way this stock had mostly gone before that date. No hindsight.">direction right <b>' + pct0(t.direction_hit) + '</b> vs ' + pct0(t.direction_base) + ' by guessing its usual direction' + edge + '</span>' +
       (t.n ? ' <span class="sep">·</span> <span class="chunk dim">tested on ' + Number(t.n).toLocaleString('en-US') + ' past forecasts, no peeking ahead</span>' : '');
   } else if (trackNotes.has(d._key)) {
     const m = trackNotes.get(d._key);
@@ -1355,8 +1408,8 @@ function renderReading() {
 
 function renderAnalogs(d, hz) {
   const a = d.analogs_sample || [];
-  $('anCount').textContent = a.length ? '· ' + a.length + ' closest' : '';
-  $('anNote').textContent = 'What happened in the ' + hz.long + ' after each of the closest matches, nearest first.';
+  $('anCount').textContent = a.length ? '· ' + a.length : '';
+  $('anNote').textContent = 'The cone takes a small part of its shape from setups like these. What happened in the ' + hz.long + ' after each one, nearest match first. A sample, not the odds.';
   $('anList').innerHTML = a.map((x) => '<li><span class="an-t">' + esc(x.ticker) + '</span><span class="an-d">' + (x.date ? fmtDate(x.date) : '') + '</span><span class="an-r ' + tone(x.ret) + '">' + pctS(x.ret) + '</span></li>').join('');
 }
 
@@ -1365,7 +1418,7 @@ function renderFoot() {
   const notes = (d && Array.isArray(d.notes)) ? d.notes.filter(Boolean).map(String) : [];
   // the server's own note usually covers survivorship; never drop a note, drop our duplicate sentence instead
   const covered = notes.some((nt) => /delisted/i.test(nt));
-  const lines = ['Odds from similar past setups, not a prediction or financial advice.' + (covered ? '' : ' Free Yahoo data: delisted companies missing.')].concat(notes);
+  const lines = ['A range of likely outcomes from a volatility model checked against history, not a prediction or financial advice.' + (covered ? '' : ' Free Yahoo data: delisted companies missing.')].concat(notes);
   if (MOCK) lines.push('Showing mock data from mock-forecast.json because the address has ?mock=1. These are not real prices.');
   $('foot').innerHTML = lines.map((l) => '<p>' + esc(l) + '</p>').join('');
 }
@@ -1596,6 +1649,7 @@ function showAcc() {
   setHash(accHash());
   renderViews();
   renderAcc();
+  loadResearch();
   if (from !== 'acc') window.scrollTo(0, from === 'chart' && A.data ? accScrollY : 0);
   const stale = A.data && A.data.status === 'ready' && Date.now() - A.lastFetch > 10 * 60 * 1000;
   if (!A.fetching && (!A.data || A.data.status !== 'ready' || stale)) fetchAcc();
@@ -1731,8 +1785,8 @@ const COLS = [
   { k: 'hit', label: 'Cone hit', cls: 'c-hit', title: 'How often the real price ended inside the 80% cone. Aim: 80%. The bar shows the distance from that aim: left means the cone was too narrow, right means too wide.' },
   { k: 'in50', label: 'Inside 50%', cls: 'c-in50', title: 'How often the real price ended inside the middle 50% band. Aim: 50%.' },
   { k: 'dir', label: 'Direction right', cls: 'c-dir', title: 'How often the typical path called the direction (up or down) correctly.' },
-  { k: 'base', label: 'Usual-direction guess', lh: 'Usual-direction<br>guess', cls: 'c-base', title: 'How often you would be right by always guessing this stock’s usual direction over the same period. The bar to beat.' },
-  { k: 'edge', label: 'Edge', cls: 'c-edge', title: 'Direction right minus the usual-direction guess, in percentage points. Greyed with “≈ luck” when it is inside the luck band, 2·√(p(1−p)/n).' },
+  { k: 'base', label: 'Guess its usual direction (so far)', lh: 'Guess its usual<br>direction (so far)', cls: 'c-base', title: 'How often you would be right by guessing this stock’s usual direction so far: on each tested date, whichever way it had mostly gone before that date. No hindsight. The bar to beat.' },
+  { k: 'edge', label: 'Edge', cls: 'c-edge', title: 'Direction right minus guessing its usual direction so far, in percentage points. Greyed with “≈ luck” when it is inside the luck band, 2·√(p(1−p)/n).' },
   { k: 'n', label: 'Tests', cls: 'c-n', title: 'Past forecasts tested for this stock, with no look-ahead.' }
 ];
 const fnum = (v) => typeof v === 'number' && isFinite(v);
@@ -1815,7 +1869,7 @@ function hitTitle(m) {
   return base + ', within 5 points of the 80% aim.' + few;
 }
 function edgeTitle(m) {
-  const s = 'Direction right ' + p1(m.dir) + ' vs ' + p1(m.base) + ' for the usual-direction guess = ' + pts(m.edge) + ' points. Luck band at ' + int(m.n) + ' tests: ±' + (m.luck * 100).toFixed(1) + ' points';
+  const s = 'Direction right ' + p1(m.dir) + ' vs ' + p1(m.base) + ' by guessing its usual direction so far = ' + pts(m.edge) + ' points. Luck band at ' + int(m.n) + ' tests: ±' + (m.luck * 100).toFixed(1) + ' points';
   return m.inLuck ? s + ', so this gap could easily be luck.' : s + '. Outside it, though about 1 stock in 20 lands out here by chance alone.';
 }
 
@@ -1893,9 +1947,9 @@ function renderAccFigs() {
     '<div class="fig-l">landed inside the <b>80% cone</b></div>' +
     '<div class="fig-cal" title="Distance from the 80% aim: left of the tick is too narrow, right is too wide. The light zone is 75 to 85%; the bar spans 60 to 100%.">' + cbar(sm.inside_80, true) + '<span>aim 80% · ' + calWord + '</span></div></div>';
   const fig2 = '<div class="fig"><div class="fig-n">' + p0(sm.direction_hit) + '<small>vs ' + p0(sm.direction_base) + '</small></div>' +
-    '<div class="fig-l"><b>direction right</b>, vs always guessing <br>each stock’s usual direction</div></div>';
+    '<div class="fig-l"><b>direction right</b>, vs guessing each <br>stock’s usual direction so far</div></div>';
   const sent = '<p class="acc-sent">' + (building ? 'So far, across ' : 'Across ') + '<b>' + int(sm.stocks) + '</b> stocks and <b>' + int(sm.forecasts) + '</b> tested ' + adj + ' forecasts, the real price landed inside the 80% cone <b>' + p0(sm.inside_80) + '</b> of the time (aim: 80%). ' +
-    'Direction right <b>' + p0(sm.direction_hit) + '</b> vs <b>' + p0(sm.direction_base) + '</b> by always guessing each stock’s usual direction. ' +
+    'Direction right <b>' + p0(sm.direction_hit) + '</b> vs <b>' + p0(sm.direction_base) + '</b> by guessing each stock’s usual direction so far (the way it had mostly gone before each tested date). ' +
     (fnum(sm.beat_base) ? 'Beat that guess on <b>' + int(sm.beat_base) + ' of ' + int(sm.stocks) + '</b> stocks.' : '') +
     (medBand != null ? '<span class="k">Greyed edges sit inside the luck band (about ±' + Math.round(medBand * 100) + ' points at ' + int(medN) + ' tests). Outside it: <b>' + better + '</b> better and <b>' + worse + '</b> worse than the guess; chance alone would put about ' + chance + ' of ' + counted + ' out there.</span>' : '') +
     '</p>';
@@ -1945,7 +1999,7 @@ function renderAccFoot() {
       lines.push((d.status === 'building' ? 'Rebuilding now. The last complete build finished ' : 'Built ') + when + '.');
     } else if (d.status === 'building') lines.push('First build in progress: numbers will move as more stocks finish.');
     (Array.isArray(d.notes) ? d.notes : []).filter(Boolean).forEach((nt) => lines.push(String(nt)));
-    lines.push('A track record, not a promise or financial advice. Edge is graded against each stock’s own usual direction, the bar any forecast has to beat.');
+    lines.push('A track record, not a promise or financial advice. Edge is graded against guessing each stock’s usual direction from its history before each tested date, with no hindsight: the bar any forecast has to beat.');
   }
   if (MOCK) lines.push('Showing mock data from mock-accuracy.json because the address has ?mock=1. These are not real results.');
   $('accFoot').innerHTML = lines.map((l) => '<p>' + esc(l) + '</p>').join('');
@@ -1960,8 +2014,83 @@ function renderAcc() {
     err.innerHTML = '<div class="ov-card err" role="alert"><h2>Couldn’t load the accuracy scoreboard</h2><p>' + esc(A.error) + '</p><button type="button" class="btn" data-act="retry">Try again</button></div>';
   } else { err.hidden = true; err.innerHTML = ''; }
   $('accMain').hidden = !A.data;
+  $('accRest').hidden = !A.data;
   if (A.data) { renderAccFigs(); renderAccTable(); renderAccExtras(); }
   renderAccFoot();
+}
+
+/* ---------- accuracy: what the research found (web/research.json) ---------- */
+const RS_KEY = 'stockcone.researchOpen';
+const RS_STATUS = {
+  works: { label: 'Works', cls: 'works' },
+  small: { label: 'Small edge', cls: 'small' },
+  no: { label: 'No edge', cls: 'no' }
+};
+const RS = { data: null, error: null, loading: false };
+
+// open the first time; after that, whatever the viewer left it as
+$('research').open = store.get(RS_KEY) !== '0';
+$('research').addEventListener('toggle', () => store.set(RS_KEY, $('research').open ? '1' : '0'));
+
+function fmtDay(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+  return m ? MON[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : String(s || '');
+}
+
+async function loadResearch(force) {
+  if (RS.loading || (RS.data && !force)) return;
+  RS.loading = true; RS.error = null;
+  renderResearch();
+  try {
+    if (MOCK && qs.get('mockresearch') === 'error') throw new LoadError('Mock failure on purpose (the address has &mockresearch=error).');
+    let r;
+    try { r = await fetch('research.json', { cache: 'no-store' }); }
+    catch (e) { throw new LoadError('Could not reach research.json (' + e.message + ').'); }
+    if (!r.ok) throw new LoadError('Could not load research.json (HTTP ' + r.status + ').');
+    let j;
+    try { j = await r.json(); } catch (e) { throw new LoadError('research.json is not valid JSON.'); }
+    if (!j || !Array.isArray(j.items) || !j.items.length) throw new LoadError('research.json has no findings in it (the "items" list is missing or empty).');
+    RS.data = j;
+  } catch (e) {
+    RS.error = e.message || String(e);
+  }
+  RS.loading = false;
+  renderResearch();
+}
+
+function renderResearch() {
+  const meta = $('rsMeta'), body = $('rsBody');
+  meta.className = 'rs-meta';
+  if (RS.error) {
+    meta.textContent = 'couldn’t load';
+    meta.classList.add('err');
+    body.innerHTML = '<p class="rs-err" role="alert">' + esc(RS.error) + ' <button type="button" class="linkish" data-act="rs-retry">Try again</button></p>';
+    return;
+  }
+  if (!RS.data) {
+    meta.textContent = RS.loading ? 'loading…' : '';
+    body.innerHTML = '<p class="rs-wait">Loading the findings…</p>';
+    return;
+  }
+  const d = RS.data;
+  meta.textContent = d.updated ? 'updated ' + fmtDay(d.updated) : '';
+  const items = d.items.map((it) => {
+    const st = RS_STATUS[it && it.status] || { label: String((it && it.status) || 'unrated'), cls: 'unk' };
+    return '<li class="rs-it ' + st.cls + '">' +
+      '<div class="rs-st"><i aria-hidden="true"></i>' + esc(st.label) + '</div>' +
+      '<div class="rs-main"><h3>' + esc(it.title) + (it.pending ? ' <span class="rs-tag" title="This result is still being checked on 2019+ data.">pending</span>' : '') + '</h3>' +
+      (it.finding ? '<p class="rs-f">' + esc(it.finding) + '</p>' : '') + '</div>' +
+      '<p class="rs-n">' + (it.numbers ? esc(it.numbers) : '') + '</p>' +
+      '</li>';
+  }).join('');
+  const list = (arr) => (Array.isArray(arr) ? arr : []).filter(Boolean).map((x) => '<li>' + esc(x) + '</li>').join('');
+  const use = list(d.use_for), dont = list(d.dont_use_for);
+  body.innerHTML = (d.verdict ? '<p class="rs-verdict">' + esc(d.verdict) + '</p>' : '') +
+    '<ol class="rs-items">' + items + '</ol>' +
+    (use || dont ? '<div class="rs-use">' +
+      (use ? '<div class="yes"><h4>Use it for</h4><ul>' + use + '</ul></div>' : '') +
+      (dont ? '<div class="nope"><h4>Don’t use it for</h4><ul>' + dont + '</ul></div>' : '') +
+      '</div>' : '');
 }
 
 /* ---------- accuracy: events ---------- */
@@ -1969,6 +2098,7 @@ $('accView').addEventListener('click', (e) => {
   const act = e.target.closest('[data-act]');
   if (!act) return;
   if (act.dataset.act === 'retry') { A.pollErr = null; fetchAcc(); }
+  if (act.dataset.act === 'rs-retry') loadResearch(true);
   if (act.dataset.act === 'clear') { A.q = ''; $('accSearch').value = ''; A.group = 'all'; renderAccTable(); }
 });
 $('accHz').addEventListener('click', (e) => {

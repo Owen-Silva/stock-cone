@@ -5287,6 +5287,7 @@
  ],
  "notes": [
   "Each stock is tested on up to 150 past dates spread across its history, each forecast using only prices up to that date (no look-ahead).",
+  "Direction is graded against guessing each stock's usual direction so far: on each tested date, the way it had mostly gone before that date. No hindsight.",
   "Free Yahoo data: delisted companies are missing (survivorship bias), which flatters any backtest a little."
  ]
 }
