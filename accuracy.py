@@ -6,6 +6,8 @@
 
 Per stock and horizon the numbers come from Engine.get_track(), the exact function
 and cache behind the chart page's `track`, so clicking through never disagrees.
+Since 2026-10-04 that is the v2 cone (cone_model.py) and a walk-forward direction
+baseline (track cache key suffix engine.TRACK_VERSION); see CONTRACT.md.
 avg_width_80 comes from the same walk-forward pass (Engine.track_width) and is
 never part of `track`. Downloads are sequential and cached like the rest of the app.
 The file is written atomically after every stock, so a crash loses at most one.
@@ -42,8 +44,8 @@ NOTES = [
     "to a lesser degree).",
     "Survivorship bias: this list is stocks that exist and trade today. Companies that "
     "went bust or were delisted are missing, which flatters any method that leans bullish.",
-    "Direction base is the hit rate of always guessing each stock's usual direction over "
-    "the tested dates. Beating it is the bar for the cone's middle line to be a signal.",
+    "The direction baseline is \"guess the stock's usual direction so far\": on each test "
+    "date, guess whichever way the stock moved more often before that date.",
     "If the bands are honest, about 80% of real outcomes land inside the shaded cone and 50% inside the darker middle. "
     "A stock counts as on target when its cone hit is between 72% and 88%.",
 ]

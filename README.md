@@ -1,10 +1,10 @@
 # Stock Cone
 
 Type a ticker, see its chart. Flip **Future** and a cone is drawn forward from the
-last close: the typical path plus 50% and 80% bands, built from what actually
-happened after the most similar past setups (analog / nearest-neighbour
-forecasting). **Replay** picks a past date, hides everything after it, draws the
-cone, then reveals what really happened. The page shows the cone's own track record.
+last close: the typical path plus 50% and 80% bands, from a calibrated volatility
+forecast blended with what happened after the most similar past setups (see "How
+the cone works now"). **Replay** picks a past date, hides everything after it, draws
+the cone, then reveals what really happened. The page shows the cone's own track record.
 
 It is a local prototype. Free Yahoo data, no accounts, nothing leaves your machine
 except the price downloads.
@@ -29,7 +29,8 @@ Other commands:
 | command | what it does |
 |---|---|
 | `python engine.py --selfcheck` | proves there is no look-ahead (see below) |
-| `python calibrate.py` | walk-forward report: analog cone vs a naive volatility cone, writes `data/calibration.json` |
+| `python cone_model.py --vs-research` | proves the served cone equals the research model `cone2_f_conf_dev` (54 samples) |
+| `python calibrate.py` | walk-forward report: served cone vs a naive volatility cone, writes `data/calibration.json` (delete `data/calib_records.json` first: it caches v0 records) |
 | `python calibrate.py --dev-only` | the same, pre-2015 dates only (the only split allowed for tuning) |
 
 API: `GET /api/forecast?ticker=NVDA&horizon=5&asof=2024-06-14` (see `CONTRACT.md`),
@@ -43,7 +44,7 @@ on the watchlist, mega caps, growth and semis, volatile small caps, and other
 sectors. No ETFs. The list and its groups live in `universe.py`; it does not touch
 the analog pool, so forecasts are unchanged.
 
-`python accuracy.py` builds `data/accuracy.json` (about 6 minutes, sequential
+`python accuracy.py` builds `data/accuracy.json` (about 10 minutes, sequential
 downloads, resumes a crashed build; `--fresh` starts over, `--only NVDA,KO` prints
 a few without writing). The server serves that file and, when it is missing or
 over a day old, rebuilds it in one background thread while returning
@@ -52,9 +53,57 @@ function and cache as the chart's `track`, so they match click-through exactly.
 Stocks Yahoo does not know, or with too little history (about a year to warm up
 plus ~30 testable dates), are listed in `skipped` with the reason. With ~150 tests
 per stock, a single stock's direction rate can be off by 6-8 points from luck
-alone; trust the pooled summary more than any one row.
+alone; trust the pooled summary more than any one row. The direction baseline is
+walk-forward: on each tested date, guess the stock's usual direction so far.
 
-## How the cone is made
+## How the cone works now (v2, since 2026-10-04)
+
+The cone is `cone_model.py`, a frozen copy of the research model `cone2_f_conf_dev`,
+picked before the final test (`research/PLAN.md`, "Pre-registered before TEST #2").
+For each horizon (1 week, 1 month, 3 months) it predicts 19 quantiles of the
+end-of-horizon return:
+
+1. **Width: a HAR volatility forecast.** The stock's own recent and long-run
+   volatility, the market's volatility, the last day's shock and the recent
+   drawdown, with coefficients fitted once on 1962-2011 data and frozen
+   (`research/volforecast.py`).
+2. **Conformal calibration.** The width is scaled by how big the forecast's errors
+   were lately, on the stock's own windows (last 3 years) and across the basket
+   (last year), at 1W and 1M. Only errors already known on the as-of date count.
+3. **Shrunk centre.** The drift is the stock's own average daily return shrunk
+   almost all the way to the average of the 42-stock basket (about 12%/yr), so a
+   hot stock's run-up is not baked into its cone.
+4. **Shape.** 19 standardised quantiles fitted on 1962-2011 forecast errors.
+5. **Analog blend.** 20% (1W) / 10% (1M, 3M) of the cone is the analog cone below,
+   with vol scaling applied only to each analog's distance from the median, so it no
+   longer inflates the drift. With fewer than 100 analogs there is no blend (a note
+   says so).
+
+Bands are exact at the horizon end. Days in between follow a random walk with drift
+(spread grows with the square root of time). `p_up` is read off the quantiles.
+
+On the research splits it beats v0 and the zero-drift naive volatility cone at every
+horizon (scaled pinball skill vs that naive cone: +0.007 / +0.014 / +0.026 on 1962-2011,
++0.013 / +0.027 / +0.063 on 2012-18). Against a naive cone with the stock's own drift it
+wins except at 3 months on 2012-18, where they tie (+0.063 each). Its 80% band covers 0.80 / 0.80 / 0.80 on 1962-2011 and 0.81 / 0.81 / 0.82
+on 2012-18.
+
+**Honest limits of v2.**
+- **No directional edge.** The middle line is a cautious drift, not a call. On 2012-18
+  its median direction was right less often than "guess the stock's usual direction so
+  far" (0.549 vs 0.554, 0.579 vs 0.591, 0.628 vs 0.650). Use it as a range.
+- The centre comes from today's large caps (survivors), so it leans bullish.
+- Calm stocks are covered a little under 80% (about 0.79 for the calmest third on
+  2012-18).
+- Chosen and scored on 1962-2018 only. The 2019+ test (TEST #2) had not been run
+  when v2 was wired in.
+
+Research reports: `research/reports/cone2-01-calibrated-cone.md` (the model),
+`research/reports/vol-01-vol-forecasting.md` (the HAR width),
+`research/reports/diag-01-v0-failure-modes.md` (why v0 was replaced),
+`research/reports/eval-01-baselines.md` (the scoring harness).
+
+## The analog search (v0's cone; now the 10-20% blend)
 
 1. **Describe the setup** on every trading day with 12 numbers, each computed only
    from bars up to that day: trailing returns over 5/21/63/126 days, distance from
@@ -78,6 +127,10 @@ alone; trust the pooled summary more than any one row.
    analogs a little more (the nearest counts about 2.7x the 250th), and apply them
    to the last close.
 
+v2 keeps steps 1-2 unchanged. From step 3 it uses only the end-of-horizon returns,
+scaling each analog's deviation from the weighted median instead of the whole return,
+and blends their 19 quantiles into the cone above.
+
 `width_vs_naive` compares the 80% band with a naive random-walk cone from the
 stock's own trailing volatility (zero drift, sqrt-time). The track record walks
 forward over about 150 past dates for that ticker, forecasting each from data up
@@ -89,6 +142,9 @@ to that date only.
 whole engine from raw data truncated at D (every pool ticker and the market
 series) and forecasts again. History, cone, odds, analogs and walk-forward records
 must match exactly, for six tickers and dates (1987 to 2024) at all three horizons.
+For v2 it also compares the model's 19 unrounded quantiles bit for bit (so the basket
+drift and conformal statistics cannot leak) and checks that the served day-h prices
+are the model's quantiles.
 
 ## Limits (read these)
 
@@ -98,16 +154,18 @@ must match exactly, for six tickers and dates (1987 to 2024) at all three horizo
 - **Adjusted prices.** Replay shows split/dividend-adjusted closes with today's
   factors, so old price levels differ from what was quoted on the day. Returns
   are right.
-- **It is odds, not a promise.** The cone is a summary of what similar setups did.
-  It knows nothing about earnings dates, news, or anything outside the price and
-  volume history. See `calibrate.py` for how well it actually does; the honest
-  result is in "Calibration" below.
+- **It is odds, not a promise.** The cone summarises recent volatility, a cautious
+  drift and what similar setups did. It knows nothing about earnings dates, news, or
+  anything outside the price and volume history. How well it does: "How the cone works
+  now" (v2 research numbers), the Accuracy scoreboard, and "Calibration" below (v0).
 - Free Yahoo data can have bad ticks and stale stretches in old history. Features
   are clipped and stale stretches dropped from the pool, but not every glitch is
   caught.
 - Today's unfinished bar is dropped during US market hours.
 
-## Calibration
+## Calibration (v0, before the 2026-10-04 switch)
+
+This section is v0's result, kept for the record. For v2 see "How the cone works now".
 
 `python calibrate.py`, run 2026-10-03: 18 tickers (SPY, QQQ, AAPL, MSFT, NVDA,
 AMZN, GOOGL, META, JPM, XOM, JNJ, KO, WMT, BA, AMD, TSLA, NFLX, PLTR), a forecast

@@ -1,14 +1,21 @@
 """Stock Cone engine: price cache, features, analog search, cone, track record.
 
-The idea in one paragraph: describe "the setup" on any day with a dozen numbers
-(recent moves, distance from moving averages, drawdown, volatility regime,
+The cone (v2, since 2026-10-04) is `cone_model.py`, the research model
+`cone2_f_conf_dev` (research/reports/cone2-01-calibrated-cone.md):
+  - width: a frozen HAR volatility forecast, times walk-forward conformal factors
+    (how big the stock's and the basket's recent forecast errors were);
+  - centre: the stock's own drift shrunk almost all the way to the basket's drift;
+  - shape: 19 standardised quantiles fitted on 1962-2011 data;
+  - a small blend (10-20%) with the analog cone below, with vol scaling applied to
+    each analog's deviation from the median only.
+
+The analog search (unchanged from v0): describe "the setup" on any day with a dozen
+numbers (recent moves, distance from moving averages, drawdown, volatility regime,
 volume, market regime), all computed only from bars up to that day and all
-expressed in units of the stock's own volatility so a calm stock and a wild one
-are comparable. To forecast ticker T as of day D, find the K past days (across
-T's own history and a fixed basket of large caps) whose setup looked most like
-T's setup on D, take what actually happened to each of them over the next
-`horizon` trading days, rescale each path by (T's vol now / analog's vol then),
-and read off per-day percentiles. That's the cone.
+expressed in units of the stock's own volatility. To forecast ticker T as of day D,
+find the K past days (across T's own history and a fixed basket of large caps)
+whose setup looked most like T's setup on D, and take what happened to each of
+them over the next `horizon` trading days.
 
 Run `python engine.py --selfcheck` to prove there is no look-ahead.
 """
@@ -25,6 +32,8 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
+
+import cone_model as CM
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, "data")
@@ -73,6 +82,7 @@ Z_QS = np.array([-1.2815515655, -0.6744897502, 0.0, 0.6744897502, 1.2815515655])
 HISTORY_YEARS = 5
 TRACK_N = 150
 TRACK_THREADS = 2       # threads for a first-request track computation
+TRACK_VERSION = "c2"    # track cache key suffix: bump when the model or the scoring changes
 MIN_BARS = 260          # ~1 year: features need 252 bars of warm-up
 
 FEATURES = [
@@ -437,11 +447,20 @@ class Engine:
         self.track = {}
         self.track_threads = {}
         self.track_width = {}   # track key -> {h: avg_width_80}; accuracy scoreboard only
+        self.market = None      # cone_model.Market (index returns from SPY / ^GSPC)
+        self.basket = None      # cone_model.Basket (basket drift + conformal sums), built in warm_up
+        self.cone_series = {}   # ticker -> cone_model.TickerSeries (tied to one TickerData)
+        self.cone_lock = threading.Lock()
         self.version = 0
         if raw is None:
             self._load_json_caches()
 
     # ----- startup / refresh -------------------------------------------------
+
+    @staticmethod
+    def _current_track(d):
+        """Only entries of the current track version (older models' scores are never served)."""
+        return {k: v for k, v in d.items() if k.endswith("|" + TRACK_VERSION)}
 
     def _load_json_caches(self):
         for path, attr in ((NAMES_PATH, "names"), (TRACK_PATH, "track")):
@@ -450,6 +469,7 @@ class Engine:
                     setattr(self, attr, json.load(fh))
             except (OSError, ValueError):
                 pass
+        self.track = self._current_track(self.track)
 
     def _save_json(self, path, obj):
         if self.raw is not None:
@@ -473,9 +493,9 @@ class Engine:
                     disk = json.load(fh)
             except (OSError, ValueError):
                 disk = {}
-            for k, v in disk.items():
+            for k, v in self._current_track(disk).items():
                 self.track.setdefault(k, v)
-            self._save_json(TRACK_PATH, dict(self.track))
+            self._save_json(TRACK_PATH, self._current_track(self.track))
 
     def _prices(self, t):
         if self.raw is not None:
@@ -498,6 +518,7 @@ class Engine:
             spl = spy.iloc[:0]
         self.progress = (2, total)
         mkt = market_frame(spy, spl)
+        market = CM.Market(spy, spl)
         tick = {}
         for i, t in enumerate(POOL):
             self.status = f"loading analog pool ({t})"
@@ -510,8 +531,16 @@ class Engine:
             self.progress = (i + 3, total)
             if not self.quiet and self.raw is None:
                 log(f"pool {i + 1}/{len(POOL)} {t}: {len(tick[t].day) if t in tick else 0} bars")
+        # cone v2 inputs: per-stock HAR / drift / residual series of the basket members and
+        # the basket-wide drift + conformal statistics (about a second, once per load)
+        self.status = "building cone statistics"
+        series = {b: CM.TickerSeries(tick[b], market) for b in BASKET if b in tick}
+        basket = CM.Basket([series[b] for b in BASKET if b in series], market)
         with self.lock:
             self.mkt = mkt
+            self.market = market
+            self.basket = basket
+            self.cone_series = series
             self.tick = tick
             self.pools = {}
             self.loaded_on = dt.date.today()
@@ -552,9 +581,12 @@ class Engine:
         td = TickerData(t, px, self.mkt, note)
         with self.lock:
             if t in POOL and t in self.tick:
-                # a pool member refreshed today: replace it and drop pools built on the old copy
+                # a pool member refreshed today: replace it and drop pools (and the cone's
+                # basket statistics) built on the old copy
                 self.tick[t] = td
                 self.pools = {}
+                if t in BASKET:
+                    self.basket = None
             elif t not in POOL:
                 self.tick[t] = td
                 self.pools.pop(t, None)
@@ -573,6 +605,36 @@ class Engine:
                     self.pools = {k: v for k, v in self.pools.items() if k == "__basket__"}
                 self.pools[key] = p
         return p
+
+    def _series(self, td):
+        """cone_model.TickerSeries for this TickerData (cached while td is current)."""
+        with self.lock:
+            s = self.cone_series.get(td.ticker)
+            market = self.market
+        if s is not None and s.td is td:
+            return s
+        s = CM.TickerSeries(td, market)
+        with self.lock:
+            if len(self.cone_series) > len(BASKET) + 24:     # bound memory: keep the basket's
+                self.cone_series = {k: v for k, v in self.cone_series.items() if k in BASKET}
+            self.cone_series[td.ticker] = s
+        return s
+
+    def _basket(self):
+        """cone_model.Basket (built in warm_up; rebuilt here if a basket member was replaced)."""
+        with self.lock:
+            b = self.basket
+        if b is not None:
+            return b
+        with self.cone_lock:
+            with self.lock:
+                b = self.basket
+                tick = dict(self.tick)
+            if b is None:
+                b = CM.Basket([self._series(tick[x]) for x in BASKET if x in tick], self.market)
+                with self.lock:
+                    self.basket = b
+        return b
 
     def get_name(self, t, wait=0.0):
         """Company name (cached on disk). The lookup runs in a background thread;
@@ -690,18 +752,28 @@ class Engine:
             out["notes"].append("Track record is still being computed; it will appear on the next request.")
         return out
 
-    def _forecast_at(self, td, p, h):
+    def cone_at(self, td, p, h):
+        """The product cone (cone_model, v2) at bar p for horizon h, plus the analog search
+        it blends in. Returns a dict: Q (19 sorted end-of-horizon log-return quantiles,
+        q = .05 .. .95), n_analogs, and the analogs (pool, sel, w, raw/scaled end returns,
+        ratio). With fewer than K_MIN analogs the cone is the volatility model alone."""
         pool = self.pool_for(td.ticker)
+        sel, _, w = self._select(pool, td.X[p], pool.dist2(td.X[p]), td.day[p], h)
+        raw, scaled, ratio = self._paths(pool, sel, h, td.sig[p], end_only=True)
+        qdev = np.full(19, np.nan)
+        if len(sel) >= K_MIN:
+            qdev = CM.dev_quantiles(raw[:, 0], ratio, w)
+        Q = CM.end_quantiles(self._series(td), self._basket(), np.array([p]), h, qdev[None, :])[0]
+        return {"Q": Q, "n_analogs": int(len(sel)), "pool": pool, "sel": sel, "w": w,
+                "raw": raw[:, 0], "scaled": scaled[:, 0], "ratio": ratio}
+
+    def _forecast_at(self, td, p, h):
         D = td.day[p]
         last = td.close[p]
         sig_now = td.sig[p]
-        sel, d, w = self._select(pool, td.X[p], pool.dist2(td.X[p]), D, h)
-        if len(sel) < K_MIN:
-            raise ForecastError(400, f"asof {day_str(D)} is too early: only {len(sel)} comparable past setups "
-                                     f"existed by then (need {K_MIN}).")
-        raw, scaled, ratio = self._paths(pool, sel, h, sig_now)
-        qlog = np.array([wquantile(scaled[:, j], w, QS) for j in range(h)]).T   # (5, h)
-        end = scaled[:, -1]
+        cone = self.cone_at(td, p, h)
+        Q, pool, sel = cone["Q"], cone["pool"], cone["sel"]
+        qlog = CM.daily_paths(Q, h)                     # (5, h) log returns; day h == the model
         naive_w = last * (math.exp(Z_QS[4] * sig_now * math.sqrt(h)) - math.exp(Z_QS[0] * sig_now * math.sqrt(h)))
         prices = last * np.exp(qlog)
 
@@ -714,9 +786,7 @@ class Engine:
         if p < len(td.day) - 1:
             actual = [[day_str(td.day[i]), sig6(td.close[i])] for i in range(p + 1, min(p + 1 + h, len(td.day)))]
 
-        # unconditional up-rate for this ticker and horizon, bars <= asof only
-        c = td.close[: p + 1]
-        base = float(np.mean(c[h:] > c[:-h])) if len(c) > h else float("nan")
+        base = self.base_up(td, p, h)
 
         start_hist = (dt.date.fromisoformat(day_str(D)) - dt.date(1970, 1, 1)).days - int(HISTORY_YEARS * 365.25)
         i0 = int(np.searchsorted(td.day, start_hist, side="left"))
@@ -728,20 +798,20 @@ class Engine:
             sample.append({
                 "ticker": pool.tickers[pool.tid[r]],
                 "date": day_str(pool.day[r]),
-                "ret": r4(math.expm1(raw[j, -1])),          # what really happened to that stock
-                "ret_scaled": r4(math.expm1(scaled[j, -1])),  # after vol scaling (what the cone used)
+                "ret": r4(math.expm1(cone["raw"][j])),         # what really happened to that stock
+                "ret_scaled": r4(math.expm1(cone["scaled"][j])),  # after vol scaling (v0's cone)
             })
 
         notes = ["Free Yahoo data: delisted companies are missing (survivorship bias), and the analog "
-                 "basket is today's large caps, so past analogs lean toward winners."]
+                 "basket is today's large caps, so past analogs and the basket drift lean toward winners."]
         if p < len(td.day) - 1:
             notes.append("Prices are split/dividend-adjusted with today's factors, so older levels can differ "
                          "from what was quoted on the day; the returns are the same.")
-        clipped = float(np.mean((ratio <= SCALE_CLIP[0]) | (ratio >= SCALE_CLIP[1])))
-        if clipped > 0.2:
-            notes.append(f"{clipped:.0%} of analogs hit the volatility-scaling clip "
-                         f"({SCALE_CLIP[0]}x-{SCALE_CLIP[1]}x), so the cone may understate the extremes.")
-        if len(sel) < K:
+        if len(sel) < K_MIN:
+            found = f"Only {len(sel)} comparable past setups" if len(sel) else "No comparable past setups"
+            notes.append(f"{found} existed by this date (the blend needs {K_MIN}), so this cone is the "
+                         f"volatility model alone, without the analog blend.")
+        elif len(sel) < K:
             notes.append(f"Only {len(sel)} comparable past setups existed by this date (normally {K}).")
         if td.note:
             notes.append(td.note)
@@ -759,11 +829,11 @@ class Engine:
             },
             "odds": {
                 "n_analogs": int(len(sel)),
-                "p_up": r4(np.sum(w * (end > 0)) / np.sum(w)),
+                "p_up": r4(CM.p_up(Q)[0]),            # the cone's CDF at 0, clipped to [0.05, 0.95]
                 "base_p_up": r4(base),
-                "median_ret": r4(math.expm1(qlog[2, -1])),
-                "p10_ret": r4(math.expm1(qlog[0, -1])),
-                "p90_ret": r4(math.expm1(qlog[4, -1])),
+                "median_ret": r4(math.expm1(Q[CM.I50])),
+                "p10_ret": r4(math.expm1(Q[CM.I10])),
+                "p90_ret": r4(math.expm1(Q[CM.I90])),
                 "width_vs_naive": r4((prices[4, -1] - prices[0, -1]) / naive_w),
             },
             "actual": actual,
@@ -774,14 +844,25 @@ class Engine:
 
     # ----- walk-forward (track record + calibration) -------------------------
 
+    @staticmethod
+    def base_up(td, p, h):
+        """Share of this stock's past h-day windows that ended up, using only windows whose
+        outcome is known at bar p (the walk-forward base rate)."""
+        c = td.close[: p + 1]
+        return float(np.mean(c[h:] > c[:-h])) if len(c) > h else float("nan")
+
     def walk_forward(self, ticker, horizons, positions):
-        """For each as-of position, forecast using only bars <= that date and
-        record the end-of-horizon analog and naive quantiles plus the outcome.
-        The distance to the pool is computed once per date and shared across
-        horizons; eligibility (A + h <= D) is applied per horizon."""
+        """For each as-of position, forecast with the product cone using only bars <= that
+        date and record the outcome. The distance to the pool is computed once per date and
+        shared across horizons; eligibility (A + h <= D) is applied per horizon.
+
+        Record per (date, h): ret (realised log return), aq (the cone's q10/q25/q50/q75/q90
+        end log returns), nq (naive trailing-63 Gaussian quantiles), p_up (the cone's),
+        base_up (the stock's walk-forward up-share before the date)."""
         td = self.get_ticker(ticker)
         pool = self.pool_for(ticker)
-        recs = {h: [] for h in horizons}
+        S, B = self._series(td), self._basket()
+        rows = {h: ([], []) for h in horizons}            # positions, analog dev cones
         n = len(td.day)
         for p in positions:
             if not td.valid[p]:
@@ -789,21 +870,32 @@ class Engine:
             q = td.X[p]
             d2 = pool.dist2(q)
             pre = np.argpartition(d2, PRE - 1)[:PRE] if pool.n > PRE else None
-            D, sig_now = td.day[p], td.sig[p]
             for h in horizons:
                 if p + h >= n:
                     continue
-                sel, _, w = self._select(pool, q, d2, D, h, pre=pre)
-                if len(sel) < K_MIN:
-                    continue
-                _, scaled, _ = self._paths(pool, sel, h, sig_now, end_only=True)
-                aq = wquantile(scaled[:, 0], w, QS)
+                sel, _, w = self._select(pool, q, d2, td.day[p], h, pre=pre)
+                qdev = np.full(19, np.nan)                # too few analogs: plain cone
+                if len(sel) >= K_MIN:
+                    raw, _, ratio = self._paths(pool, sel, h, td.sig[p], end_only=True)
+                    qdev = CM.dev_quantiles(raw[:, 0], ratio, w)
+                rows[h][0].append(p)
+                rows[h][1].append(qdev)
+        recs = {h: [] for h in horizons}
+        for h in horizons:
+            P, QD = rows[h]
+            if not P:
+                continue
+            P = np.array(P, dtype=np.int64)
+            Q = CM.end_quantiles(S, B, P, h, np.array(QD))
+            pu = CM.p_up(Q)
+            for i, p in enumerate(P.tolist()):
                 recs[h].append({
-                    "date": day_str(D),
-                    "ret": float(td.logc[p + h] - td.logc[p]),     # realised log return
-                    "aq": aq.tolist(),                              # analog log-return quantiles
-                    "nq": (Z_QS * sig_now * math.sqrt(h)).tolist(),  # naive log-return quantiles
-                    "p_up": float(np.sum(w * (scaled[:, 0] > 0)) / np.sum(w)),
+                    "date": day_str(td.day[p]),
+                    "ret": float(td.logc[p + h] - td.logc[p]),
+                    "aq": Q[i, CM.IDX5].tolist(),
+                    "nq": (Z_QS * td.sig[p] * math.sqrt(h)).tolist(),
+                    "p_up": float(pu[i]),
+                    "base_up": self.base_up(td, p, h),
                 })
         return recs
 
@@ -828,19 +920,21 @@ class Engine:
         r = np.array([x["ret"] for x in recs])
         aq = np.array([x["aq"] for x in recs])
         up = r > 0
-        maj = max(up.mean(), 1 - up.mean())
+        # fair walk-forward baseline: on each date guess the direction the stock took in
+        # most of its past windows of this length (known by then), score that guess
+        guess_up = np.array([x["base_up"] >= 0.5 for x in recs])
         return {
             "n": int(len(recs)),
             "inside_80": r4(np.mean((r >= aq[:, 0]) & (r <= aq[:, 4]))),
             "inside_50": r4(np.mean((r >= aq[:, 1]) & (r <= aq[:, 3]))),
             "direction_hit": r4(np.mean((aq[:, 2] > 0) == up)),
-            "direction_base": r4(maj),
+            "direction_base": r4(np.mean(guess_up == up)),
         }
 
     def _track_key(self, t):
         td = self.tick.get(t)
         last = day_str(td.day[-1]) if td is not None else "?"
-        return f"{t}|{last}|v2"
+        return f"{t}|{last}|{TRACK_VERSION}"
 
     def track_records(self, t):
         """Walk-forward records for every horizon at once (distances are shared).
@@ -944,6 +1038,15 @@ def selfcheck():
             keys = ["ticker", "asof", "horizon", "last_close", "history", "odds", "analogs_sample"]
             bad = [k for k in keys if a[k] != b[k]]
             bad += [q for q in ("p10", "p25", "p50", "p75", "p90") if a["future"][q] != b["future"][q]]
+            # the cone model itself, unrounded: all 19 quantiles bit-identical on truncated data
+            Qa = full.cone_at(td, p, h)["Q"]
+            Qb = trunc.cone_at(tt, len(tt.day) - 1, h)["Q"]
+            if not np.array_equal(Qa, Qb):
+                bad.append(f"cone_Q(max diff {np.max(np.abs(Qa - Qb)):.2e})")
+            # served day-h prices are the model's end quantiles (up to 6-significant-digit rounding)
+            endq = np.log(np.array([a["future"][q][-1] for q in ("p10", "p25", "p50", "p75", "p90")]) / a["last_close"])
+            if np.max(np.abs(endq - Qa[CM.IDX5])) > 2e-5:
+                bad.append("day_h_vs_model")
             # walk-forward records at earlier dates whose outcome is known by D must match exactly
             pos = [x for x in (p - 400, p - 150, p - h) if x > 0]
             wa = full.walk_forward(t, [h], pos)[h]
@@ -964,7 +1067,8 @@ def selfcheck():
             status = "OK  " if not bad else "FAIL " + ",".join(bad)
             failures += 1 if bad else 0
             print(f"{status} {t:5s} asof={a['asof']} h={h:2d}  p50_end={a['future']['p50'][-1]}  "
-                  f"n={a['odds']['n_analogs']}  wf_dates={len(wa)}  history_end={a['history'][-1][0]}")
+                  f"p_up={a['odds']['p_up']}  n={a['odds']['n_analogs']}  wf_dates={len(wa)}  "
+                  f"history_end={a['history'][-1][0]}")
     print("SELF-CHECK", "PASSED" if failures == 0 else f"FAILED ({failures} mismatches)")
     return failures == 0
 
