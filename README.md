@@ -56,6 +56,18 @@ per stock, a single stock's direction rate can be off by 6-8 points from luck
 alone; trust the pooled summary more than any one row. The direction baseline is
 walk-forward: on each tested date, guess the stock's usual direction so far.
 
+## Live test (forward log)
+
+Every number above is today's stock list looking backwards. The live test is the
+clean check: the server writes down the exact cone it serves for each scored stock
+at 1W/1M/3M once a day (`data/forward/<asof>.jsonl`, at start-up and every 6 hours,
+in a background thread), and scores each one when its real price arrives: inside
+the 80% and 50% cones, and direction right vs the stock's usual direction. The
+Accuracy page shows it under "Live test"; `GET /api/forward` returns it. By hand:
+`python forward.py --snapshot` (log today and score), `--score`, `--status`, and
+`--selfcheck` (logs 2026-05-01 into a temp folder and checks it against real
+prices). Early results are a small, correlated sample: give it months.
+
 ## How the cone works now (v2, since 2026-10-04)
 
 The cone is `cone_model.py`, a frozen copy of the research model `cone2_f_conf_dev`,

@@ -436,6 +436,20 @@ details.analogs summary .count { font-weight: 450; color: var(--muted); }
 .acc-t tr.empty td { padding: 28px 4px; text-align: left; white-space: normal; color: var(--muted); }
 .acc-t tr.empty .linkish { border: 0; padding: 0; background: none; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
 
+/* live test: the cone logged every day, scored when the real price arrives (/api/forward) */
+.acc-live { padding: 20px 0 22px; border-bottom: 1px solid var(--hair); }
+.acc-live h2 { margin: 0; font-size: 15px; line-height: 1.3; font-weight: 650; color: var(--ink); }
+.acc-live p { margin: 6px 0 0; max-width: 66ch; font-size: 14px; line-height: 1.55; color: var(--ink-2); overflow-wrap: anywhere; }
+.acc-live p b { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.acc-live p.k { font-size: 13px; color: var(--muted); }
+.acc-live p.err { color: var(--down); }
+.live-rows { list-style: none; margin: 12px 0 2px; padding: 0; }
+.live-rows li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); gap: 2px 12px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--hair); font-size: 14px; line-height: 1.5; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.live-rows li:first-child { border-top: 0; }
+.live-rows .hz { font-weight: 650; color: var(--ink); }
+.live-rows b { font-weight: 650; color: var(--ink); }
+.live-rows .n { color: var(--muted); }
+
 details.acc-skip { margin-top: 26px; }
 .skip-list { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); column-gap: 32px; }
 .skip-list li { display: grid; grid-template-columns: 4.6em 1fr; gap: 10px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
@@ -731,6 +745,11 @@ details.rs[open] summary .chev { transform: rotate(90deg); }
         <div id="accFigs" class="acc-figs"></div>
       </section>
     </div>
+
+    <section id="accLive" class="acc-live" aria-labelledby="accLiveH" aria-live="polite" hidden>
+      <h2 id="accLiveH">Live test</h2>
+      <div id="accLiveBody"></div>
+    </section>
 
     <details id="research" class="rs">
       <summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="rs-h">What the research found</span><span id="rsMeta" class="rs-meta"></span></summary>
@@ -1799,6 +1818,7 @@ function showAcc() {
   renderViews();
   renderAcc();
   loadResearch();
+  loadLive();
   if (from !== 'acc') window.scrollTo(0, from === 'chart' && A.data ? accScrollY : 0);
   const stale = A.data && A.data.status === 'ready' && Date.now() - A.lastFetch > 10 * 60 * 1000;
   if (!A.fetching && (!A.data || A.data.status !== 'ready' || stale)) fetchAcc();
@@ -2166,6 +2186,90 @@ function renderAcc() {
   $('accRest').hidden = !A.data;
   if (A.data) { renderAccFigs(); renderAccTable(); renderAccExtras(); }
   renderAccFoot();
+}
+
+/* ---------- accuracy: live test (/api/forward, forward.py) ---------- */
+const FW = { data: null, error: null, loading: false, lastFetch: 0, timer: 0 };
+
+function mockLive(kind) {
+  const base = { status: 'ready', since: '2026-10-02', latest: '2026-10-02', days_logged: 1, last_error: null, horizons: {} };
+  [5, 21, 63].forEach((h, i) => { base.horizons[h] = { n: 0, days: 0, pending: 155, next_result: ['2026-10-09', '2026-10-30', '2026-12-31'][i] }; });
+  if (kind === 'results') {
+    base.horizons[5] = { n: 1240, days: 8, inside_80: 0.7433, inside_50: 0.4611, direction_hit: 0.5371, direction_base: 0.5121, pending: 620, next_result: '2026-10-22' };
+    base.horizons[21] = { n: 310, days: 2, inside_80: 0.8129, inside_50: 0.5, direction_hit: 0.4806, direction_base: 0.55, pending: 3100, next_result: '2026-11-13' };
+  }
+  if (kind === 'error') base.last_error = { at: '2026-10-04T18:00:00Z', message: 'snapshot 2026-10-02: 3 stock(s) not logged, will retry next run (first: OPEN: Yahoo Finance unreachable while fetching OPEN: timed out)' };
+  if (kind === 'building') { base.status = 'building'; base.since = null; base.days_logged = 0; base.progress = [37, 155]; }
+  return base;
+}
+
+async function loadLive(force) {
+  clearTimeout(FW.timer); FW.timer = 0;
+  if (FW.loading) return;
+  if (!force && FW.data && FW.data.status === 'ready' && Date.now() - FW.lastFetch < 5 * 60 * 1000) { renderLive(); return; }
+  FW.loading = true;
+  try {
+    const mk = qs.get('mockforward');
+    if (mk) FW.data = mockLive(mk);
+    else {
+      let r;
+      try { r = await fetch('/api/forward', { headers: { Accept: 'application/json' }, cache: 'no-store' }); }
+      catch (e) { throw new LoadError('Could not reach the Stock Cone server (' + (e && e.message ? e.message : 'network error') + ').'); }
+      let j = null;
+      try { j = await r.json(); } catch (e) { j = null; }
+      if (!r.ok) throw new LoadError((j && j.error ? j.error : 'The server answered HTTP ' + r.status) + ' (HTTP ' + r.status + ')', r.status);
+      if (!j || typeof j !== 'object' || !j.horizons) throw new LoadError('The live test reply did not have the expected shape (no "horizons").');
+      FW.data = j;
+    }
+    FW.error = null;
+    FW.lastFetch = Date.now();
+  } catch (e) {
+    FW.error = e && e.message ? e.message : String(e);
+  }
+  FW.loading = false;
+  renderLive();
+  const busy = FW.data && (FW.data.status === 'building' || FW.data.status === 'running');
+  if (view === 'acc' && (busy || (FW.error && !FW.data))) FW.timer = setTimeout(() => { if (view === 'acc') loadLive(true); }, busy ? 5000 : 30000);
+}
+
+function renderLive() {
+  const box = $('accLive'), body = $('accLiveBody');
+  const d = FW.data;
+  if (!d && !FW.error) { box.hidden = true; return; }
+  box.hidden = false;
+  const out = [];
+  if (!d) {
+    out.push('<p class="err">Couldn’t load the live test: ' + esc(FW.error) + '</p>');
+    body.innerHTML = out.join('');
+    return;
+  }
+  const H = d.horizons || {};
+  const hv = (h) => H[h] || H[String(h)] || {};
+  const anyN = [5, 21, 63].some((h) => fnum(hv(h).n) && hv(h).n > 0);
+  const first5 = hv(5).next_result;
+  if (!d.since) {
+    const pr = Array.isArray(d.progress) && d.progress[1] ? ' (' + int(d.progress[0]) + ' of ' + int(d.progress[1]) + ' stocks)' : '';
+    out.push('<p>' + (d.status === 'building' ? 'Writing down today’s cone for every stock for the first time' + pr + '…' : 'Nothing logged yet. The server writes down every stock’s cone once a day.') + '</p>');
+  } else if (!anyN) {
+    out.push('<p>Logging the cone every day since <b>' + esc(fmtDate(d.since)) + '</b>.' + (first5 ? ' First 1-week results on <b>' + esc(fmtDate(first5)) + '</b>.' : '') + '</p>');
+    out.push('<p class="k">Each day’s cone is saved before the real price is known, then checked once it arrives. Unlike the table below, it can’t be helped by hindsight or by today’s stock list.</p>');
+  } else {
+    out.push('<p>Each day’s cone, saved before the real price was known, then checked against it. Logging since <b>' + esc(fmtDate(d.since)) + '</b>.</p>');
+    const rows = [5, 21, 63].map((h) => {
+      const r = hv(h);
+      if (!fnum(r.n) || r.n <= 0) return '<li><span class="hz">' + HZ[h].k + '</span><span class="n">' + (r.next_result ? 'First results on ' + esc(fmtDate(r.next_result)) : 'No results yet') + '</span></li>';
+      return '<li><span class="hz">' + HZ[h].k + '</span><span>Inside the 80% cone <b>' + p0(r.inside_80) + '</b> · direction right <b>' + p0(r.direction_hit) + '</b> vs <b>' + p0(r.direction_base) + '</b> by usual direction <span class="n">· ' + int(r.n) + ' cones from ' + int(r.days) + (r.days === 1 ? ' day' : ' days') + '</span></span></li>';
+    });
+    out.push('<ul class="live-rows">' + rows.join('') + '</ul>');
+    out.push('<p class="k">The first weeks are a small sample, and stocks tend to move together: one market swing pushes most of them the same way on the same day, so these numbers can jump around a lot until months of days are in.</p>');
+  }
+  if (d.last_error && d.last_error.message) {
+    let when = '';
+    try { when = d.last_error.at ? new Date(d.last_error.at).toLocaleString() : ''; } catch (e) { when = ''; }
+    out.push('<p class="err">Last logging run had a problem' + (when ? ' (' + esc(when) + ')' : '') + ': ' + esc(d.last_error.message) + '</p>');
+  }
+  if (FW.error) out.push('<p class="err">Couldn’t refresh the live test: ' + esc(FW.error) + '</p>');
+  body.innerHTML = out.join('');
 }
 
 /* ---------- accuracy: what the research found (web/research.json) ---------- */

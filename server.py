@@ -1,6 +1,8 @@
 """Stock Cone server: stdlib only. Serves web/ at / and the API at /api/.
 
-    python server.py            -> http://127.0.0.1:8642
+    python server.py               -> http://127.0.0.1:8642
+    python server.py --port 8650   -> another port (e.g. a test server next to the real one)
+    python server.py --no-forward  -> do not run the live-test logger thread (forward.py)
 """
 
 import json
@@ -15,6 +17,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 import accuracy
 import engine
+import forward
 
 HOST, PORT = "127.0.0.1", 8642
 WEB_DIR = os.path.join(engine.ROOT, "web")
@@ -61,6 +64,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._forecast(parse_qs(url.query))
             elif url.path == "/api/accuracy":
                 self._accuracy()
+            elif url.path == "/api/forward":
+                self._forward()
             elif url.path == "/api/health":
                 a, b = ENGINE.progress
                 self._json(200, {"ready": ENGINE.ready, "status": ENGINE.status, "progress": [a, b]})
@@ -100,6 +105,15 @@ class Handler(BaseHTTPRequestHandler):
             traceback.print_exc()
             self._json(500, {"error": f"Accuracy scoreboard failed: {type(e).__name__}: {e}"})
 
+    def _forward(self):
+        """The live test (forward.py): status + per-horizon scores. Cheap: reads two small
+        JSON files and a directory listing; the logging runs in its own thread."""
+        try:
+            self._json(200, forward.status())
+        except Exception as e:
+            traceback.print_exc()
+            self._json(500, {"error": f"Live test status failed: {type(e).__name__}: {e}"})
+
     def _static(self, path):
         rel = unquote(path).lstrip("/") or "index.html"
         full = os.path.realpath(os.path.join(WEB_DIR, rel))
@@ -114,10 +128,15 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, fh.read(), ctype)
 
 
-def main():
-    httpd = ThreadingHTTPServer((HOST, PORT), Handler)
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description="Stock Cone server")
+    ap.add_argument("--port", type=int, default=PORT)
+    ap.add_argument("--no-forward", action="store_true", help="skip the live-test logger thread")
+    args = ap.parse_args(argv)
+    httpd = ThreadingHTTPServer((HOST, args.port), Handler)
     httpd.daemon_threads = True
-    print(f"Stock Cone running at http://{HOST}:{PORT}  (Ctrl+C to stop)", flush=True)
+    print(f"Stock Cone running at http://{HOST}:{args.port}  (Ctrl+C to stop)", flush=True)
 
     def warm():
         try:
@@ -127,6 +146,9 @@ def main():
             print(f"WARM-UP FAILED: {e}", flush=True)
 
     threading.Thread(target=warm, daemon=True).start()
+    if not args.no_forward:
+        # live test: waits for the warm-up, logs today's cones, scores old ones; every 6 h
+        forward.start_loop(ENGINE, every_s=6 * 3600, say=engine.log)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

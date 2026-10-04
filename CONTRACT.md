@@ -177,3 +177,59 @@ ticker + horizon (same function, same cache), so clicking through never disagree
 
 Applied only to the live (latest-bar) forecast: past earnings dates are not known
 point-in-time, so replays and the track record never use it.
+
+## GET /api/forward  (added 2026-10-04: the live test)
+
+The forward log (`forward.py`). Once at server start and then every 6 hours, a daemon
+thread logs the exact cone `/api/forecast` serves for the latest close (same engine steps,
+including the live earnings widening; name and track record are left out because they do
+not change the cone) for every stock the Accuracy scoreboard scores, at 5, 21 and 63 days,
+then scores every logged cone whose outcome is in. The request only reads two small JSON
+files and a directory listing; it never waits on the logging.
+
+```jsonc
+{
+  "status": "building",          // "building" (first run in progress) | "running" | "ready" | "empty"
+  "phase": "snapshot",           // "snapshot" | "score" while running, else null
+  "progress": [48, 155],         // stocks done / to do in the current snapshot, else null
+  "since": "2026-10-02",         // first as-of date logged (null before the first one)
+  "latest": "2026-10-02",        // last as-of date logged
+  "days_logged": 1,              // number of data/forward/<asof>.jsonl files
+  "cones_logged": 465,           // logged cones, skips excluded (as of the last score)
+  "records_scored": 0,
+  "records_pending": {"5": 465, "21": 465, "63": 465},   // logged, outcome not in yet
+  "model": "cone2_f_conf_dev+earnings|c2",
+  "last_run": "2026-10-04T05:31:02Z",      // UTC, end of the last snapshot+score run
+  "last_error": null,            // or {"at": "...Z", "message": "why"}: never silent
+  "last_snapshot": {"asof": "2026-10-02", "expected": 465, "already": 0, "added": 465, "skipped": 0, "errors": 0},
+  "scored_at": "2026-10-04T05:31:02Z",
+  "horizons": {
+    "5": {
+      "n": 0,                    // scored cones
+      "days": 0,                 // distinct as-of days among them
+      "inside_80": null,         // share whose real close landed in p10..p90 (null while n = 0)
+      "inside_50": null,         // ... in p25..p75
+      "direction_hit": null,     // share where the median's direction (p50 vs last_close) matched the real move
+      "direction_base": null,    // share where the usual direction (base_p_up >= 0.5 means up) matched
+      "first_asof": null, "last_asof": null,   // first / last scored as-of date
+      "pending": 465,
+      "next_result": "2026-10-09"              // earliest target date among pending cones
+    },
+    "21": { ... }, "63": { ... }
+  }
+}
+```
+
+- One record per (ticker, horizon) in `data/forward/<asof>.jsonl`: `asof, ticker, horizon,
+  target_date, last_close, p10, p25, p50, p75, p90` (end of horizon), `p_up, base_p_up,
+  event_widen` (null when no earnings widening), `event_date, event_note, n_analogs, model,
+  created_at` (UTC). A stock that cannot be forecast for a lasting reason gets
+  `{asof, ticker, horizon, skip: "reason"}` instead; a passing failure (Yahoo down) writes
+  nothing and is retried next run, and shows up in `last_error`.
+- Idempotent: a complete file is left alone; a partial one (crash) is finished, never
+  duplicated. Logged records are never rewritten.
+- Scoring uses the ratio of two closes from the current adjusted price file (asof and
+  asof + horizon trading days) applied to the logged `last_close`, so dividends and splits
+  after the log date cancel out. A cone is scored once the price file has `horizon`
+  trading days after its as-of date.
+- CLI: `python forward.py --snapshot | --score | --status | --selfcheck`.
