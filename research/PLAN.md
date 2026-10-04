@@ -68,3 +68,27 @@ Baselines always reported alongside: `naive0` (random walk, zero drift, trailing
 - Save partial results as you go (a Windows reboot or a crash should not cost the run).
 - Reports go in `research/reports/` as markdown: Method, Results (tables), What it means,
   Not verified.
+
+## TOP PRIORITY (23:12): is direction predictable at all?
+
+The question raised mid-run: can the forecasts of where stocks go next be made accurate
+enough to be useful for direction, not just for range?
+
+So the night's first question is no longer cone width; it is: **is there a directional
+edge that survives honest testing, and how big is it after costs?**
+
+- Single-stock up/down has shown no edge. The documented place to look is
+  **cross-sectional**: which stocks will do better than the others this week/month
+  (momentum, short-term reversal, low volatility, 52-week-high proximity, trend,
+  volume shocks, analog expected return, and combinations).
+- Score with a **trading backtest**, not just hit rates: weekly (and monthly) rebalance,
+  long-only top group vs the equal-weight universe and vs SPY, plus a long-short spread;
+  10 bps cost per side; report annual return, volatility, Sharpe, max drawdown, turnover,
+  hit rate by year. Survivorship: the universe is today's survivors, so long-only returns
+  are inflated; the comparison against the equal-weight SAME universe is the honest one.
+- Splits for cross-sectional work: TRAIN tickers only on DEV/VAL (time split as above);
+  TEST = all tickers, 2019+, coordinator only.
+- **A backtest that looks amazing is presumed to be a bug or overfit** until proven
+  otherwise (look-ahead, survivorship, costs, tiny names, one lucky year).
+- If an edge survives TEST, the app gets a Picks/Rankings view with its own honest track
+  record. If none survives, the report says so plainly.
