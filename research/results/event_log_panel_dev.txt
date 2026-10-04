@@ -1,0 +1,16 @@
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  [0] AAPL 1503 rows, 209 events (0s)
+  [10] AVGO 62 rows, 88 events (1s)
+  [20] COST 1189 rows, 188 events (2s)
+  [30] GS 578 rows, 82 events (2s)
+  skip IRE: IRE has only 239 trading days of history; the cone needs about a year.
+  [40] LMT 2202 rows, 358 events (3s)
+  [50] O 748 rows, 105 events (3s)
+  skip RVI: RVI has only 146 trading days of history; the cone needs about a year.
+  [60] SCHW 1084 rows, 188 events (4s)
+panel dev: 48277 rows -> <repo>\research\results\event_panel_dev.npz (5s)

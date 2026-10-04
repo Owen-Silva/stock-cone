@@ -1,0 +1,13 @@
+default    | h5: base 0.09 pred 0.16 P 0.14 R 0.24 rvF due/not 1.07/0.99 | h21: base 0.39 pred 0.41 P 0.41 R 0.43 rvF due/not 1.05/0.97 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.75
+thr0.2     | h5: base 0.09 pred 0.23 P 0.12 R 0.30 rvF due/not 1.04/0.99 | h21: base 0.39 pred 0.46 P 0.39 R 0.47 rvF due/not 1.03/0.98 | h63: base 0.76 pred 0.99 P 0.76 R 1.00 rvF due/not 1.00/0.83
+thr0.3     | h5: base 0.09 pred 0.16 P 0.14 R 0.24 rvF due/not 1.07/0.99 | h21: base 0.39 pred 0.41 P 0.41 R 0.43 rvF due/not 1.05/0.97 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.75
+thr0.4     | h5: base 0.09 pred 0.10 P 0.16 R 0.17 rvF due/not 1.11/0.99 | h21: base 0.39 pred 0.34 P 0.43 R 0.37 rvF due/not 1.07/0.97 | h63: base 0.76 pred 0.95 P 0.77 R 0.96 rvF due/not 1.01/0.75
+thr0.5     | h5: base 0.09 pred 0.06 P 0.17 R 0.11 rvF due/not 1.13/0.99 | h21: base 0.39 pred 0.26 P 0.45 R 0.31 rvF due/not 1.10/0.97 | h63: base 0.76 pred 0.90 P 0.78 R 0.93 rvF due/not 1.02/0.79
+y_only     | h5: base 0.09 pred 0.20 P 0.12 R 0.25 rvF due/not 1.05/0.99 | h21: base 0.39 pred 0.42 P 0.39 R 0.43 rvF due/not 1.04/0.98 | h63: base 0.76 pred 0.95 P 0.76 R 0.95 rvF due/not 0.99/1.13
+q_only     | h5: base 0.09 pred 0.23 P 0.12 R 0.30 rvF due/not 1.04/0.99 | h21: base 0.39 pred 0.44 P 0.40 R 0.45 rvF due/not 1.02/0.99 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.79
+tol5/7     | h5: base 0.09 pred 0.12 P 0.15 R 0.18 rvF due/not 1.10/0.99 | h21: base 0.39 pred 0.39 P 0.41 R 0.41 rvF due/not 1.06/0.97 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.74
+tol10/14   | h5: base 0.09 pred 0.20 P 0.13 R 0.28 rvF due/not 1.06/0.98 | h21: base 0.39 pred 0.43 P 0.40 R 0.45 rvF due/not 1.04/0.97 | h63: base 0.76 pred 0.98 P 0.76 R 0.99 rvF due/not 1.00/0.75
+nogap      | h5: base 0.09 pred 0.51 P 0.12 R 0.62 rvF due/not 1.06/0.94 | h21: base 0.39 pred 0.81 P 0.42 R 0.88 rvF due/not 1.04/0.87 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.75
+gap50      | h5: base 0.09 pred 0.22 P 0.14 R 0.33 rvF due/not 1.06/0.98 | h21: base 0.39 pred 0.59 P 0.43 R 0.66 rvF due/not 1.03/0.96 | h63: base 0.76 pred 0.97 P 0.76 R 0.98 rvF due/not 1.00/0.75
+y4         | h5: base 0.09 pred 0.13 P 0.15 R 0.21 rvF due/not 1.11/0.98 | h21: base 0.39 pred 0.39 P 0.41 R 0.42 rvF due/not 1.06/0.97 | h63: base 0.76 pred 0.97 P 0.76 R 0.99 rvF due/not 1.00/0.72
+h5 rvF if event happened / not: 2.54 0.84

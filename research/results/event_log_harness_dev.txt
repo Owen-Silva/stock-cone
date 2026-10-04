@@ -1,0 +1,131 @@
+  [1/71] AAPL    1503 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.4s
+  [2/71] ABBV       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [3/71] ADBE    1221 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.3s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.3s
+  [4/71] ALAB       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [5/71] AMD     1422 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.4s
+  [6/71] AMGN    1300 as-of dates  event_base 0.5s  event_pool_bin 0.3s  event_shrunk_bin 0.3s  event_pool 0.4s  event_shrunk 0.3s  event_har 0.4s
+  [7/71] AMT      637 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.2s  event_pool 0.2s  event_shrunk 0.2s  event_har 0.3s
+  [8/71] ANET       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [9/71] APP        0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [10/71] ASML     787 as-of dates  event_base 0.2s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.2s
+  [11/71] AVGO      62 as-of dates  event_base 0.2s  event_pool_bin 0.1s  event_shrunk_bin 0.2s  event_pool 0.1s  event_shrunk 0.2s  event_har 0.1s
+  [12/71] AXP     1908 as-of dates  event_base 0.4s  event_pool_bin 0.5s  event_shrunk_bin 0.4s  event_pool 0.5s  event_shrunk 0.4s  event_har 0.5s
+  [13/71] BA      2424 as-of dates  event_base 0.5s  event_pool_bin 0.5s  event_shrunk_bin 0.6s  event_pool 0.5s  event_shrunk 0.4s  event_har 0.5s
+  [14/71] BAC     1483 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.4s  event_pool 0.3s  event_shrunk 0.4s  event_har 0.3s
+  [15/71] BBAI       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [16/71] CAT     2454 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.4s  event_shrunk 0.3s  event_har 0.4s
+  [17/71] CCJ      736 as-of dates  event_base 0.3s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.1s  event_shrunk 0.2s  event_har 0.3s
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  [18/71] CDE     1188 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.4s
+  [19/71] CIFR       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [20/71] CLSK       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [21/71] COST    1189 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.3s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.4s
+  [22/71] CRWD       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [23/71] CRWV       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [24/71] CVNA       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [25/71] CVX     2423 as-of dates  event_base 0.5s  event_pool_bin 0.5s  event_shrunk_bin 0.5s  event_pool 0.3s  event_shrunk 0.5s  event_har 0.4s
+  [26/71] DDOG       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [27/71] DELL       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [28/71] FCX      771 as-of dates  event_base 0.2s  event_pool_bin 0.3s  event_shrunk_bin 0.2s  event_pool 0.3s  event_shrunk 0.2s  event_har 0.2s
+  [29/71] FSLY       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [30/71] GOLD       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [31/71] GS       578 as-of dates  event_base 0.2s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.2s  event_shrunk 0.2s  event_har 0.3s
+  [32/71] HL      1066 as-of dates  event_base 0.4s  event_pool_bin 0.2s  event_shrunk_bin 0.4s  event_pool 0.4s  event_shrunk 0.3s  event_har 0.3s
+  [33/71] HUT        0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  [34/71] IBM     2458 as-of dates  event_base 0.4s  event_pool_bin 0.5s  event_shrunk_bin 0.3s  event_pool 0.5s  event_shrunk 0.5s  event_har 0.6s
+  [35/71] INTC    1522 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.5s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.4s
+  [36/71] IONQ       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [38/71] KGC      637 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.3s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.3s
+  [39/71] KO      2431 as-of dates  event_base 0.5s  event_pool_bin 0.6s  event_shrunk_bin 0.6s  event_pool 0.6s  event_shrunk 0.6s  event_har 0.6s
+  [40/71] LCID       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [41/71] LMT     2202 as-of dates  event_base 0.5s  event_pool_bin 0.6s  event_shrunk_bin 0.6s  event_pool 0.6s  event_shrunk 0.6s  event_har 0.5s
+  [42/71] LUNR       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [43/71] MA       223 as-of dates  event_base 0.2s  event_pool_bin 0.2s  event_shrunk_bin 0.1s  event_pool 0.2s  event_shrunk 0.2s  event_har 0.3s
+  [44/71] MSFT    1242 as-of dates  event_base 0.5s  event_pool_bin 0.4s  event_shrunk_bin 0.4s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.4s
+  [45/71] MU      1298 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.4s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.5s
+  [46/71] NEE     1401 as-of dates  event_base 0.6s  event_pool_bin 0.6s  event_shrunk_bin 0.7s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.5s
+  [47/71] NEM     1535 as-of dates  event_base 0.6s  event_pool_bin 0.7s  event_shrunk_bin 0.4s  event_pool 0.4s  event_shrunk 0.4s  event_har 0.4s
+  [48/71] NET        0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [49/71] NNE        0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  [50/71] NVDA     592 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.2s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.3s
+  [51/71] O        748 as-of dates  event_base 0.3s  event_pool_bin 0.3s  event_shrunk_bin 0.3s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.3s
+  [52/71] OLB        0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [53/71] PFE     1536 as-of dates  event_base 0.8s  event_pool_bin 0.5s  event_shrunk_bin 0.5s  event_pool 0.4s  event_shrunk 0.5s  event_har 0.5s
+  [54/71] PLD      621 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.2s  event_shrunk 0.3s  event_har 0.2s
+  [55/71] QBTS       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [56/71] RIOT       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [57/71] RIVN       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [58/71] RKLB       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [60/71] SBUX     922 as-of dates  event_base 0.4s  event_pool_bin 0.4s  event_shrunk_bin 0.3s  event_pool 0.3s  event_shrunk 0.3s  event_har 0.4s
+  [61/71] SCHW    1084 as-of dates  event_base 0.5s  event_pool_bin 0.3s  event_shrunk_bin 0.4s  event_pool 0.3s  event_shrunk 0.4s  event_har 0.5s
+  [62/71] SHOP       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [63/71] SMCI     181 as-of dates  event_base 0.2s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.2s  event_shrunk 0.2s  event_har 0.1s
+  [64/71] SNDK       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [65/71] SPOT       0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+  [66/71] TXN     1864 as-of dates  event_base 0.5s  event_pool_bin 0.6s  event_shrunk_bin 0.5s  event_pool 0.6s  event_shrunk 0.5s  event_har 0.6s
+  [67/71] UEC      180 as-of dates  event_base 0.2s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.2s  event_shrunk 0.1s  event_har 0.2s
+  [68/71] UPS      551 as-of dates  event_base 0.2s  event_pool_bin 0.3s  event_shrunk_bin 0.2s  event_pool 0.4s  event_shrunk 0.5s  event_har 0.3s
+  [69/71] V        132 as-of dates  event_base 0.3s  event_pool_bin 0.2s  event_shrunk_bin 0.2s  event_pool 0.1s  event_shrunk 0.2s  event_har 0.1s
+  [70/71] WMT     1765 as-of dates  event_base 0.4s  event_pool_bin 0.5s  event_shrunk_bin 0.4s  event_pool 0.3s  event_shrunk 0.4s  event_har 0.3s
+  [71/71] ZS         0 as-of dates  event_base 0.0s  event_pool_bin 0.0s  event_shrunk_bin 0.0s  event_pool 0.0s  event_shrunk 0.0s  event_har 0.0s
+
+== event_base  split=dev  tickers=40  compute=16s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_base       5   48277 +0.0054  0.499  0.799  0.001  0.126  +0.0017  0.517  0.510     0  skill90%CI[+0.0047,+0.0061]
+event_base      21   48277 +0.0095  0.498  0.799  0.001  0.256  +0.0013  0.553  0.550     0  skill90%CI[+0.0072,+0.0121]
+event_base      63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0022  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.802/0.792/0.803  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.008/+0.006  cov80 0.799/0.799/0.800  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.807/0.796/0.802  brierSk +0.001/+0.000/+0.006
+
+== event_pool_bin  split=dev  tickers=40  compute=15s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_pool_bin   5   48277 +0.0055  0.497  0.798  0.002  0.125  +0.0017  0.517  0.510     0  skill90%CI[+0.0048,+0.0062]
+event_pool_bin  21   48277 +0.0096  0.499  0.800  0.000  0.257  +0.0013  0.553  0.550     0  skill90%CI[+0.0072,+0.0121]
+event_pool_bin  63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0021  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.801/0.791/0.801  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.009/+0.006  cov80 0.801/0.799/0.801  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.806/0.795/0.802  brierSk +0.001/+0.000/+0.006
+
+== event_shrunk_bin  split=dev  tickers=40  compute=14s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_shrunk_bin   5   48277 +0.0055  0.497  0.797  0.003  0.125  +0.0017  0.517  0.510     0  skill90%CI[+0.0048,+0.0062]
+event_shrunk_bin  21   48277 +0.0096  0.499  0.800  0.000  0.257  +0.0013  0.553  0.550     0  skill90%CI[+0.0073,+0.0121]
+event_shrunk_bin  63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0021  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.801/0.791/0.801  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.009/+0.006  cov80 0.800/0.799/0.801  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.806/0.795/0.802  brierSk +0.001/+0.000/+0.006
+
+== event_pool  split=dev  tickers=40  compute=14s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_pool       5   48277 +0.0055  0.498  0.799  0.001  0.125  +0.0017  0.517  0.510     0  skill90%CI[+0.0048,+0.0062]
+event_pool      21   48277 +0.0096  0.499  0.801  0.001  0.257  +0.0014  0.553  0.550     0  skill90%CI[+0.0073,+0.0121]
+event_pool      63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0021  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.802/0.792/0.802  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.009/+0.006  cov80 0.800/0.801/0.801  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.806/0.795/0.802  brierSk +0.001/+0.000/+0.006
+
+== event_shrunk  split=dev  tickers=40  compute=14s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_shrunk     5   48277 +0.0055  0.498  0.799  0.001  0.125  +0.0017  0.517  0.510     0  skill90%CI[+0.0048,+0.0062]
+event_shrunk    21   48277 +0.0096  0.499  0.801  0.001  0.257  +0.0014  0.553  0.550     0  skill90%CI[+0.0073,+0.0121]
+event_shrunk    63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0021  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.802/0.792/0.802  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.009/+0.006  cov80 0.800/0.800/0.801  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.806/0.795/0.802  brierSk +0.001/+0.000/+0.006
+
+== event_har  split=dev  tickers=40  compute=14s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_har        5   48277 +0.0055  0.498  0.799  0.001  0.125  +0.0017  0.517  0.510     0  skill90%CI[+0.0048,+0.0062]
+event_har       21   48277 +0.0096  0.499  0.801  0.001  0.257  +0.0014  0.553  0.550     0  skill90%CI[+0.0073,+0.0121]
+event_har       63   48277 +0.0124  0.500  0.801  0.001  0.455  +0.0021  0.583  0.580     0  skill90%CI[+0.0055,+0.0195]
+   h= 5 vol low/mid/high: skill +0.005/+0.004/+0.008  cov80 0.802/0.792/0.802  brierSk +0.002/+0.001/+0.002
+   h=21 vol low/mid/high: skill +0.013/+0.009/+0.006  cov80 0.800/0.800/0.801  brierSk -0.000/+0.002/+0.002
+   h=63 vol low/mid/high: skill +0.025/+0.011/-0.001  cov80 0.806/0.795/0.802  brierSk +0.001/+0.000/+0.006
+
+wall 62s; JSON in research\results

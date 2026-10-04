@@ -1,0 +1,6 @@
+OK   lookahead event_har    KO    asof=2008-10-10 q05/q50/q95(h21)=-0.1647/+0.0128/+0.1701 
+OK   lookahead event_har    AAPL  asof=2015-06-12 q05/q50/q95(h21)=-0.0894/+0.0154/+0.1082 
+OK   lookahead event_har    NVDA  asof=2011-03-04 q05/q50/q95(h21)=-0.2331/+0.0216/+0.2472 
+OK   lookahead event_har    SMCI  asof=2018-02-02 q05/q50/q95(h21)=-0.2032/+0.0100/+0.1988 
+OK   lookahead event_har    IBM   asof=1987-10-30 q05/q50/q95(h21)=-0.2652/+0.0109/+0.2556 
+HARNESS PROOFS PASSED

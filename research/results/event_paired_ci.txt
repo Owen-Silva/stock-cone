@@ -1,0 +1,37 @@
+dev h 5 all      dskill(event_har - none)   +0.7bp  90% CI [  -0.1,   +1.5]  share>0 0.93
+dev h 5 due      dskill(event_har - none)   +4.3bp  90% CI [  -0.2,   +8.4]  share>0 0.94
+dev h 5 not_due  dskill(event_har - none)   -0.0bp  90% CI [  -0.6,   +0.6]  share>0 0.46
+dev h21 all      dskill(event_har - none)   +0.9bp  90% CI [  -0.4,   +2.1]  share>0 0.87
+dev h21 due      dskill(event_har - none)   +2.3bp  90% CI [  -0.8,   +5.5]  share>0 0.90
+dev h21 not_due  dskill(event_har - none)   -0.1bp  90% CI [  -1.1,   +0.8]  share>0 0.41
+dev h63 all      dskill(event_har - none)   +0.2bp  90% CI [  -0.3,   +0.6]  share>0 0.74
+dev h63 due      dskill(event_har - none)   +0.0bp  90% CI [  +0.0,   +0.0]  share>0 0.00
+dev h63 not_due  dskill(event_har - none)   +7.8bp  90% CI [ -14.8,  +29.3]  share>0 0.75
+val h 5 all      dskill(event_har - none)   +4.4bp  90% CI [  +2.1,   +6.8]  share>0 1.00
+val h 5 due      dskill(event_har - none)  +13.1bp  90% CI [  +1.5,  +24.1]  share>0 0.97
+val h 5 not_due  dskill(event_har - none)   +2.5bp  90% CI [  +1.7,   +3.4]  share>0 1.00
+val h21 all      dskill(event_har - none)   +2.0bp  90% CI [  -0.7,   +4.6]  share>0 0.88
+val h21 due      dskill(event_har - none)   +0.7bp  90% CI [  -5.8,   +7.5]  share>0 0.57
+val h21 not_due  dskill(event_har - none)   +2.9bp  90% CI [  +1.7,   +4.3]  share>0 1.00
+val h63 all      dskill(event_har - none)   +0.6bp  90% CI [  +0.1,   +1.1]  share>0 0.98
+val h63 due      dskill(event_har - none)   +0.0bp  90% CI [  +0.0,   +0.0]  share>0 0.00
+val h63 not_due  dskill(event_har - none)  +19.0bp  90% CI [  +3.2,  +42.1]  share>0 0.98
+--- control: uniform deflation by d, no event information
+dev h 5 all      dskill(uniform d - none)   -0.3bp  90% CI [  -0.9,   +0.3]  share>0 0.19
+dev h 5 due      dskill(uniform d - none)   -2.3bp  90% CI [  -3.4,   -1.2]  share>0 0.00
+dev h 5 not_due  dskill(uniform d - none)   +0.0bp  90% CI [  -0.6,   +0.7]  share>0 0.53
+dev h21 all      dskill(uniform d - none)   -0.5bp  90% CI [  -1.3,   +0.5]  share>0 0.23
+dev h21 due      dskill(uniform d - none)   -1.6bp  90% CI [  -2.8,   -0.3]  share>0 0.02
+dev h21 not_due  dskill(uniform d - none)   +0.3bp  90% CI [  -0.6,   +1.4]  share>0 0.71
+dev h63 all      dskill(uniform d - none)   -5.1bp  90% CI [ -11.1,   +0.5]  share>0 0.07
+dev h63 due      dskill(uniform d - none)   -5.4bp  90% CI [ -11.4,   +0.6]  share>0 0.07
+dev h63 not_due  dskill(uniform d - none)   +7.8bp  90% CI [ -14.8,  +29.3]  share>0 0.75
+val h 5 all      dskill(uniform d - none)   +1.9bp  90% CI [  +1.1,   +2.8]  share>0 1.00
+val h 5 due      dskill(uniform d - none)   -2.5bp  90% CI [  -4.3,   -0.4]  share>0 0.03
+val h 5 not_due  dskill(uniform d - none)   +2.9bp  90% CI [  +1.9,   +3.9]  share>0 1.00
+val h21 all      dskill(uniform d - none)   +1.9bp  90% CI [  +0.8,   +3.2]  share>0 1.00
+val h21 due      dskill(uniform d - none)   -0.5bp  90% CI [  -2.2,   +1.2]  share>0 0.30
+val h21 not_due  dskill(uniform d - none)   +3.8bp  90% CI [  +2.3,   +5.4]  share>0 1.00
+val h63 all      dskill(uniform d - none)  +11.3bp  90% CI [  +3.3,  +20.1]  share>0 0.99
+val h63 due      dskill(uniform d - none)  +11.1bp  90% CI [  +2.3,  +20.4]  share>0 0.98
+val h63 not_due  dskill(uniform d - none)  +19.0bp  90% CI [  +3.2,  +42.1]  share>0 0.98
