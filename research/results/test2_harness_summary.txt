@@ -1,0 +1,75 @@
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+<site-packages>\pandas\core\arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+
+== naive0  split=test  tickers=159  compute=0s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+naive0           5   52748 +0.0000  0.551  0.819  0.019  0.184  -0.0028  0.538  0.538     0  skill90%CI[+0.0000,+0.0000]
+naive0          21   52247 +0.0000  0.518  0.798  0.002  0.378  -0.0095  0.559  0.559     0  skill90%CI[+0.0000,+0.0000]
+naive0          63   50899 +0.0000  0.503  0.788  0.012  0.651  -0.0129  0.582  0.582     0  skill90%CI[+0.0000,+0.0000]
+   h= 5 vol low/mid/high: skill +0.000/+0.000/+0.000  cov80 0.793/0.824/0.840  brierSk -0.007/-0.005/+0.004
+   h=21 vol low/mid/high: skill +0.000/+0.000/+0.000  cov80 0.755/0.812/0.827  brierSk -0.010/-0.017/-0.001
+   h=63 vol low/mid/high: skill +0.000/+0.000/+0.000  cov80 0.744/0.794/0.828  brierSk -0.028/-0.032/+0.019
+
+== naive_drift  split=test  tickers=159  compute=0s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+naive_drift      5   52748 +0.0014  0.555  0.819  0.019  0.184  +0.0021  0.537  0.538     0  skill90%CI[+0.0008,+0.0020]
+naive_drift     21   52247 +0.0025  0.527  0.799  0.001  0.378  -0.0012  0.554  0.559     0  skill90%CI[+0.0004,+0.0049]
+naive_drift     63   50899 +0.0016  0.512  0.796  0.004  0.651  -0.0045  0.576  0.582     0  skill90%CI[-0.0048,+0.0084]
+   h= 5 vol low/mid/high: skill +0.003/+0.002/-0.001  cov80 0.795/0.824/0.839  brierSk +0.000/+0.001/+0.005
+   h=21 vol low/mid/high: skill +0.006/+0.006/-0.005  cov80 0.761/0.812/0.825  brierSk -0.001/-0.003/-0.000
+   h=63 vol low/mid/high: skill +0.013/+0.012/-0.024  cov80 0.760/0.808/0.819  brierSk -0.007/-0.008/+0.001
+
+== vol_har_drift  split=test  tickers=159  compute=9s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+vol_har_drift    5   52748 +0.0076  0.506  0.796  0.004  0.168  +0.0021  0.537  0.538     0  skill90%CI[+0.0063,+0.0087]
+vol_har_drift   21   52247 +0.0080  0.484  0.776  0.024  0.341  -0.0005  0.554  0.559     0  skill90%CI[+0.0053,+0.0108]
+vol_har_drift   63   50899 +0.0083  0.482  0.785  0.015  0.604  -0.0022  0.578  0.582     0  skill90%CI[+0.0017,+0.0152]
+   h= 5 vol low/mid/high: skill +0.008/+0.010/+0.005  cov80 0.802/0.793/0.793  brierSk -0.000/+0.001/+0.005
+   h=21 vol low/mid/high: skill +0.011/+0.012/+0.001  cov80 0.768/0.782/0.776  brierSk -0.002/+0.001/-0.000
+   h=63 vol low/mid/high: skill +0.019/+0.020/-0.017  cov80 0.787/0.789/0.779  brierSk -0.006/-0.003/+0.002
+
+== cone2_f_conf_dev  split=test  tickers=159  compute=848s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+cone2_f_conf_dev   5   52748 +0.0088  0.510  0.802  0.002  0.170  +0.0016  0.526  0.538     0  skill90%CI[+0.0077,+0.0098]
+cone2_f_conf_dev  21   52247 +0.0119  0.492  0.785  0.015  0.349  +0.0015  0.548  0.559     0  skill90%CI[+0.0097,+0.0141]
+cone2_f_conf_dev  63   50899 +0.0241  0.475  0.782  0.018  0.590  +0.0137  0.577  0.582     0  skill90%CI[+0.0188,+0.0297]
+   h= 5 vol low/mid/high: skill +0.008/+0.011/+0.008  cov80 0.798/0.803/0.804  brierSk +0.000/+0.000/+0.004
+   h=21 vol low/mid/high: skill +0.013/+0.016/+0.007  cov80 0.770/0.795/0.792  brierSk +0.002/+0.003/-0.000
+   h=63 vol low/mid/high: skill +0.027/+0.033/+0.011  cov80 0.779/0.784/0.782  brierSk +0.001/+0.014/+0.025
+
+== cone2  split=test  tickers=159  compute=6s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+cone2            5   52748 +0.0087  0.510  0.802  0.002  0.170  +0.0023  0.535  0.538     0  skill90%CI[+0.0077,+0.0097]
+cone2           21   52247 +0.0105  0.487  0.780  0.020  0.343  +0.0019  0.550  0.559     0  skill90%CI[+0.0081,+0.0129]
+cone2           63   50899 +0.0182  0.479  0.779  0.021  0.590  +0.0099  0.572  0.582     0  skill90%CI[+0.0130,+0.0238]
+   h= 5 vol low/mid/high: skill +0.008/+0.010/+0.008  cov80 0.797/0.804/0.804  brierSk -0.000/+0.001/+0.006
+   h=21 vol low/mid/high: skill +0.012/+0.014/+0.005  cov80 0.764/0.791/0.784  brierSk +0.001/+0.003/+0.002
+   h=63 vol low/mid/high: skill +0.024/+0.029/+0.001  cov80 0.772/0.790/0.775  brierSk -0.001/+0.010/+0.020
+
+== event_har  split=test  tickers=159  compute=14s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+event_har        5   52748 +0.0079  0.508  0.797  0.003  0.168  +0.0020  0.537  0.538     0  skill90%CI[+0.0067,+0.0091]
+event_har       21   52247 +0.0085  0.489  0.781  0.019  0.344  -0.0004  0.554  0.559     0  skill90%CI[+0.0058,+0.0112]
+event_har       63   50899 +0.0083  0.481  0.784  0.016  0.603  -0.0023  0.578  0.582     0  skill90%CI[+0.0017,+0.0153]
+   h= 5 vol low/mid/high: skill +0.008/+0.010/+0.005  cov80 0.804/0.795/0.793  brierSk -0.000/+0.001/+0.005
+   h=21 vol low/mid/high: skill +0.011/+0.013/+0.001  cov80 0.774/0.787/0.781  brierSk -0.002/+0.001/-0.000
+   h=63 vol low/mid/high: skill +0.019/+0.020/-0.017  cov80 0.784/0.789/0.779  brierSk -0.006/-0.003/+0.002
+
+== v0  split=test  tickers=159  compute=778s
+model            h       n   skill  cov50  cov80  |e80|    w80  brierSk    hit    maj  abst
+v0               5   52748 +0.0008  0.500  0.794  0.006  0.165  -0.0073  0.521  0.538     0  skill90%CI[-0.0004,+0.0019]
+v0              21   52247 -0.0001  0.473  0.763  0.037  0.333  -0.0125  0.540  0.559     0  skill90%CI[-0.0029,+0.0028]
+v0              63   50899 +0.0101  0.464  0.763  0.037  0.577  -0.0066  0.566  0.582     0  skill90%CI[+0.0037,+0.0167]
+   h= 5 vol low/mid/high: skill +0.000/+0.001/+0.001  cov80 0.787/0.808/0.788  brierSk -0.008/-0.009/-0.005
+   h=21 vol low/mid/high: skill +0.007/+0.006/-0.015  cov80 0.746/0.789/0.754  brierSk +0.001/-0.005/-0.033
+   h=63 vol low/mid/high: skill +0.020/+0.028/-0.021  cov80 0.750/0.791/0.746  brierSk -0.000/+0.007/-0.026
+
+wall 1686s; JSON in research\results

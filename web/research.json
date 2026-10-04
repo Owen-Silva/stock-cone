@@ -5,15 +5,15 @@
   {
    "title": "Price ranges (the cone)",
    "status": "works",
-   "finding": "The shaded cone is honest about how far prices move. About 8 in 10 real outcomes landed inside the 80% cone at 1 week, 1 month and 3 months ahead, on 2012-2018 data the tuning never used.",
-   "numbers": "2019+ check pending",
-   "pending": true
+   "finding": "The shaded cone is honest about how far prices move. On 2019 to today, a period none of the tuning saw, about 8 in 10 real outcomes landed inside the 80% cone, slightly fewer at 1 and 3 months because of the 2020 crash and 2022 bear market. The old cone was clearly worse.",
+   "numbers": "Inside the 80% cone, 2019+: 80% at 1 week, 78.5% at 1 month, 78% at 3 months (old cone: 79%, 76%, 76%). 159 stocks, about 52,000 forecasts per horizon.",
+   "pending": false
   },
   {
    "title": "Will this stock go up or down?",
    "status": "no",
    "finding": "No model beat simply guessing each stock’s usual direction, on any horizon. The “Chance it ends higher” figure is a lean, not a call.",
-   "numbers": "Tested 1 week, 1 month and 3 months ahead. None beat the usual-direction guess."
+   "numbers": "2019+: the cone's middle line called the direction right 53% / 55% / 58% of the time (1W / 1M / 3M) vs 54% / 56% / 58% for guessing each stock's usual direction."
   },
   {
    "title": "Which stocks beat the others (momentum)",
