@@ -85,3 +85,54 @@ and cached.
   `history` never contains a bar after `asof`. Replay is worthless if this leaks.
 - **No silent failures.** Every error or fallback is shown in the UI with its reason,
   not just logged. The mock is used only when `?mock=1` is in the URL.
+
+## GET /api/accuracy  (added 2026-10-03: the Accuracy scoreboard)
+
+The walk-forward track record for ~150 individual stocks, all three horizons in one
+payload. Per-stock numbers MUST be the exact same `track` the chart page shows for that
+ticker + horizon (same function, same cache), so clicking through never disagrees.
+
+```jsonc
+{
+  "status": "ready",                     // "building" while a (re)build runs; partial results are still returned
+  "progress": {"done": 87, "total": 152},
+  "generated": "2026-10-03T17:40:00",    // when the last complete build finished (null if never)
+  "horizons": [5, 21, 63],
+  "groups": [                            // display order; a stock can be in several
+    {"id": "watchlist", "label": "Watchlist"},
+    {"id": "mega",   "label": "Mega caps"},
+    {"id": "growth", "label": "Growth & tech"},
+    {"id": "volatile", "label": "Volatile & small"},
+    {"id": "other",  "label": "Other sectors"}
+  ],
+  "summary": {                           // over the stocks done so far, keyed by horizon as a string
+    "5": {
+      "stocks": 148, "forecasts": 22200,
+      "inside_80": 0.79, "inside_50": 0.49,   // pooled over every forecast
+      "direction_hit": 0.52, "direction_base": 0.55,
+      "beat_base": 41,                   // stocks where direction_hit > direction_base
+      "calibrated": 120                  // stocks whose inside_80 is within 0.72..0.88
+    },
+    "21": {}, "63": {}
+  },
+  "stocks": [
+    {
+      "ticker": "NVDA", "name": "NVIDIA Corporation",
+      "groups": ["watchlist", "mega", "growth"],
+      "first_date": "1999-01-22", "last_close": 233.95,
+      "h": {                              // keyed by horizon as a string; same fields as /api/forecast `track` + avg_width_80
+        "5":  {"n": 150, "inside_80": 0.767, "inside_50": 0.447, "direction_hit": 0.52, "direction_base": 0.56, "avg_width_80": 0.121},
+        "21": {}, "63": {}
+      }
+    }
+  ],
+  "skipped": [{"ticker": "CHYM", "reason": "under 1 year of history"}],
+  "notes": ["..."]
+}
+```
+
+- Built by `accuracy.py` (CLI: `python accuracy.py`) into `data/accuracy.json`. The server
+  serves that file; if it is missing or older than one day it starts a background rebuild
+  and returns `status: "building"` with whatever is done so far. Never block a request.
+- The universe lives in `universe.py` (hand-curated, grouped). It does NOT change the
+  analog pool: adding the scoreboard must not change any forecast.

@@ -30,6 +30,8 @@
   --up: #3a7455;
   --down: #a34a3f;
   --actual: #9a6619;
+  --warn: #8a6a30;
+  --warn-soft: rgba(138, 106, 48, .13);
   --err-bg: #fbf4f2;
   --err-hair: #ead2cc;
   --focus: rgba(63, 95, 134, .5);
@@ -59,6 +61,8 @@
     --up: #7fb394;
     --down: #d58c80;
     --actual: #d3a55c;
+    --warn: #c9a463;
+    --warn-soft: rgba(201, 164, 99, .16);
     --err-bg: #261c1a;
     --err-hair: #4a302b;
     --focus: rgba(142, 166, 198, .55);
@@ -88,6 +92,8 @@
   --up: #7fb394;
   --down: #d58c80;
   --actual: #d3a55c;
+  --warn: #c9a463;
+  --warn-soft: rgba(201, 164, 99, .16);
   --err-bg: #261c1a;
   --err-hair: #4a302b;
   --focus: rgba(142, 166, 198, .55);
@@ -104,7 +110,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .num, .ax, .tag text, .tip b { font-variant-numeric: tabular-nums; }
-button, input { font: inherit; color: inherit; }
+button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: default; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
@@ -119,6 +125,21 @@ button:disabled { cursor: default; }
 .brand svg { display: block; }
 .badge { font-size: 12px; color: var(--accent-ink); background: var(--accent-soft); border-radius: 999px; padding: 2px 9px; }
 .top .grow { flex: 1; }
+.views { display: flex; align-self: stretch; margin-left: 12px; }
+.brand, .badge { white-space: nowrap; }
+@media (max-width: 374px) {
+  .top:has(#mockBadge:not([hidden])) .brand-t { display: none; }
+  .views { margin-left: 4px; }
+  .views a { padding: 0 8px; }
+  .views a[aria-current="page"]::after { left: 8px; right: 8px; }
+}
+.views a {
+  position: relative; display: inline-flex; align-items: center; padding: 0 10px;
+  font-size: 13.5px; font-weight: 550; color: var(--muted); text-decoration: none;
+}
+.views a:hover { color: var(--ink); }
+.views a[aria-current="page"] { color: var(--ink); }
+.views a[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px 2px 0 0; background: var(--ink); }
 
 /* quote */
 .quote { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px 24px; padding: 20px 0 16px; }
@@ -291,6 +312,182 @@ details.analogs summary .count { font-weight: 450; color: var(--muted); }
 .foot { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 12px; line-height: 1.6; color: var(--faint); }
 .foot p { margin: 0; }
 
+/* ---------- accuracy view ---------- */
+.acc { padding-top: 22px; }
+.acc-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0 0 18px; font-size: 13px; color: var(--muted); }
+.acc-status:empty { display: none; }
+.acc-status .trk { position: relative; flex: 0 0 140px; height: 2px; border-radius: 2px; background: var(--hair); overflow: hidden; }
+.acc-status .trk i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); transition: width .5s ease; }
+.acc-status .trk.indet i { width: 28%; animation: slide 1.3s ease-in-out infinite; }
+.acc-status .secs { color: var(--faint); font-variant-numeric: tabular-nums; }
+.acc-status .err { color: var(--down); }
+.acc-status .linkish { border: 0; padding: 0; background: none; color: var(--accent-ink); font-size: 13px; text-decoration: underline; text-underline-offset: 2px; }
+.acc-errbox { margin: 8px 0 24px; }
+.acc-errbox .ov-card { max-width: 560px; }
+
+.acc-title { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 24px; }
+.acc-title h1 { margin: 0; font-size: 22px; line-height: 1.25; font-weight: 650; letter-spacing: -.01em; color: var(--ink); }
+.acc-title .sub { margin: 5px 0 0; max-width: 64ch; font-size: 14px; color: var(--muted); }
+.acc-hz { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.acc-figs { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: start; gap: 22px 56px; padding: 26px 0 24px; border-bottom: 1px solid var(--hair); }
+.fig-n { font-size: 46px; line-height: 1; font-weight: 600; letter-spacing: -.03em; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fig-n small { margin-left: 8px; font-size: 22px; font-weight: 550; letter-spacing: -.01em; color: var(--muted); }
+.fig-l { margin-top: 9px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.fig-l b { font-weight: 600; color: var(--ink-2); }
+.fig-cal { display: flex; align-items: center; gap: 8px; margin-top: 7px; font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.acc-sent { margin: 0; max-width: 66ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.acc-sent b { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.acc-sent .k { display: block; margin-top: 8px; font-size: 13px; line-height: 1.55; color: var(--muted); }
+.acc-sent .k b { font-weight: 600; color: var(--ink-2); }
+.acc-none { margin: 0; font-size: 15px; color: var(--muted); }
+
+/* calibration bar: 60%..100% scale, tick at the 80% aim in the middle, segment = distance from it */
+.cbar { position: relative; display: inline-block; width: 64px; height: 12px; vertical-align: middle; flex: none; }
+.cbar::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--hair-2); }
+.cbar .ok { position: absolute; top: 3px; bottom: 3px; left: 37.5%; width: 25%; background: var(--hair); }
+.cbar .dev { position: absolute; top: 4px; height: 4px; min-width: 3px; border-radius: 2px; background: var(--muted); }
+.cbar .tgt { position: absolute; top: 0; bottom: 0; left: 50%; width: 1.5px; margin-left: -.75px; background: var(--ink-2); }
+.cbar.off .dev { background: var(--warn); }
+.cbar.lg { width: 148px; height: 14px; }
+.cbar.lg .ok { top: 4px; bottom: 4px; }
+.cbar.lg .dev { top: 5px; }
+
+.acc-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 18px 0 10px; }
+.acc-tools .grow { flex: 1; }
+.search { position: relative; display: inline-flex; align-items: center; }
+.search svg { position: absolute; left: 10px; color: var(--faint); pointer-events: none; }
+.search input { width: 220px; height: 32px; padding: 0 10px 0 31px; border: 1px solid var(--hair-2); border-radius: 8px; background: var(--surface); font-size: 13.5px; outline: 0; }
+.search input:focus { border-color: var(--accent); }
+.search input::placeholder { color: var(--faint); }
+.chips { display: flex; gap: 6px; min-width: 0; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; flex: none;
+  border: 1px solid var(--hair-2); border-radius: 999px; background: transparent; white-space: nowrap;
+  font-size: 13px; font-weight: 550; color: var(--ink-2);
+}
+.chip i { font-style: normal; font-weight: 450; color: var(--faint); font-variant-numeric: tabular-nums; }
+.chip:hover { border-color: var(--faint); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.chip[aria-pressed="true"] i { color: var(--bg); opacity: .6; }
+.acc-count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.acc-sort { display: none; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.acc-sort select { height: 32px; padding: 0 6px; border: 1px solid var(--hair-2); border-radius: 8px; background: var(--surface); font-size: 13.5px; }
+.acc-sort .btn { width: 32px; padding: 0; justify-content: center; }
+
+.acc-t { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.acc-t th { position: sticky; top: 0; z-index: 1; padding: 0; background: var(--bg); border-bottom: 1px solid var(--hair-2); vertical-align: bottom; font-weight: 550; text-align: right; }
+.acc-t th button {
+  display: flex; align-items: flex-end; justify-content: flex-end; gap: 3px; width: 100%; padding: 10px 10px 8px;
+  border: 0; background: none; text-align: right; font-size: 12.5px; font-weight: 550; line-height: 1.3; color: var(--muted);
+}
+.acc-t th button:hover { color: var(--ink); }
+.acc-t th.l, .acc-t th.l button { text-align: left; justify-content: flex-start; }
+.acc-t th[aria-sort] button { color: var(--ink); }
+.acc-t th .ar { flex: none; width: 9px; height: 13px; display: grid; place-items: center; visibility: hidden; }
+.acc-t th[aria-sort] .ar { visibility: visible; }
+.acc-t th button:hover .ar { visibility: visible; opacity: .55; }
+.acc-t th[aria-sort] button:hover .ar { opacity: 1; }
+.acc-t th[aria-sort="ascending"] .ar svg { transform: rotate(180deg); }
+.acc-t th.c-base button { white-space: normal; }
+.acc-t td { padding: 9px 10px; border-bottom: 1px solid var(--hair); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.acc-t th:first-child button, .acc-t td:first-child { padding-left: 4px; }
+.acc-t th:last-child button, .acc-t td:last-child { padding-right: 4px; }
+.acc-t tbody tr[data-t] { cursor: pointer; }
+.acc-t tbody tr[data-t]:hover td { background: var(--future-bg); }
+.acc-t tbody tr[data-t]:hover .tk { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
+.acc-t td.c-stock { text-align: left; }
+.tk { display: inline-block; min-width: 4.4em; margin-right: 8px; font-weight: 650; color: var(--ink); text-decoration: none; }
+.tm { display: none; margin-right: 8px; padding: 0 5px; border-radius: 4px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11px; line-height: 17px; vertical-align: 1px; }
+.nm { display: inline-block; max-width: 200px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; color: var(--muted); }
+.acc-t td.c-grp { text-align: left; }
+.g { display: inline-block; margin-right: 4px; padding: 0 6px; border: 1px solid var(--hair-2); border-radius: 5px; font-size: 11.5px; line-height: 18px; color: var(--muted); }
+.g.traded { border-color: transparent; background: var(--accent-soft); color: var(--accent-ink); }
+.c-hit .in { display: inline-flex; align-items: center; gap: 8px; }
+.c-hit .cv { min-width: 3.4em; padding: 1px 5px; border-radius: 4px; }
+.c-hit.off .cv { color: var(--warn); background: var(--warn-soft); }
+.acc-t td.c-base, .acc-t td.c-n { color: var(--muted); }
+.c-edge .ev { font-weight: 600; }
+.c-edge.pos .ev { color: var(--up); }
+.c-edge.neg .ev { color: var(--down); }
+.c-edge.luckish .ev { font-weight: 500; color: var(--faint); }
+.luck { margin-right: 7px; font-size: 11.5px; color: var(--faint); }
+.na { color: var(--faint); }
+.acc-t tr.empty td { padding: 28px 4px; text-align: left; white-space: normal; color: var(--muted); }
+.acc-t tr.empty .linkish { border: 0; padding: 0; background: none; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+
+details.acc-skip { margin-top: 26px; }
+.skip-list { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); column-gap: 32px; }
+.skip-list li { display: grid; grid-template-columns: 4.6em 1fr; gap: 10px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
+.skip-list .t { font-weight: 650; color: var(--ink); }
+.skip-list .r { color: var(--muted); }
+
+@media (max-width: 1060px) {
+  .acc-t .c-grp { display: none; }
+  .tm { display: inline-block; }
+  .nm { max-width: 170px; }
+}
+@media (max-width: 900px) {
+  .acc-figs { grid-template-columns: auto auto; gap: 22px 40px; }
+  .acc-sent { grid-column: 1 / -1; }
+  .nm { max-width: 110px; }
+  .acc-t td { padding-left: 8px; padding-right: 8px; }
+  .acc-t th button { padding-left: 8px; padding-right: 8px; }
+}
+@media (max-width: 820px) {
+  .acc { padding-top: 18px; }
+  .acc-title h1 { font-size: 20px; }
+  .acc-figs { padding: 20px 0 20px; gap: 20px 28px; }
+  .fig-n { font-size: 38px; }
+  .fig-n small { font-size: 19px; margin-left: 6px; }
+  .acc-sent { font-size: 15px; }
+  .acc-tools { padding-top: 16px; }
+  .search { flex: 1 1 100%; }
+  .search input { width: 100%; }
+  .chips { flex: 1 1 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 1px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .acc-tools .grow { display: block; }
+  .acc-sort { display: inline-flex; }
+
+  /* the table becomes compact two-line rows: ticker, cone hit and edge first; the rest secondary */
+  .acc-t, .acc-t tbody { display: block; }
+  .acc-t thead { display: none; }
+  .acc-t tbody tr { display: flex; flex-wrap: wrap; align-items: flex-start; padding: 11px 0 10px; border-bottom: 1px solid var(--hair); }
+  .acc-t tbody tr::after { content: ""; order: 4; flex: 0 0 100%; height: 6px; }
+  .acc-t tbody tr[data-t]:hover td { background: none; }
+  .acc-t td { padding: 0; border: 0; }
+  .acc-t td:first-child, .acc-t td:last-child { padding: 0; }
+  .acc-t td.c-stock { order: 1; flex: 1 1 0; min-width: 0; padding-right: 10px; }
+  .acc-t td.c-stock .tk { min-width: 0; margin: 0 6px 0 0; font-size: 15px; line-height: 1.3; }
+  .acc-t td.c-stock .nm { display: block; max-width: 100%; font-size: 12.5px; line-height: 1.35; }
+  .acc-t td.c-hit, .acc-t td.c-edge { font-size: 15px; line-height: 1.3; }
+  .acc-t td.c-hit::before, .acc-t td.c-edge::before { display: block; font-size: 11px; line-height: 1.35; color: var(--faint); }
+  .acc-t td.c-hit { order: 2; flex: none; }
+  .acc-t td.c-hit::before { content: "Cone hit"; }
+  .acc-t td.c-hit { text-align: left; }
+  .acc-t td.c-hit .cv { min-width: 0; margin-left: -5px; font-weight: 600; }
+  .acc-t td.c-hit .cbar { width: 50px; }
+  .acc-t td.c-edge { order: 3; flex: 0 0 74px; display: flex; flex-direction: column; align-items: flex-end; }
+  .acc-t td.c-edge::before { content: "Edge"; }
+  .acc-t td.c-edge .luck { order: 2; margin: 0; font-size: 11px; line-height: 1.35; }
+  .acc-t td.c-in50, .acc-t td.c-dir, .acc-t td.c-base, .acc-t td.c-n { flex: none; margin-right: 12px; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+  .acc-t td.c-in50 { order: 5; }
+  .acc-t td.c-dir { order: 6; }
+  .acc-t td.c-base { order: 7; }
+  .acc-t td.c-n { order: 8; margin-right: 0; }
+  .acc-t td[data-l]::before { content: attr(data-l) " "; color: var(--faint); }
+  .acc-t tr.empty { display: block; }
+  .acc-t tr.empty::after { display: none; }
+}
+@media (max-width: 480px) {
+  .acc-figs { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .fig-n { font-size: 36px; }
+  .fig-n small { font-size: 18px; }
+  .fig-l br { display: none; }
+}
+@media (max-width: 400px) {
+  .acc-t td.c-in50, .acc-t td.c-dir, .acc-t td.c-base { margin-right: 10px; }
+}
+
 @media (max-width: 720px) {
   .wrap { padding: 0 16px 32px; }
   .quote { grid-template-columns: 1fr auto; padding: 16px 0 12px; }
@@ -322,12 +519,17 @@ details.analogs summary .count { font-weight: 450; color: var(--muted); }
   <header class="top">
     <span class="brand">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M1.5 10h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M7.5 10L16.5 4v12z" fill="var(--band50)" stroke="var(--edge)" stroke-width="1"/><path d="M7.5 10h9" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="2 1.6"/></svg>
-      Stock Cone
+      <span class="brand-t">Stock Cone</span>
     </span>
+    <nav class="views" aria-label="View">
+      <a id="navChart" href="#">Chart</a>
+      <a id="navAcc" href="#accuracy">Accuracy</a>
+    </nav>
     <span class="grow"></span>
     <span id="mockBadge" class="badge" hidden>Mock data</span>
   </header>
 
+  <div id="chartView">
   <section class="quote" aria-label="Ticker">
     <form id="tickerForm" class="ticker-form" autocomplete="off" novalidate>
       <label for="ticker" class="sr">Ticker symbol</label>
@@ -411,6 +613,59 @@ details.analogs summary .count { font-weight: 450; color: var(--muted); }
   </details>
 
   <footer id="foot" class="foot"></footer>
+  </div>
+
+  <div id="accView" class="acc" hidden>
+    <div id="accStatus" class="acc-status" aria-live="polite"></div>
+    <div id="accErr" class="acc-errbox" hidden></div>
+    <div id="accMain" hidden>
+      <section class="acc-head" aria-label="Summary">
+        <div class="acc-title">
+          <div>
+            <h1>How accurate is the cone?</h1>
+            <p class="sub">Each stock was forecast from many past dates using only the prices known on that day, then checked against what really happened next.</p>
+          </div>
+          <div class="acc-hz">
+            <span id="accHzLbl">Looking ahead</span>
+            <div class="seg" id="accHz" role="group" aria-labelledby="accHzLbl">
+              <button type="button" data-h="5" aria-pressed="true" title="Forecasts 5 trading days ahead">1W</button>
+              <button type="button" data-h="21" aria-pressed="false" title="Forecasts 21 trading days ahead">1M</button>
+              <button type="button" data-h="63" aria-pressed="false" title="Forecasts 63 trading days ahead">3M</button>
+            </div>
+          </div>
+        </div>
+        <div id="accFigs" class="acc-figs"></div>
+      </section>
+
+      <section class="acc-tools" aria-label="Filter the table">
+        <label class="search">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.2 9.2L12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="sr">Search by ticker or name</span>
+          <input id="accSearch" type="search" placeholder="Search ticker or name" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="search">
+        </label>
+        <div id="accChips" class="chips" role="group" aria-label="Group"></div>
+        <span class="grow"></span>
+        <span id="accCount" class="acc-count" aria-live="polite"></span>
+        <span class="acc-sort">
+          <label for="accSort">Sort</label>
+          <select id="accSort"></select>
+          <button type="button" id="accSortDir" class="btn" aria-label="Reverse the sort order"></button>
+        </span>
+      </section>
+
+      <table class="acc-t" id="accTable">
+        <caption class="sr">Walk-forward track record per stock. Click a row to open its chart.</caption>
+        <thead><tr id="accHeadRow"></tr></thead>
+        <tbody id="accBody"></tbody>
+      </table>
+
+      <details id="accSkip" class="analogs acc-skip" hidden>
+        <summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Not tested <span id="accSkipN" class="count"></span></summary>
+        <ul id="accSkipList" class="skip-list"></ul>
+      </details>
+    </div>
+    <footer id="accFoot" class="foot"></footer>
+  </div>
 </div>
 
 <script>
@@ -603,6 +858,8 @@ function stopLoading() { S.loading = null; clearInterval(loadTimer); }
 async function load() {
   const my = ++seq;
   const t = S.ticker, h = S.horizon, asof = S.replay.on ? S.replay.asof : null;
+  chartKey = t + '|' + h;
+  if (view === 'chart') setHash(chartHash());
   S.error = null;
   S.replay.error = null;
   const first = !cache.has(ckey(t, h, null)) && !(S.live && S.live._req.t === t);
@@ -998,6 +1255,7 @@ function renderControls() {
   $('replayBtn').setAttribute('aria-pressed', String(S.replay.on));
   $('replayBtn').disabled = !S.live;
   $('mockBadge').hidden = !MOCK;
+  $('navChart').href = chartHash(); $('navAcc').href = accHash();
 }
 
 function verdictOf(r) {
@@ -1251,16 +1509,516 @@ svgEl.addEventListener('click', (e) => {
 if (window.ResizeObserver) new ResizeObserver(() => renderChart()).observe($('chartBox'));
 else window.addEventListener('resize', renderChart);
 
+/* ---------- views + routing ----------
+   #accuracy, #accuracy/1M      the Accuracy view (horizon after the slash; 1W is the default and is left out)
+   #NVDA, #NVDA/3M              the Chart view for a ticker
+   Ticker / horizon changes inside a view replace the hash; switching views adds a history entry. */
+const HKEY = { 5: '1W', 21: '1M', 63: '3M' };
+const HFROM = { '1W': 5, '1M': 21, '3M': 63 };
+const TICKER_RE = /^[A-Z0-9^][A-Z0-9.\-=^]{0,14}$/;
+let view = 'chart';
+let chartStarted = false;     // the chart loads lazily, the first time its view is shown
+let chartKey = '';            // ticker|horizon of the last chart load
+let futureOnArrive = false;   // set by a click in the Accuracy table: open the chart with the cone showing
+let accScrollY = 0;
+
+const hzSuffix = (h) => (h === 5 ? '' : '/' + HKEY[h]);
+const tickerHash = (t, h) => '#' + encodeURIComponent(t) + hzSuffix(h);
+const chartHash = () => tickerHash(S.ticker || 'SPY', S.horizon);
+const accHash = () => '#accuracy' + hzSuffix(S.horizon);
+function setHash(h) {
+  if (location.hash === h) return;
+  try { history.replaceState(history.state, '', h); } catch (e) { /* history blocked (sandboxed frame): the address just does not follow */ }
+}
+function parseHash() {
+  let raw = location.hash.replace(/^#/, '');
+  try { raw = decodeURIComponent(raw); } catch (e) { /* malformed escape: use it as typed */ }
+  const parts = raw.trim().split('/');
+  const h = HFROM[(parts[1] || '').toUpperCase()] || null;
+  if (parts[0].toLowerCase() === 'accuracy') return { view: 'acc', h: h };
+  const t = parts[0].toUpperCase();
+  return { view: 'chart', t: TICKER_RE.test(t) ? t : null, h: h };
+}
+function route() {
+  const r = parseHash();
+  if (r.h) S.horizon = r.h;
+  else if (location.hash) S.horizon = 5;   // a hash without a horizon means 1W
+  if (r.view === 'acc') showAcc(); else showChart(r.t);
+}
+window.addEventListener('hashchange', route);
+
+function renderViews() {
+  $('chartView').hidden = view !== 'chart';
+  $('accView').hidden = view !== 'acc';
+  const nc = $('navChart'), na = $('navAcc');
+  nc.href = chartHash(); na.href = accHash();
+  if (view === 'chart') { nc.setAttribute('aria-current', 'page'); na.removeAttribute('aria-current'); }
+  else { na.setAttribute('aria-current', 'page'); nc.removeAttribute('aria-current'); }
+  document.title = view === 'acc' ? 'Accuracy · Stock Cone' : 'Stock Cone';
+}
+
+function showChart(t) {
+  const from = view;
+  if (from === 'acc') accScrollY = window.scrollY;
+  view = 'chart';
+  stopAccPoll();
+  if (t && t !== S.ticker) {
+    S.ticker = t;
+    $('ticker').value = t;
+    inputMsg('');
+    S.replay = { on: false, asof: null, resp: null, revealed: false, error: null };
+    S.tActual = 0;
+    S.hover = null;
+  }
+  const arrive = futureOnArrive; futureOnArrive = false;
+  if (arrive) {
+    if (S.replay.on) { S.replay = { on: false, asof: null, resp: null, revealed: false, error: null }; S.tActual = 0; restartCone(); }
+    S.future = true;
+  }
+  renderViews();
+  if (from !== 'chart') window.scrollTo(0, 0);
+  if (!chartStarted || chartKey !== S.ticker + '|' + S.horizon) {
+    chartStarted = true;
+    S.replay.revealed = false; S.tActual = 0;
+    load();
+  } else {
+    setHash(chartHash());
+    syncCone();
+    renderAll();
+    scheduleTrackRetry();
+  }
+}
+
+function showAcc() {
+  const from = view;
+  view = 'acc';
+  futureOnArrive = false;
+  setHash(accHash());
+  renderViews();
+  renderAcc();
+  if (from !== 'acc') window.scrollTo(0, from === 'chart' && A.data ? accScrollY : 0);
+  const stale = A.data && A.data.status === 'ready' && Date.now() - A.lastFetch > 10 * 60 * 1000;
+  if (!A.fetching && (!A.data || A.data.status !== 'ready' || stale)) fetchAcc();
+}
+
+/* ---------- accuracy: data ---------- */
+const A = {
+  data: null,          // last good /api/accuracy reply
+  error: null,         // message when there is no data to show
+  pollErr: null,       // message when a refresh failed but older data is still on screen
+  fetching: false,
+  started: 0,
+  lastFetch: 0,
+  timer: 0,
+  ticker: 0,
+  q: '',
+  group: 'all',
+  sort: { k: 'ticker', dir: 1 }
+};
+
+async function apiAccuracy() {
+  let res;
+  try {
+    res = await fetch('/api/accuracy', { headers: { Accept: 'application/json' }, cache: 'no-store' });
+  } catch (e) {
+    throw new LoadError('Could not reach the Stock Cone server (' + (e && e.message ? e.message : 'network error') + '). Is run.bat still running?');
+  }
+  let text = '', body = null;
+  try { text = await res.text(); body = JSON.parse(text); } catch (e) { body = null; }
+  if (!res.ok) {
+    if (body && body.error) throw new LoadError(body.error + ' (HTTP ' + res.status + ')', res.status);
+    throw new LoadError('The server answered HTTP ' + res.status + (res.statusText ? ' ' + res.statusText : '') + (text ? ': ' + text.slice(0, 160) : '') + '.', res.status);
+  }
+  if (!body) throw new LoadError('The server sent a reply that is not JSON (HTTP ' + res.status + ').');
+  if (body.error) throw new LoadError(body.error);
+  return body;
+}
+
+function validateAcc(d) {
+  const bad = (m) => { throw new LoadError('The accuracy reply did not match the expected shape: ' + m + '.'); };
+  if (!d || typeof d !== 'object') bad('not an object');
+  if (d.status !== 'ready' && d.status !== 'building') bad('status is "' + d.status + '", expected "ready" or "building"');
+  if (!Array.isArray(d.stocks)) bad('stocks is missing');
+  d.stocks.forEach((s, i) => {
+    if (!s || typeof s.ticker !== 'string' || !s.ticker) bad('stocks[' + i + '] has no ticker');
+    if (!s.h || typeof s.h !== 'object') bad(s.ticker + ' has no "h" (per-horizon results)');
+  });
+  if (d.groups != null && !Array.isArray(d.groups)) bad('groups is not a list');
+  if (d.skipped != null && !Array.isArray(d.skipped)) bad('skipped is not a list');
+}
+
+function stopAccPoll() { clearTimeout(A.timer); A.timer = 0; }
+
+async function fetchAcc() {
+  stopAccPoll();
+  if (A.fetching) return;
+  A.fetching = true;
+  if (!A.data) {
+    A.error = null;
+    A.started = Date.now();
+    clearInterval(A.ticker);
+    A.ticker = setInterval(() => { if (view === 'acc' && !A.data) renderAccStatus(); }, 1000);
+  }
+  if (view === 'acc') renderAcc();
+  try {
+    const d = MOCK ? await mockAccuracy() : await apiAccuracy();
+    validateAcc(d);
+    A.data = d; A.error = null; A.pollErr = null; A.lastFetch = Date.now();
+  } catch (e) {
+    const msg = (e && e.message) ? e.message : String(e);
+    if (A.data) A.pollErr = msg; else A.error = msg;
+  }
+  A.fetching = false;
+  clearInterval(A.ticker);
+  if (view !== 'acc') return;
+  renderAcc();
+  if (A.data && A.data.status === 'building') A.timer = setTimeout(fetchAcc, 3000);
+}
+
+/* mock (only with ?mock=1): serves web/mock-accuracy.json.
+   &mockacc=building replays a build (about 64 stocks done, 24 more per poll); &mockacc=error fails on purpose. */
+let mockAcc = null, mockAccCalls = 0;
+async function mockAccuracy() {
+  const mode = qs.get('mockacc');
+  await sleep(mockAccCalls ? 300 : 700);
+  mockAccCalls++;
+  if (mode === 'error') throw new LoadError('Mock failure on purpose (the address has &mockacc=error). Remove it to load mock-accuracy.json.');
+  if (!mockAcc) {
+    let r;
+    try { r = await fetch('mock-accuracy.json', { cache: 'no-store' }); }
+    catch (e) { throw new LoadError('Could not load mock-accuracy.json (' + e.message + ').'); }
+    if (!r.ok) throw new LoadError('Could not load mock-accuracy.json (HTTP ' + r.status + ').');
+    try { mockAcc = await r.json(); } catch (e) { throw new LoadError('mock-accuracy.json is not valid JSON.'); }
+  }
+  if (mode !== 'building') return mockAcc;
+  const all = mockAcc.stocks, sk = mockAcc.skipped || [];
+  const n = Math.min(all.length, 64 + (mockAccCalls - 1) * 24);
+  const ready = n >= all.length;
+  const skDone = ready ? sk.length : Math.floor(sk.length * n / all.length);
+  const stocks = all.slice(0, n);
+  return Object.assign({}, mockAcc, {
+    status: ready ? 'ready' : 'building',
+    progress: { done: n + skDone, total: all.length + sk.length },
+    generated: ready ? mockAcc.generated : null,
+    summary: mockSummary(stocks, mockAcc.horizons || [5, 21, 63]),
+    stocks: stocks,
+    skipped: sk.slice(0, skDone)
+  });
+}
+function mockSummary(stocks, hs) {
+  const out = {};
+  hs.forEach((h) => {
+    const rows = stocks.map((s) => s.h[String(h)]).filter((m) => m && m.n > 0);
+    if (!rows.length) { out[String(h)] = {}; return; }
+    const N = rows.reduce((a, m) => a + m.n, 0);
+    const pool = (f) => Math.round(rows.reduce((a, m) => a + m[f] * m.n, 0) / N * 1000) / 1000;
+    out[String(h)] = {
+      stocks: rows.length, forecasts: N,
+      inside_80: pool('inside_80'), inside_50: pool('inside_50'),
+      direction_hit: pool('direction_hit'), direction_base: pool('direction_base'),
+      beat_base: rows.filter((m) => m.direction_hit > m.direction_base).length,
+      calibrated: rows.filter((m) => m.inside_80 >= 0.72 && m.inside_80 <= 0.88).length
+    };
+  });
+  return out;
+}
+
+/* ---------- accuracy: render ---------- */
+const AIM80 = 0.80, CAL_TOL = 0.05;
+const COLS = [
+  { k: 'ticker', label: 'Stock', cls: 'c-stock', l: true, title: 'Ticker and company name' },
+  { k: 'groups', label: 'Groups', cls: 'c-grp', l: true, title: 'Which lists the stock is in' },
+  { k: 'hit', label: 'Cone hit', cls: 'c-hit', title: 'How often the real price ended inside the 80% cone. Aim: 80%. The bar shows the distance from that aim: left means the cone was too narrow, right means too wide.' },
+  { k: 'in50', label: 'Inside 50%', cls: 'c-in50', title: 'How often the real price ended inside the middle 50% band. Aim: 50%.' },
+  { k: 'dir', label: 'Direction right', cls: 'c-dir', title: 'How often the typical path called the direction (up or down) correctly.' },
+  { k: 'base', label: 'Usual-direction guess', lh: 'Usual-direction<br>guess', cls: 'c-base', title: 'How often you would be right by always guessing this stock’s usual direction over the same period. The bar to beat.' },
+  { k: 'edge', label: 'Edge', cls: 'c-edge', title: 'Direction right minus the usual-direction guess, in percentage points. Greyed with “≈ luck” when it is inside the luck band, 2·√(p(1−p)/n).' },
+  { k: 'n', label: 'Tests', cls: 'c-n', title: 'Past forecasts tested for this stock, with no look-ahead.' }
+];
+const fnum = (v) => typeof v === 'number' && isFinite(v);
+const p1 = (v) => fnum(v) ? (v * 100).toFixed(1) + '%' : '—';
+const p0 = (v) => fnum(v) ? Math.round(v * 100) + '%' : '—';
+const int = (v) => fnum(v) ? Math.round(v).toLocaleString('en-US') : '—';
+function pts(v) {
+  if (!fnum(v)) return '—';
+  const s = Math.abs(v * 100).toFixed(1);
+  return +s === 0 ? '0.0' : (v > 0 ? '+' : '−') + s;
+}
+
+function metrics(s, h) {
+  const m = s.h && s.h[String(h)];
+  if (!m || !fnum(m.n) || m.n <= 0) return null;
+  const o = { n: m.n, hit: m.inside_80, in50: m.inside_50, dir: m.direction_hit, base: m.direction_base, edge: null, luck: null, inLuck: false };
+  if (fnum(o.dir) && fnum(o.base)) {
+    o.edge = o.dir - o.base;
+    o.luck = 2 * Math.sqrt(Math.max(0, o.base * (1 - o.base)) / o.n);
+    o.inLuck = Math.abs(o.edge) <= o.luck;
+  }
+  return o;
+}
+function calState(hit) {
+  if (!fnum(hit)) return '';
+  if (hit < AIM80 - CAL_TOL) return 'narrow';
+  if (hit > AIM80 + CAL_TOL) return 'wide';
+  return 'ok';
+}
+function cbar(hit, lg) {
+  if (!fnum(hit)) return '';
+  const x = clamp((hit - 0.6) / 0.4, 0, 1) * 100, t = 50;
+  const a = Math.min(x, t), w = Math.abs(x - t);
+  const off = calState(hit) !== 'ok';
+  return '<span class="cbar' + (lg ? ' lg' : '') + (off ? ' off' : '') + '" aria-hidden="true"><span class="ok"></span><span class="dev" style="left:' + a.toFixed(1) + '%;width:' + w.toFixed(1) + '%"></span><span class="tgt"></span></span>';
+}
+
+function groupList() {
+  const d = A.data;
+  if (d && Array.isArray(d.groups) && d.groups.length) return d.groups.filter((g) => g && g.id);
+  // the contract always sends groups; if it ever does not, fall back to the ids the stocks use
+  const ids = [];
+  ((d && d.stocks) || []).forEach((s) => (s.groups || []).forEach((g) => { if (ids.indexOf(g) < 0) ids.push(g); }));
+  return ids.map((id) => ({ id: id, label: id }));
+}
+function shortLabel(label) {
+  const w = String(label).split(/\s+/).filter((x) => !/^(you['’]ve|your|the)$/i.test(x));
+  const s = (w[0] || label).replace(/[^\w-]/g, '') || String(label);
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function rowsFor() {
+  const d = A.data, h = S.horizon;
+  const q = A.q.trim().toLowerCase();
+  const gi = {}; groupList().forEach((g, i) => { gi[g.id] = i; });
+  let rows = d.stocks.map((s) => ({ s: s, m: metrics(s, h) }));
+  if (A.group !== 'all') rows = rows.filter((r) => (r.s.groups || []).indexOf(A.group) >= 0);
+  if (q) rows = rows.filter((r) => r.s.ticker.toLowerCase().indexOf(q) >= 0 || String(r.s.name || '').toLowerCase().indexOf(q) >= 0);
+  const k = A.sort.k, dir = A.sort.dir;
+  const val = (r) => {
+    if (k === 'ticker') return r.s.ticker;
+    if (k === 'groups') { const g = (r.s.groups || []).map((x) => gi[x] == null ? 99 : gi[x]); return g.length ? Math.min.apply(null, g) : 99; }
+    return r.m ? r.m[k] : null;
+  };
+  rows.sort((a, b) => {
+    const va = val(a), vb = val(b);
+    const na = va == null || (typeof va === 'number' && !isFinite(va)), nb = vb == null || (typeof vb === 'number' && !isFinite(vb));
+    if (na || nb) return na === nb ? a.s.ticker.localeCompare(b.s.ticker) : na ? 1 : -1;   // missing values always last
+    const c = typeof va === 'string' ? va.localeCompare(vb) : va - vb;
+    return c ? c * dir : a.s.ticker.localeCompare(b.s.ticker);
+  });
+  return rows;
+}
+
+function hitTitle(m) {
+  const st = calState(m.hit), base = p1(m.hit) + ' of ' + int(m.n) + ' tests ended inside the 80% cone';
+  const few = m.n < 40 ? ' Only ' + int(m.n) + ' tests, so treat this as a rough read.' : '';
+  if (st === 'narrow') return 'Too narrow: only ' + base + ' (aim 80%). Real moves were bigger than the cone allowed.' + few;
+  if (st === 'wide') return 'Too wide: ' + base + ' (aim 80%). The cone was more cautious than it needed to be.' + few;
+  return base + ', within 5 points of the 80% aim.' + few;
+}
+function edgeTitle(m) {
+  const s = 'Direction right ' + p1(m.dir) + ' vs ' + p1(m.base) + ' for the usual-direction guess = ' + pts(m.edge) + ' points. Luck band at ' + int(m.n) + ' tests: ±' + (m.luck * 100).toFixed(1) + ' points';
+  return m.inLuck ? s + ', so this gap could easily be luck.' : s + '. Outside it, though about 1 stock in 20 lands out here by chance alone.';
+}
+
+function rowHtml(r, gl) {
+  const s = r.s, m = r.m, h = S.horizon;
+  const chips = (s.groups || []).map((id) => { const g = gl[id]; const lab = g ? g.label : id; return '<span class="g' + (id === 'traded' ? ' traded' : '') + '" title="' + esc(lab) + '">' + esc(shortLabel(lab)) + '</span>'; }).join('');
+  const nm = s.name && s.name !== s.ticker ? s.name : '';
+  const stock = '<td class="c-stock"><a class="tk" href="' + esc(tickerHash(s.ticker, h)) + '" title="Open the ' + esc(s.ticker) + ' chart at ' + HKEY[h] + '">' + esc(s.ticker) + '</a>' + ((s.groups || []).indexOf('traded') >= 0 ? '<span class="tm">' + esc(shortLabel((gl.traded || {}).label || 'traded')) + '</span>' : '') + '<span class="nm"' + (nm ? ' title="' + esc(nm) + '"' : '') + '>' + esc(nm) + '</span></td>';
+  if (!m) {
+    const na = '<span class="na">—</span>';
+    return '<tr data-t="' + esc(s.ticker) + '">' + stock + '<td class="c-grp">' + chips + '</td>' +
+      '<td class="c-hit" title="Not tested at ' + HZ[h].long + ' (too little history)">' + na + '</td><td class="c-in50" data-l="In 50%">' + na + '</td><td class="c-dir" data-l="Dir">' + na + '</td>' +
+      '<td class="c-base" data-l="Guess">' + na + '</td><td class="c-edge">' + na + '</td><td class="c-n" data-l="Tests">' + na + '</td></tr>';
+  }
+  const st = calState(m.hit);
+  const ecls = m.edge == null ? '' : m.inLuck ? 'luckish' : m.edge > 0 ? 'pos' : m.edge < 0 ? 'neg' : '';
+  return '<tr data-t="' + esc(s.ticker) + '">' + stock +
+    '<td class="c-grp">' + chips + '</td>' +
+    '<td class="c-hit' + (st && st !== 'ok' ? ' off' : '') + '"' + (fnum(m.hit) ? ' title="' + esc(hitTitle(m)) + '"' : '') + '><span class="in"><span class="cv">' + p1(m.hit) + '</span>' + cbar(m.hit) + '</span></td>' +
+    '<td class="c-in50" data-l="In 50%" title="Aim: 50%">' + p1(m.in50) + '</td>' +
+    '<td class="c-dir" data-l="Dir">' + p1(m.dir) + '</td>' +
+    '<td class="c-base" data-l="Guess">' + p1(m.base) + '</td>' +
+    '<td class="c-edge ' + ecls + '"' + (m.edge != null ? ' title="' + esc(edgeTitle(m)) + '"' : '') + '>' + (m.inLuck ? '<span class="luck">≈ luck</span>' : '') + '<span class="ev">' + pts(m.edge) + '</span></td>' +
+    '<td class="c-n" data-l="Tests">' + int(m.n) + '</td></tr>';
+}
+
+function renderAccStatus() {
+  const el = $('accStatus'), d = A.data;
+  if (!d && !A.error) {
+    const secs = Math.floor((Date.now() - A.started) / 1000);
+    el.innerHTML = '<span class="trk indet"><i></i></span><span>Loading the accuracy scoreboard…' + (secs >= 2 ? ' <span class="secs">' + secs + 's</span>' : '') + '</span>';
+    return;
+  }
+  if (!d) { el.innerHTML = ''; return; }
+  const parts = [];
+  if (d.status === 'building') {
+    const pr = d.progress || {}, done = fnum(pr.done) ? pr.done : d.stocks.length, total = fnum(pr.total) && pr.total > 0 ? pr.total : null;
+    const w = total ? clamp(done / total, 0, 1) * 100 : 0;
+    parts.push('<span class="trk' + (total ? '' : ' indet') + '"><i' + (total ? ' style="width:' + w.toFixed(1) + '%"' : '') + '></i></span>');
+    parts.push('<span>' + (total ? 'Testing ' + int(done) + ' of ' + int(total) + ' stocks…' : 'Testing stocks…') + ' The table fills in as each one finishes.</span>');
+  }
+  if (A.pollErr) {
+    const again = d.status === 'building' ? ' Trying again in 3 seconds.' : ' Showing the last copy.';
+    parts.push('<span class="err" role="alert">Couldn’t refresh: ' + esc(A.pollErr) + '.' + again + '</span>');
+    if (d.status !== 'building') parts.push('<button type="button" class="linkish" data-act="retry">Try again</button>');
+  }
+  el.innerHTML = parts.join('');
+}
+
+function renderAccFigs() {
+  const d = A.data, h = S.horizon, hz = HZ[h], adj = hz.long.replace(' ', '-').replace(/s$/, '');
+  const sm = (d.summary && d.summary[String(h)]) || {};
+  const el = $('accFigs');
+  if (!fnum(sm.stocks) || sm.stocks <= 0) {
+    el.innerHTML = '<p class="acc-none">' + (d.status === 'building' ? 'No ' + adj + ' results yet. They will appear here as stocks finish testing.' : 'No stocks have ' + adj + ' results.') + '</p>';
+    return;
+  }
+  const building = d.status === 'building';
+  const st = calState(sm.inside_80);
+  const calWord = st === 'narrow' ? 'too narrow overall' : st === 'wide' ? 'too wide overall' : 'on target';
+  // luck band, computed per stock from the rows we have
+  let better = 0, worse = 0, counted = 0; const bands = [];
+  d.stocks.forEach((s) => {
+    const m = metrics(s, h);
+    if (!m || m.edge == null) return;
+    counted++; bands.push(m.luck);
+    if (!m.inLuck) { if (m.edge > 0) better++; else worse++; }
+  });
+  bands.sort((a, b) => a - b);
+  const medBand = bands.length ? bands[Math.floor(bands.length / 2)] : null;
+  const ns = d.stocks.map((s) => metrics(s, h)).filter(Boolean).map((m) => m.n).sort((a, b) => a - b);
+  const medN = ns.length ? ns[Math.floor(ns.length / 2)] : null;
+  const chance = Math.round(counted * 0.0455);
+  const fig1 = '<div class="fig"><div class="fig-n">' + p0(sm.inside_80) + '</div>' +
+    '<div class="fig-l">landed inside the <b>80% cone</b></div>' +
+    '<div class="fig-cal" title="Distance from the 80% aim: left of the tick is too narrow, right is too wide. The light zone is 75 to 85%; the bar spans 60 to 100%.">' + cbar(sm.inside_80, true) + '<span>aim 80% · ' + calWord + '</span></div></div>';
+  const fig2 = '<div class="fig"><div class="fig-n">' + p0(sm.direction_hit) + '<small>vs ' + p0(sm.direction_base) + '</small></div>' +
+    '<div class="fig-l"><b>direction right</b>, vs always guessing <br>each stock’s usual direction</div></div>';
+  const sent = '<p class="acc-sent">' + (building ? 'So far, across ' : 'Across ') + '<b>' + int(sm.stocks) + '</b> stocks and <b>' + int(sm.forecasts) + '</b> tested ' + adj + ' forecasts, the real price landed inside the 80% cone <b>' + p0(sm.inside_80) + '</b> of the time (aim: 80%). ' +
+    'Direction right <b>' + p0(sm.direction_hit) + '</b> vs <b>' + p0(sm.direction_base) + '</b> by always guessing each stock’s usual direction. ' +
+    (fnum(sm.beat_base) ? 'Beat that guess on <b>' + int(sm.beat_base) + ' of ' + int(sm.stocks) + '</b> stocks.' : '') +
+    (medBand != null ? '<span class="k">Greyed edges sit inside the luck band (about ±' + Math.round(medBand * 100) + ' points at ' + int(medN) + ' tests). Outside it: <b>' + better + '</b> better and <b>' + worse + '</b> worse than the guess; chance alone would put about ' + chance + ' of ' + counted + ' out there.</span>' : '') +
+    '</p>';
+  el.innerHTML = fig1 + fig2 + sent;
+}
+
+function renderAccTable() {
+  const d = A.data, gl = {}, groups = groupList();
+  groups.forEach((g) => { gl[g.id] = g; });
+  if (A.group !== 'all' && !gl[A.group]) A.group = 'all';
+  const count = (id) => id === 'all' ? d.stocks.length : d.stocks.filter((s) => (s.groups || []).indexOf(id) >= 0).length;
+  $('accChips').innerHTML = [{ id: 'all', label: 'All' }].concat(groups).map((g) =>
+    '<button type="button" class="chip" data-g="' + esc(g.id) + '" aria-pressed="' + (A.group === g.id) + '">' + esc(g.label) + ' <i>' + count(g.id) + '</i></button>').join('');
+  $('accHeadRow').innerHTML = COLS.map((c) => {
+    const on = A.sort.k === c.k;
+    return '<th scope="col" class="' + c.cls + (c.l ? ' l' : '') + '"' + (on ? ' aria-sort="' + (A.sort.dir > 0 ? 'ascending' : 'descending') + '"' : '') + '>' +
+      '<button type="button" data-k="' + c.k + '" title="' + esc(c.title) + '"><span>' + (c.lh || esc(c.label)) + '</span><span class="ar"><svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1.5 3l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></th>';
+  }).join('');
+  $('accSort').innerHTML = COLS.map((c) => '<option value="' + c.k + '"' + (A.sort.k === c.k ? ' selected' : '') + '>' + esc(c.label) + '</option>').join('');
+  $('accSortDir').textContent = A.sort.dir > 0 ? '↑' : '↓';
+  $('accSortDir').title = A.sort.dir > 0 ? 'Ascending (tap to reverse)' : 'Descending (tap to reverse)';
+  const rows = rowsFor();
+  const total = d.stocks.length;
+  $('accCount').textContent = rows.length === total ? int(total) + ' stocks' : int(rows.length) + ' of ' + int(total) + ' stocks';
+  if (!rows.length) {
+    const why = A.q.trim() ? 'No stocks match “' + esc(A.q.trim()) + '”' + (A.group !== 'all' ? ' in ' + esc((gl[A.group] || {}).label || A.group) : '') + '.' : total ? 'No stocks in this group yet.' : (d.status === 'building' ? 'No stocks have finished testing yet.' : 'The scoreboard has no stocks.');
+    $('accBody').innerHTML = '<tr class="empty"><td colspan="' + COLS.length + '">' + why + (A.q.trim() || A.group !== 'all' ? ' <button type="button" class="linkish" data-act="clear">Show all stocks</button>' : '') + '</td></tr>';
+    return;
+  }
+  $('accBody').innerHTML = rows.map((r) => rowHtml(r, gl)).join('');
+}
+
+function renderAccExtras() {
+  const d = A.data;
+  const sk = Array.isArray(d.skipped) ? d.skipped : [];
+  $('accSkip').hidden = !sk.length;
+  $('accSkipN').textContent = '(' + sk.length + ')';
+  $('accSkipList').innerHTML = sk.map((x) => '<li><span class="t">' + esc(x && x.ticker) + '</span><span class="r">' + esc((x && x.reason) || 'no reason given') + '</span></li>').join('');
+}
+
+function renderAccFoot() {
+  const d = A.data, lines = [];
+  if (d) {
+    if (d.generated) {
+      const g = new Date(d.generated);
+      const when = isNaN(g) ? String(d.generated) : g.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+      lines.push((d.status === 'building' ? 'Rebuilding now. The last complete build finished ' : 'Built ') + when + '.');
+    } else if (d.status === 'building') lines.push('First build in progress: numbers will move as more stocks finish.');
+    (Array.isArray(d.notes) ? d.notes : []).filter(Boolean).forEach((nt) => lines.push(String(nt)));
+    lines.push('A track record, not a promise or financial advice. Edge is graded against each stock’s own usual direction, the bar any forecast has to beat.');
+  }
+  if (MOCK) lines.push('Showing mock data from mock-accuracy.json because the address has ?mock=1. These are not real results.');
+  $('accFoot').innerHTML = lines.map((l) => '<p>' + esc(l) + '</p>').join('');
+}
+
+function renderAcc() {
+  document.querySelectorAll('#accHz button').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.h === S.horizon)));
+  renderAccStatus();
+  const err = $('accErr');
+  if (!A.data && A.error) {
+    err.hidden = false;
+    err.innerHTML = '<div class="ov-card err" role="alert"><h2>Couldn’t load the accuracy scoreboard</h2><p>' + esc(A.error) + '</p><button type="button" class="btn" data-act="retry">Try again</button></div>';
+  } else { err.hidden = true; err.innerHTML = ''; }
+  $('accMain').hidden = !A.data;
+  if (A.data) { renderAccFigs(); renderAccTable(); renderAccExtras(); }
+  renderAccFoot();
+}
+
+/* ---------- accuracy: events ---------- */
+$('accView').addEventListener('click', (e) => {
+  const act = e.target.closest('[data-act]');
+  if (!act) return;
+  if (act.dataset.act === 'retry') { A.pollErr = null; fetchAcc(); }
+  if (act.dataset.act === 'clear') { A.q = ''; $('accSearch').value = ''; A.group = 'all'; renderAccTable(); }
+});
+$('accHz').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  const h = +b.dataset.h;
+  if (h === S.horizon) return;
+  S.horizon = h;
+  setHash(accHash());
+  renderViews(); renderControls(); renderAcc();
+});
+$('accChips').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-g]'); if (!b) return;
+  A.group = b.dataset.g;
+  renderAccTable();
+});
+$('accSearch').addEventListener('input', (e) => { A.q = e.target.value; renderAccTable(); });
+$('accSearch').addEventListener('keydown', (e) => { if (e.key === 'Escape' && e.target.value) { e.target.value = ''; A.q = ''; renderAccTable(); } });
+function setSort(k, toggle) {
+  if (toggle && A.sort.k === k) A.sort.dir = -A.sort.dir;
+  else A.sort = { k: k, dir: (k === 'ticker' || k === 'groups') ? 1 : -1 };   // numbers start high-to-low
+  renderAccTable();
+}
+$('accHeadRow').addEventListener('click', (e) => { const b = e.target.closest('button[data-k]'); if (b) setSort(b.dataset.k, true); });
+$('accSort').addEventListener('change', (e) => setSort(e.target.value, false));
+$('accSortDir').addEventListener('click', () => { A.sort.dir = -A.sort.dir; renderAccTable(); });
+$('accBody').addEventListener('click', (e) => {
+  const tr = e.target.closest('tr[data-t]'); if (!tr) return;
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;   // new tab / window: leave it to the browser
+  futureOnArrive = true;
+  if (e.target.closest('a')) return;   // the ticker link navigates by itself
+  location.hash = tickerHash(tr.dataset.t, S.horizon);
+});
+
 /* ---------- start ---------- */
 (async function init() {
+  const r = parseHash();
+  if (r.h) S.horizon = r.h;
+  if (r.view === 'acc') { $('chartView').hidden = true; $('accView').hidden = false; }
+  let mockErr = null;
   if (MOCK) {
     try { const M = await loadMockFile(); S.ticker = M.ticker; }
-    catch (e) { S.ticker = 'NVDA'; S.error = { message: e.message, ticker: 'mock data' }; renderAll(); return; }
+    catch (e) { S.ticker = 'NVDA'; mockErr = e.message; }
   } else {
     S.ticker = (store.get(STORE_KEY) || 'SPY').toUpperCase();
   }
+  if (r.t) S.ticker = r.t;
   $('ticker').value = S.ticker;
-  load();
+  if (mockErr) { S.error = { message: mockErr, ticker: 'mock data' }; chartStarted = true; chartKey = S.ticker + '|' + S.horizon; }
+  renderControls();
+  if (r.view === 'acc') showAcc(); else showChart(null);
 })();
 })();
 </script>

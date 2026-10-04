@@ -35,6 +35,25 @@ Other commands:
 API: `GET /api/forecast?ticker=NVDA&horizon=5&asof=2024-06-14` (see `CONTRACT.md`),
 plus `GET /api/health` (warm-up progress).
 
+## Accuracy scoreboard
+
+`GET /api/accuracy` (and the Accuracy page) shows the walk-forward track record
+for about 160 hand-picked individual stocks at all three horizons: the stocks
+on the watchlist, mega caps, growth and semis, volatile small caps, and other
+sectors. No ETFs. The list and its groups live in `universe.py`; it does not touch
+the analog pool, so forecasts are unchanged.
+
+`python accuracy.py` builds `data/accuracy.json` (about 6 minutes, sequential
+downloads, resumes a crashed build; `--fresh` starts over, `--only NVDA,KO` prints
+a few without writing). The server serves that file and, when it is missing or
+over a day old, rebuilds it in one background thread while returning
+`status: "building"` with partial results. Each stock's numbers come from the same
+function and cache as the chart's `track`, so they match click-through exactly.
+Stocks Yahoo does not know, or with too little history (about a year to warm up
+plus ~30 testable dates), are listed in `skipped` with the reason. With ~150 tests
+per stock, a single stock's direction rate can be off by 6-8 points from luck
+alone; trust the pooled summary more than any one row.
+
 ## How the cone is made
 
 1. **Describe the setup** on every trading day with 12 numbers, each computed only

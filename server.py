@@ -13,6 +13,7 @@ import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote, urlparse
 
+import accuracy
 import engine
 
 HOST, PORT = "127.0.0.1", 8642
@@ -58,6 +59,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if url.path == "/api/forecast":
                 self._forecast(parse_qs(url.query))
+            elif url.path == "/api/accuracy":
+                self._accuracy()
             elif url.path == "/api/health":
                 a, b = ENGINE.progress
                 self._json(200, {"ready": ENGINE.ready, "status": ENGINE.status, "progress": [a, b]})
@@ -86,6 +89,16 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:  # never a bare 500 page; say what broke
             traceback.print_exc()
             self._json(500, {"error": f"Internal error: {type(e).__name__}: {e}"})
+
+    def _accuracy(self):
+        """The scoreboard. Serves data/accuracy.json; if it is missing, partial or
+        over a day old, starts ONE background rebuild and returns status
+        "building" with progress and the partial results. Never blocks."""
+        try:
+            self._json(200, accuracy.payload(ENGINE))
+        except Exception as e:
+            traceback.print_exc()
+            self._json(500, {"error": f"Accuracy scoreboard failed: {type(e).__name__}: {e}"})
 
     def _static(self, path):
         rel = unquote(path).lstrip("/") or "index.html"

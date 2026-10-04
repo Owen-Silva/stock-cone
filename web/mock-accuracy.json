@@ -1,0 +1,5292 @@
+{
+ "status": "ready",
+ "progress": {
+  "done": 152,
+  "total": 152
+ },
+ "generated": "2026-10-03T17:40:00",
+ "horizons": [
+  5,
+  21,
+  63
+ ],
+ "groups": [
+  {
+   "id": "watchlist",
+   "label": "Watchlist"
+  },
+  {
+   "id": "mega",
+   "label": "Mega caps"
+  },
+  {
+   "id": "growth",
+   "label": "Growth & tech"
+  },
+  {
+   "id": "volatile",
+   "label": "Volatile & small"
+  },
+  {
+   "id": "other",
+   "label": "Other sectors"
+  }
+ ],
+ "summary": {
+  "5": {
+   "stocks": 148,
+   "forecasts": 22003,
+   "inside_80": 0.784,
+   "inside_50": 0.485,
+   "direction_hit": 0.521,
+   "direction_base": 0.553,
+   "beat_base": 27,
+   "calibrated": 139
+  },
+  "21": {
+   "stocks": 147,
+   "forecasts": 21947,
+   "inside_80": 0.772,
+   "inside_50": 0.481,
+   "direction_hit": 0.559,
+   "direction_base": 0.598,
+   "beat_base": 31,
+   "calibrated": 124
+  },
+  "63": {
+   "stocks": 147,
+   "forecasts": 21874,
+   "inside_80": 0.761,
+   "inside_50": 0.472,
+   "direction_hit": 0.635,
+   "direction_base": 0.665,
+   "beat_base": 45,
+   "calibrated": 116
+  }
+ },
+ "stocks": [
+  {
+   "ticker": "NVDA",
+   "name": "NVIDIA Corporation",
+   "groups": [
+    "watchlist",
+    "mega",
+    "growth"
+   ],
+   "first_date": "1999-01-22",
+   "last_close": 233.95,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.79,
+     "inside_50": 0.51,
+     "direction_hit": 0.57,
+     "direction_base": 0.55,
+     "avg_width_80": 0.174
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.79,
+     "inside_50": 0.51,
+     "direction_hit": 0.57,
+     "direction_base": 0.55,
+     "avg_width_80": 0.428
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.79,
+     "inside_50": 0.51,
+     "direction_hit": 0.57,
+     "direction_base": 0.55,
+     "avg_width_80": 0.713
+    }
+   }
+  },
+  {
+   "ticker": "TSLA",
+   "name": "Tesla, Inc.",
+   "groups": [
+    "watchlist",
+    "mega",
+    "volatile"
+   ],
+   "first_date": "2010-06-29",
+   "last_close": 370.59,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.427,
+     "direction_hit": 0.54,
+     "direction_base": 0.58,
+     "avg_width_80": 0.221
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.653,
+     "inside_50": 0.347,
+     "direction_hit": 0.607,
+     "direction_base": 0.6,
+     "avg_width_80": 0.479
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.48,
+     "direction_hit": 0.66,
+     "direction_base": 0.7,
+     "avg_width_80": 0.857
+    }
+   }
+  },
+  {
+   "ticker": "PLTR",
+   "name": "Palantir Technologies Inc.",
+   "groups": [
+    "watchlist",
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2020-09-30",
+   "last_close": 188.75,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.44,
+     "direction_hit": 0.473,
+     "direction_base": 0.56,
+     "avg_width_80": 0.22
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.507,
+     "direction_hit": 0.613,
+     "direction_base": 0.633,
+     "avg_width_80": 0.477
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.493,
+     "direction_hit": 0.607,
+     "direction_base": 0.707,
+     "avg_width_80": 0.833
+    }
+   }
+  },
+  {
+   "ticker": "AMD",
+   "name": "Advanced Micro Devices, Inc.",
+   "groups": [
+    "watchlist",
+    "mega",
+    "growth"
+   ],
+   "first_date": "1980-03-17",
+   "last_close": 633.91,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.52,
+     "direction_hit": 0.573,
+     "direction_base": 0.56,
+     "avg_width_80": 0.198
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.513,
+     "direction_hit": 0.587,
+     "direction_base": 0.62,
+     "avg_width_80": 0.443
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.393,
+     "direction_hit": 0.56,
+     "direction_base": 0.667,
+     "avg_width_80": 0.744
+    }
+   }
+  },
+  {
+   "ticker": "IREN",
+   "name": "IREN Limited",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2021-11-17",
+   "last_close": 41.76,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.867,
+     "inside_50": 0.54,
+     "direction_hit": 0.513,
+     "direction_base": 0.553,
+     "avg_width_80": 0.314
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.493,
+     "direction_hit": 0.58,
+     "direction_base": 0.593,
+     "avg_width_80": 0.649
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.533,
+     "direction_hit": 0.52,
+     "direction_base": 0.66,
+     "avg_width_80": 1.098
+    }
+   }
+  },
+  {
+   "ticker": "SOFI",
+   "name": "SoFi Technologies, Inc.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2021-01-04",
+   "last_close": 15.77,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.427,
+     "direction_hit": 0.52,
+     "direction_base": 0.533,
+     "avg_width_80": 0.289
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.4,
+     "direction_hit": 0.527,
+     "direction_base": 0.593,
+     "avg_width_80": 0.582
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.453,
+     "direction_hit": 0.627,
+     "direction_base": 0.707,
+     "avg_width_80": 1.032
+    }
+   }
+  },
+  {
+   "ticker": "HOOD",
+   "name": "Robinhood Markets, Inc.",
+   "groups": [
+    "watchlist",
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2021-07-29",
+   "last_close": 112.74,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.513,
+     "direction_hit": 0.513,
+     "direction_base": 0.567,
+     "avg_width_80": 0.274
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.66,
+     "inside_50": 0.287,
+     "direction_hit": 0.573,
+     "direction_base": 0.6,
+     "avg_width_80": 0.534
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.473,
+     "direction_hit": 0.607,
+     "direction_base": 0.667,
+     "avg_width_80": 0.966
+    }
+   }
+  },
+  {
+   "ticker": "MSTR",
+   "name": "Strategy Inc",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "1998-06-11",
+   "last_close": 160.01,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.46,
+     "direction_hit": 0.52,
+     "direction_base": 0.547,
+     "avg_width_80": 0.311
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.407,
+     "direction_hit": 0.593,
+     "direction_base": 0.587,
+     "avg_width_80": 0.637
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.567,
+     "direction_hit": 0.547,
+     "direction_base": 0.66,
+     "avg_width_80": 1.046
+    }
+   }
+  },
+  {
+   "ticker": "COIN",
+   "name": "Coinbase Global, Inc.",
+   "groups": [
+    "watchlist",
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2021-04-14",
+   "last_close": 183,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.507,
+     "direction_hit": 0.48,
+     "direction_base": 0.567,
+     "avg_width_80": 0.286
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.487,
+     "direction_hit": 0.573,
+     "direction_base": 0.593,
+     "avg_width_80": 0.643
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.453,
+     "direction_hit": 0.613,
+     "direction_base": 0.633,
+     "avg_width_80": 0.95
+    }
+   }
+  },
+  {
+   "ticker": "RKLB",
+   "name": "Rocket Lab Corporation",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2020-11-24",
+   "last_close": 73.92,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.447,
+     "direction_hit": 0.527,
+     "direction_base": 0.553,
+     "avg_width_80": 0.305
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.52,
+     "direction_hit": 0.553,
+     "direction_base": 0.613,
+     "avg_width_80": 0.702
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.473,
+     "direction_hit": 0.667,
+     "direction_base": 0.72,
+     "avg_width_80": 1.185
+    }
+   }
+  },
+  {
+   "ticker": "SMCI",
+   "name": "Super Micro Computer, Inc.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2007-03-29",
+   "last_close": 43.69,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.687,
+     "inside_50": 0.413,
+     "direction_hit": 0.493,
+     "direction_base": 0.56,
+     "avg_width_80": 0.29
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.473,
+     "direction_hit": 0.6,
+     "direction_base": 0.607,
+     "avg_width_80": 0.702
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.467,
+     "direction_hit": 0.567,
+     "direction_base": 0.667,
+     "avg_width_80": 1.028
+    }
+   }
+  },
+  {
+   "ticker": "MARA",
+   "name": "MARA Holdings, Inc.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2012-05-04",
+   "last_close": 11.23,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.433,
+     "direction_hit": 0.473,
+     "direction_base": 0.533,
+     "avg_width_80": 0.351
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.447,
+     "direction_hit": 0.593,
+     "direction_base": 0.573,
+     "avg_width_80": 0.801
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.52,
+     "direction_hit": 0.76,
+     "direction_base": 0.66,
+     "avg_width_80": 1.259
+    }
+   }
+  },
+  {
+   "ticker": "HIMS",
+   "name": "Hims & Hers Health, Inc.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2019-09-13",
+   "last_close": 29,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.687,
+     "inside_50": 0.407,
+     "direction_hit": 0.567,
+     "direction_base": 0.567,
+     "avg_width_80": 0.274
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.533,
+     "direction_hit": 0.607,
+     "direction_base": 0.607,
+     "avg_width_80": 0.573
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.64,
+     "inside_50": 0.267,
+     "direction_hit": 0.58,
+     "direction_base": 0.647,
+     "avg_width_80": 1.093
+    }
+   }
+  },
+  {
+   "ticker": "NBIS",
+   "name": "Nebius Group N.V.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2011-05-24",
+   "last_close": 104.9,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.507,
+     "direction_hit": 0.46,
+     "direction_base": 0.553,
+     "avg_width_80": 0.327
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.447,
+     "direction_hit": 0.527,
+     "direction_base": 0.607,
+     "avg_width_80": 0.616
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.42,
+     "direction_hit": 0.693,
+     "direction_base": 0.673,
+     "avg_width_80": 1.093
+    }
+   }
+  },
+  {
+   "ticker": "OKLO",
+   "name": "Oklo Inc.",
+   "groups": [
+    "watchlist",
+    "volatile"
+   ],
+   "first_date": "2021-07-08",
+   "last_close": 35.87,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.447,
+     "direction_hit": 0.493,
+     "direction_base": 0.567,
+     "avg_width_80": 0.4
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.453,
+     "direction_hit": 0.633,
+     "direction_base": 0.607,
+     "avg_width_80": 0.697
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.487,
+     "direction_hit": 0.687,
+     "direction_base": 0.647,
+     "avg_width_80": 1.291
+    }
+   }
+  },
+  {
+   "ticker": "AAPL",
+   "name": "Apple Inc.",
+   "groups": [
+    "watchlist",
+    "mega"
+   ],
+   "first_date": "1980-12-12",
+   "last_close": 333.69,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.447,
+     "direction_hit": 0.533,
+     "direction_base": 0.56,
+     "avg_width_80": 0.096
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.38,
+     "direction_hit": 0.513,
+     "direction_base": 0.607,
+     "avg_width_80": 0.184
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.547,
+     "direction_hit": 0.813,
+     "direction_base": 0.733,
+     "avg_width_80": 0.396
+    }
+   }
+  },
+  {
+   "ticker": "META",
+   "name": "Meta Platforms, Inc.",
+   "groups": [
+    "watchlist",
+    "mega",
+    "growth"
+   ],
+   "first_date": "2012-05-18",
+   "last_close": 728.08,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.42,
+     "direction_hit": 0.573,
+     "direction_base": 0.553,
+     "avg_width_80": 0.152
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.487,
+     "direction_hit": 0.593,
+     "direction_base": 0.627,
+     "avg_width_80": 0.283
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.393,
+     "direction_hit": 0.693,
+     "direction_base": 0.687,
+     "avg_width_80": 0.485
+    }
+   }
+  },
+  {
+   "ticker": "MSFT",
+   "name": "Microsoft Corporation",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1986-03-13",
+   "last_close": 517.53,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.44,
+     "direction_hit": 0.48,
+     "direction_base": 0.56,
+     "avg_width_80": 0.089
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.627,
+     "direction_hit": 0.587,
+     "direction_base": 0.653,
+     "avg_width_80": 0.189
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.54,
+     "direction_hit": 0.6,
+     "direction_base": 0.72,
+     "avg_width_80": 0.334
+    }
+   }
+  },
+  {
+   "ticker": "GOOGL",
+   "name": "Alphabet Inc.",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "2004-08-19",
+   "last_close": 343.5,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.493,
+     "direction_hit": 0.5,
+     "direction_base": 0.567,
+     "avg_width_80": 0.114
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.427,
+     "direction_hit": 0.56,
+     "direction_base": 0.613,
+     "avg_width_80": 0.214
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.433,
+     "direction_hit": 0.833,
+     "direction_base": 0.707,
+     "avg_width_80": 0.342
+    }
+   }
+  },
+  {
+   "ticker": "AMZN",
+   "name": "Amazon.com, Inc.",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "1997-05-15",
+   "last_close": 251.52,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.867,
+     "inside_50": 0.62,
+     "direction_hit": 0.513,
+     "direction_base": 0.56,
+     "avg_width_80": 0.136
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.58,
+     "direction_base": 0.613,
+     "avg_width_80": 0.271
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.56,
+     "direction_hit": 0.727,
+     "direction_base": 0.707,
+     "avg_width_80": 0.384
+    }
+   }
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom Inc.",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "2009-08-06",
+   "last_close": 355.14,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.48,
+     "direction_hit": 0.533,
+     "direction_base": 0.58,
+     "avg_width_80": 0.14
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.527,
+     "direction_hit": 0.6,
+     "direction_base": 0.653,
+     "avg_width_80": 0.282
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.513,
+     "direction_hit": 0.84,
+     "direction_base": 0.76,
+     "avg_width_80": 0.54
+    }
+   }
+  },
+  {
+   "ticker": "BRK-B",
+   "name": "Berkshire Hathaway Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1996-05-09",
+   "last_close": 502.65,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.453,
+     "direction_hit": 0.587,
+     "direction_base": 0.553,
+     "avg_width_80": 0.079
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.467,
+     "direction_hit": 0.62,
+     "direction_base": 0.607,
+     "avg_width_80": 0.161
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.54,
+     "direction_hit": 0.593,
+     "direction_base": 0.667,
+     "avg_width_80": 0.267
+    }
+   }
+  },
+  {
+   "ticker": "LLY",
+   "name": "Eli Lilly and Company",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 1142.85,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.487,
+     "direction_hit": 0.493,
+     "direction_base": 0.553,
+     "avg_width_80": 0.118
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.86,
+     "inside_50": 0.607,
+     "direction_hit": 0.56,
+     "direction_base": 0.633,
+     "avg_width_80": 0.232
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.5,
+     "direction_hit": 0.613,
+     "direction_base": 0.687,
+     "avg_width_80": 0.395
+    }
+   }
+  },
+  {
+   "ticker": "JPM",
+   "name": "JPMorgan Chase & Co.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1980-03-17",
+   "last_close": 332.38,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.5,
+     "direction_hit": 0.507,
+     "direction_base": 0.553,
+     "avg_width_80": 0.087
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.4,
+     "direction_hit": 0.547,
+     "direction_base": 0.62,
+     "avg_width_80": 0.178
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.44,
+     "direction_hit": 0.693,
+     "direction_base": 0.68,
+     "avg_width_80": 0.331
+    }
+   }
+  },
+  {
+   "ticker": "V",
+   "name": "Visa Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "2008-03-19",
+   "last_close": 360.66,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.48,
+     "direction_hit": 0.533,
+     "direction_base": 0.56,
+     "avg_width_80": 0.073
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.487,
+     "direction_hit": 0.627,
+     "direction_base": 0.613,
+     "avg_width_80": 0.181
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.48,
+     "direction_hit": 0.587,
+     "direction_base": 0.707,
+     "avg_width_80": 0.293
+    }
+   }
+  },
+  {
+   "ticker": "MA",
+   "name": "Mastercard Incorporated",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "2006-05-25",
+   "last_close": 552.26,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.447,
+     "direction_hit": 0.553,
+     "direction_base": 0.58,
+     "avg_width_80": 0.091
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.4,
+     "direction_hit": 0.607,
+     "direction_base": 0.62,
+     "avg_width_80": 0.186
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.393,
+     "direction_hit": 0.733,
+     "direction_base": 0.72,
+     "avg_width_80": 0.317
+    }
+   }
+  },
+  {
+   "ticker": "WMT",
+   "name": "Walmart Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1972-08-25",
+   "last_close": 104.26,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.873,
+     "inside_50": 0.573,
+     "direction_hit": 0.467,
+     "direction_base": 0.553,
+     "avg_width_80": 0.081
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.513,
+     "direction_hit": 0.58,
+     "direction_base": 0.64,
+     "avg_width_80": 0.146
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.473,
+     "direction_hit": 0.627,
+     "direction_base": 0.707,
+     "avg_width_80": 0.259
+    }
+   }
+  },
+  {
+   "ticker": "XOM",
+   "name": "Exxon Mobil Corporation",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 164.01,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.513,
+     "direction_hit": 0.6,
+     "direction_base": 0.547,
+     "avg_width_80": 0.089
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.467,
+     "direction_hit": 0.54,
+     "direction_base": 0.58,
+     "avg_width_80": 0.186
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.44,
+     "direction_hit": 0.607,
+     "direction_base": 0.64,
+     "avg_width_80": 0.355
+    }
+   }
+  },
+  {
+   "ticker": "UNH",
+   "name": "UnitedHealth Group Incorporated",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1984-10-17",
+   "last_close": 371.9,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.527,
+     "direction_hit": 0.573,
+     "direction_base": 0.56,
+     "avg_width_80": 0.103
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.52,
+     "direction_hit": 0.633,
+     "direction_base": 0.627,
+     "avg_width_80": 0.244
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.407,
+     "direction_hit": 0.693,
+     "direction_base": 0.74,
+     "avg_width_80": 0.42
+    }
+   }
+  },
+  {
+   "ticker": "ORCL",
+   "name": "Oracle Corporation",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "1986-03-12",
+   "last_close": 142.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.453,
+     "direction_hit": 0.587,
+     "direction_base": 0.58,
+     "avg_width_80": 0.136
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.46,
+     "direction_hit": 0.58,
+     "direction_base": 0.6,
+     "avg_width_80": 0.241
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.547,
+     "direction_hit": 0.727,
+     "direction_base": 0.733,
+     "avg_width_80": 0.444
+    }
+   }
+  },
+  {
+   "ticker": "COST",
+   "name": "Costco Wholesale Corporation",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1986-07-09",
+   "last_close": 920.65,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.467,
+     "direction_hit": 0.547,
+     "direction_base": 0.547,
+     "avg_width_80": 0.073
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.54,
+     "direction_hit": 0.56,
+     "direction_base": 0.607,
+     "avg_width_80": 0.145
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.493,
+     "direction_hit": 0.767,
+     "direction_base": 0.727,
+     "avg_width_80": 0.313
+    }
+   }
+  },
+  {
+   "ticker": "HD",
+   "name": "The Home Depot, Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1981-09-22",
+   "last_close": 282.85,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.427,
+     "direction_hit": 0.613,
+     "direction_base": 0.567,
+     "avg_width_80": 0.08
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.487,
+     "direction_hit": 0.473,
+     "direction_base": 0.613,
+     "avg_width_80": 0.201
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.427,
+     "direction_hit": 0.647,
+     "direction_base": 0.707,
+     "avg_width_80": 0.353
+    }
+   }
+  },
+  {
+   "ticker": "PG",
+   "name": "The Procter & Gamble Company",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 144.91,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.5,
+     "direction_hit": 0.527,
+     "direction_base": 0.547,
+     "avg_width_80": 0.071
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.5,
+     "direction_hit": 0.547,
+     "direction_base": 0.647,
+     "avg_width_80": 0.149
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.893,
+     "inside_50": 0.62,
+     "direction_hit": 0.76,
+     "direction_base": 0.653,
+     "avg_width_80": 0.214
+    }
+   }
+  },
+  {
+   "ticker": "JNJ",
+   "name": "Johnson & Johnson",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 256.03,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.54,
+     "direction_hit": 0.54,
+     "direction_base": 0.553,
+     "avg_width_80": 0.071
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.453,
+     "direction_hit": 0.587,
+     "direction_base": 0.593,
+     "avg_width_80": 0.131
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.387,
+     "direction_hit": 0.513,
+     "direction_base": 0.653,
+     "avg_width_80": 0.221
+    }
+   }
+  },
+  {
+   "ticker": "NFLX",
+   "name": "Netflix, Inc.",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "2002-05-23",
+   "last_close": 67.06,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.493,
+     "direction_hit": 0.56,
+     "direction_base": 0.56,
+     "avg_width_80": 0.145
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.467,
+     "direction_hit": 0.62,
+     "direction_base": 0.6,
+     "avg_width_80": 0.361
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.553,
+     "direction_hit": 0.733,
+     "direction_base": 0.687,
+     "avg_width_80": 0.577
+    }
+   }
+  },
+  {
+   "ticker": "ABBV",
+   "name": "AbbVie Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "2013-01-02",
+   "last_close": 262.82,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.54,
+     "direction_hit": 0.6,
+     "direction_base": 0.553,
+     "avg_width_80": 0.077
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.88,
+     "inside_50": 0.64,
+     "direction_hit": 0.48,
+     "direction_base": 0.607,
+     "avg_width_80": 0.186
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.447,
+     "direction_hit": 0.607,
+     "direction_base": 0.687,
+     "avg_width_80": 0.289
+    }
+   }
+  },
+  {
+   "ticker": "BAC",
+   "name": "Bank of America Corporation",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1973-02-21",
+   "last_close": 53.75,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.54,
+     "direction_hit": 0.52,
+     "direction_base": 0.573,
+     "avg_width_80": 0.122
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.5,
+     "direction_hit": 0.547,
+     "direction_base": 0.593,
+     "avg_width_80": 0.254
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.527,
+     "direction_hit": 0.72,
+     "direction_base": 0.627,
+     "avg_width_80": 0.413
+    }
+   }
+  },
+  {
+   "ticker": "KO",
+   "name": "The Coca-Cola Company",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 85.65,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.48,
+     "direction_hit": 0.547,
+     "direction_base": 0.56,
+     "avg_width_80": 0.062
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.553,
+     "direction_hit": 0.5,
+     "direction_base": 0.587,
+     "avg_width_80": 0.13
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.493,
+     "direction_hit": 0.673,
+     "direction_base": 0.66,
+     "avg_width_80": 0.205
+    }
+   }
+  },
+  {
+   "ticker": "CRM",
+   "name": "Salesforce, Inc.",
+   "groups": [
+    "mega",
+    "growth"
+   ],
+   "first_date": "2004-06-23",
+   "last_close": 234.69,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.46,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.128
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.487,
+     "direction_hit": 0.56,
+     "direction_base": 0.587,
+     "avg_width_80": 0.272
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.413,
+     "direction_hit": 0.693,
+     "direction_base": 0.647,
+     "avg_width_80": 0.443
+    }
+   }
+  },
+  {
+   "ticker": "CVX",
+   "name": "Chevron Corporation",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 206.69,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.493,
+     "direction_hit": 0.54,
+     "direction_base": 0.54,
+     "avg_width_80": 0.107
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.46,
+     "direction_hit": 0.52,
+     "direction_base": 0.587,
+     "avg_width_80": 0.212
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.58,
+     "direction_hit": 0.62,
+     "direction_base": 0.62,
+     "avg_width_80": 0.31
+    }
+   }
+  },
+  {
+   "ticker": "MRK",
+   "name": "Merck & Co., Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 144.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.547,
+     "direction_hit": 0.487,
+     "direction_base": 0.547,
+     "avg_width_80": 0.082
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.427,
+     "direction_hit": 0.62,
+     "direction_base": 0.6,
+     "avg_width_80": 0.165
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.553,
+     "direction_hit": 0.653,
+     "direction_base": 0.647,
+     "avg_width_80": 0.266
+    }
+   }
+  },
+  {
+   "ticker": "PEP",
+   "name": "PepsiCo, Inc.",
+   "groups": [
+    "mega"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 125.89,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.573,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.072
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.393,
+     "direction_hit": 0.6,
+     "direction_base": 0.6,
+     "avg_width_80": 0.124
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.393,
+     "direction_hit": 0.573,
+     "direction_base": 0.687,
+     "avg_width_80": 0.211
+    }
+   }
+  },
+  {
+   "ticker": "SHOP",
+   "name": "Shopify Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2015-05-20",
+   "last_close": 151.39,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.487,
+     "direction_hit": 0.573,
+     "direction_base": 0.547,
+     "avg_width_80": 0.203
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.46,
+     "direction_hit": 0.6,
+     "direction_base": 0.607,
+     "avg_width_80": 0.405
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.66,
+     "inside_50": 0.367,
+     "direction_hit": 0.707,
+     "direction_base": 0.687,
+     "avg_width_80": 0.785
+    }
+   }
+  },
+  {
+   "ticker": "CRWD",
+   "name": "CrowdStrike Holdings, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2019-06-12",
+   "last_close": 270.04,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.487,
+     "direction_hit": 0.527,
+     "direction_base": 0.56,
+     "avg_width_80": 0.19
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.467,
+     "direction_hit": 0.513,
+     "direction_base": 0.607,
+     "avg_width_80": 0.366
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.553,
+     "direction_hit": 0.667,
+     "direction_base": 0.7,
+     "avg_width_80": 0.591
+    }
+   }
+  },
+  {
+   "ticker": "SNOW",
+   "name": "Snowflake Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2020-09-16",
+   "last_close": 341.04,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.473,
+     "direction_hit": 0.493,
+     "direction_base": 0.533,
+     "avg_width_80": 0.183
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.48,
+     "direction_hit": 0.533,
+     "direction_base": 0.587,
+     "avg_width_80": 0.435
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.487,
+     "direction_hit": 0.667,
+     "direction_base": 0.673,
+     "avg_width_80": 0.687
+    }
+   }
+  },
+  {
+   "ticker": "NET",
+   "name": "Cloudflare, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2019-09-13",
+   "last_close": 349.07,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.407,
+     "direction_hit": 0.54,
+     "direction_base": 0.553,
+     "avg_width_80": 0.217
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.5,
+     "direction_hit": 0.467,
+     "direction_base": 0.587,
+     "avg_width_80": 0.447
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.407,
+     "direction_hit": 0.753,
+     "direction_base": 0.673,
+     "avg_width_80": 0.83
+    }
+   }
+  },
+  {
+   "ticker": "DDOG",
+   "name": "Datadog, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2019-09-19",
+   "last_close": 277.22,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.527,
+     "direction_hit": 0.58,
+     "direction_base": 0.56,
+     "avg_width_80": 0.192
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.853,
+     "inside_50": 0.587,
+     "direction_hit": 0.58,
+     "direction_base": 0.607,
+     "avg_width_80": 0.412
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.5,
+     "direction_hit": 0.607,
+     "direction_base": 0.687,
+     "avg_width_80": 0.739
+    }
+   }
+  },
+  {
+   "ticker": "MDB",
+   "name": "MongoDB, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2017-10-19",
+   "last_close": 357.96,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.447,
+     "direction_hit": 0.553,
+     "direction_base": 0.567,
+     "avg_width_80": 0.227
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.68,
+     "inside_50": 0.313,
+     "direction_hit": 0.6,
+     "direction_base": 0.587,
+     "avg_width_80": 0.463
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.507,
+     "direction_hit": 0.653,
+     "direction_base": 0.667,
+     "avg_width_80": 0.722
+    }
+   }
+  },
+  {
+   "ticker": "PANW",
+   "name": "Palo Alto Networks, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2012-07-20",
+   "last_close": 403.24,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.5,
+     "direction_hit": 0.507,
+     "direction_base": 0.56,
+     "avg_width_80": 0.129
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.413,
+     "direction_hit": 0.6,
+     "direction_base": 0.607,
+     "avg_width_80": 0.275
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.6,
+     "direction_hit": 0.693,
+     "direction_base": 0.72,
+     "avg_width_80": 0.509
+    }
+   }
+  },
+  {
+   "ticker": "ZS",
+   "name": "Zscaler, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2018-03-16",
+   "last_close": 196.6,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.507,
+     "direction_hit": 0.54,
+     "direction_base": 0.547,
+     "avg_width_80": 0.186
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.507,
+     "direction_hit": 0.5,
+     "direction_base": 0.587,
+     "avg_width_80": 0.365
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.507,
+     "direction_hit": 0.707,
+     "direction_base": 0.687,
+     "avg_width_80": 0.708
+    }
+   }
+  },
+  {
+   "ticker": "NOW",
+   "name": "ServiceNow, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2012-06-29",
+   "last_close": 134.38,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.507,
+     "direction_hit": 0.533,
+     "direction_base": 0.58,
+     "avg_width_80": 0.145
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.5,
+     "direction_hit": 0.52,
+     "direction_base": 0.633,
+     "avg_width_80": 0.322
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.46,
+     "direction_hit": 0.74,
+     "direction_base": 0.713,
+     "avg_width_80": 0.487
+    }
+   }
+  },
+  {
+   "ticker": "ADBE",
+   "name": "Adobe Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1986-08-13",
+   "last_close": 237.69,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.473,
+     "direction_hit": 0.52,
+     "direction_base": 0.567,
+     "avg_width_80": 0.127
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.46,
+     "direction_hit": 0.567,
+     "direction_base": 0.593,
+     "avg_width_80": 0.276
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.367,
+     "direction_hit": 0.647,
+     "direction_base": 0.673,
+     "avg_width_80": 0.461
+    }
+   }
+  },
+  {
+   "ticker": "INTU",
+   "name": "Intuit Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1993-03-12",
+   "last_close": 671.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.507,
+     "direction_hit": 0.5,
+     "direction_base": 0.56,
+     "avg_width_80": 0.123
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.467,
+     "direction_hit": 0.567,
+     "direction_base": 0.613,
+     "avg_width_80": 0.26
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.587,
+     "direction_hit": 0.653,
+     "direction_base": 0.707,
+     "avg_width_80": 0.447
+    }
+   }
+  },
+  {
+   "ticker": "UBER",
+   "name": "Uber Technologies, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2019-05-10",
+   "last_close": 68.11,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.44,
+     "direction_hit": 0.48,
+     "direction_base": 0.547,
+     "avg_width_80": 0.159
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.547,
+     "direction_hit": 0.56,
+     "direction_base": 0.62,
+     "avg_width_80": 0.327
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.407,
+     "direction_hit": 0.613,
+     "direction_base": 0.68,
+     "avg_width_80": 0.599
+    }
+   }
+  },
+  {
+   "ticker": "ABNB",
+   "name": "Airbnb, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2020-12-10",
+   "last_close": 162.43,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.513,
+     "direction_hit": 0.567,
+     "direction_base": 0.54,
+     "avg_width_80": 0.171
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.86,
+     "inside_50": 0.553,
+     "direction_hit": 0.48,
+     "direction_base": 0.56,
+     "avg_width_80": 0.319
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.5,
+     "direction_hit": 0.66,
+     "direction_base": 0.66,
+     "avg_width_80": 0.613
+    }
+   }
+  },
+  {
+   "ticker": "DASH",
+   "name": "DoorDash, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2020-12-09",
+   "last_close": 271.6,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.533,
+     "direction_hit": 0.533,
+     "direction_base": 0.547,
+     "avg_width_80": 0.176
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.387,
+     "direction_hit": 0.573,
+     "direction_base": 0.587,
+     "avg_width_80": 0.378
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.473,
+     "direction_hit": 0.647,
+     "direction_base": 0.647,
+     "avg_width_80": 0.613
+    }
+   }
+  },
+  {
+   "ticker": "TTD",
+   "name": "The Trade Desk, Inc.",
+   "groups": [
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2016-09-21",
+   "last_close": 11.95,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.4,
+     "direction_hit": 0.56,
+     "direction_base": 0.553,
+     "avg_width_80": 0.224
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.433,
+     "direction_hit": 0.513,
+     "direction_base": 0.6,
+     "avg_width_80": 0.451
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.487,
+     "direction_hit": 0.713,
+     "direction_base": 0.64,
+     "avg_width_80": 0.728
+    }
+   }
+  },
+  {
+   "ticker": "ARM",
+   "name": "Arm Holdings plc",
+   "groups": [
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2023-09-14",
+   "last_close": 307.49,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.5,
+     "direction_hit": 0.52,
+     "direction_base": 0.553,
+     "avg_width_80": 0.246
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.56,
+     "direction_hit": 0.5,
+     "direction_base": 0.58,
+     "avg_width_80": 0.423
+    },
+    "63": {
+     "n": 108,
+     "inside_80": 0.741,
+     "inside_50": 0.509,
+     "direction_hit": 0.556,
+     "direction_base": 0.657,
+     "avg_width_80": 0.838
+    }
+   }
+  },
+  {
+   "ticker": "MU",
+   "name": "Micron Technology, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1984-06-01",
+   "last_close": 1074.89,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.54,
+     "direction_hit": 0.44,
+     "direction_base": 0.54,
+     "avg_width_80": 0.186
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.547,
+     "direction_hit": 0.62,
+     "direction_base": 0.6,
+     "avg_width_80": 0.379
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.487,
+     "direction_hit": 0.56,
+     "direction_base": 0.667,
+     "avg_width_80": 0.594
+    }
+   }
+  },
+  {
+   "ticker": "ANET",
+   "name": "Arista Networks, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2014-06-06",
+   "last_close": 207.35,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.533,
+     "direction_hit": 0.627,
+     "direction_base": 0.567,
+     "avg_width_80": 0.174
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.467,
+     "direction_hit": 0.493,
+     "direction_base": 0.627,
+     "avg_width_80": 0.362
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.673,
+     "inside_50": 0.4,
+     "direction_hit": 0.7,
+     "direction_base": 0.7,
+     "avg_width_80": 0.571
+    }
+   }
+  },
+  {
+   "ticker": "QCOM",
+   "name": "QUALCOMM Incorporated",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1991-12-13",
+   "last_close": 184.87,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.52,
+     "direction_hit": 0.473,
+     "direction_base": 0.553,
+     "avg_width_80": 0.139
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.9,
+     "inside_50": 0.6,
+     "direction_hit": 0.527,
+     "direction_base": 0.6,
+     "avg_width_80": 0.295
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.533,
+     "direction_hit": 0.52,
+     "direction_base": 0.647,
+     "avg_width_80": 0.507
+    }
+   }
+  },
+  {
+   "ticker": "AMAT",
+   "name": "Applied Materials, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1980-03-17",
+   "last_close": 540.04,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.44,
+     "direction_hit": 0.5,
+     "direction_base": 0.567,
+     "avg_width_80": 0.153
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.447,
+     "direction_hit": 0.547,
+     "direction_base": 0.613,
+     "avg_width_80": 0.274
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.447,
+     "direction_hit": 0.64,
+     "direction_base": 0.68,
+     "avg_width_80": 0.552
+    }
+   }
+  },
+  {
+   "ticker": "LRCX",
+   "name": "Lam Research Corporation",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1984-05-04",
+   "last_close": 347.49,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.533,
+     "direction_hit": 0.58,
+     "direction_base": 0.553,
+     "avg_width_80": 0.149
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.493,
+     "direction_hit": 0.573,
+     "direction_base": 0.613,
+     "avg_width_80": 0.33
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.853,
+     "inside_50": 0.593,
+     "direction_hit": 0.68,
+     "direction_base": 0.687,
+     "avg_width_80": 0.549
+    }
+   }
+  },
+  {
+   "ticker": "KLAC",
+   "name": "KLA Corporation",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1980-10-08",
+   "last_close": 1062.4,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.493,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.143
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.447,
+     "direction_hit": 0.707,
+     "direction_base": 0.633,
+     "avg_width_80": 0.293
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.447,
+     "direction_hit": 0.713,
+     "direction_base": 0.7,
+     "avg_width_80": 0.457
+    }
+   }
+  },
+  {
+   "ticker": "MRVL",
+   "name": "Marvell Technology, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2000-06-30",
+   "last_close": 272.29,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.533,
+     "direction_base": 0.54,
+     "avg_width_80": 0.196
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.487,
+     "direction_base": 0.58,
+     "avg_width_80": 0.453
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.393,
+     "direction_hit": 0.82,
+     "direction_base": 0.673,
+     "avg_width_80": 0.781
+    }
+   }
+  },
+  {
+   "ticker": "TSM",
+   "name": "Taiwan Semiconductor Manufacturing Company Limited",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1997-10-09",
+   "last_close": 472.78,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.527,
+     "direction_hit": 0.553,
+     "direction_base": 0.567,
+     "avg_width_80": 0.128
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.433,
+     "direction_hit": 0.567,
+     "direction_base": 0.633,
+     "avg_width_80": 0.239
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.713,
+     "direction_base": 0.713,
+     "avg_width_80": 0.509
+    }
+   }
+  },
+  {
+   "ticker": "ASML",
+   "name": "ASML Holding N.V.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1995-03-15",
+   "last_close": 1867.31,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.467,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.149
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.4,
+     "direction_hit": 0.533,
+     "direction_base": 0.633,
+     "avg_width_80": 0.281
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.44,
+     "direction_hit": 0.78,
+     "direction_base": 0.68,
+     "avg_width_80": 0.512
+    }
+   }
+  },
+  {
+   "ticker": "APP",
+   "name": "AppLovin Corporation",
+   "groups": [
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2021-04-15",
+   "last_close": 268.22,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.493,
+     "direction_hit": 0.46,
+     "direction_base": 0.573,
+     "avg_width_80": 0.26
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.473,
+     "direction_hit": 0.58,
+     "direction_base": 0.627,
+     "avg_width_80": 0.543
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.46,
+     "direction_hit": 0.667,
+     "direction_base": 0.72,
+     "avg_width_80": 1.122
+    }
+   }
+  },
+  {
+   "ticker": "RBLX",
+   "name": "Roblox Corporation",
+   "groups": [
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2021-03-10",
+   "last_close": 44.12,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.52,
+     "direction_hit": 0.52,
+     "direction_base": 0.54,
+     "avg_width_80": 0.196
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.5,
+     "direction_hit": 0.64,
+     "direction_base": 0.58,
+     "avg_width_80": 0.398
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.48,
+     "direction_hit": 0.693,
+     "direction_base": 0.627,
+     "avg_width_80": 0.817
+    }
+   }
+  },
+  {
+   "ticker": "SPOT",
+   "name": "Spotify Technology S.A.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2018-04-03",
+   "last_close": 472.89,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.5,
+     "direction_hit": 0.5,
+     "direction_base": 0.56,
+     "avg_width_80": 0.152
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.447,
+     "direction_hit": 0.533,
+     "direction_base": 0.6,
+     "avg_width_80": 0.317
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.46,
+     "direction_hit": 0.64,
+     "direction_base": 0.66,
+     "avg_width_80": 0.588
+    }
+   }
+  },
+  {
+   "ticker": "MELI",
+   "name": "MercadoLibre, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2007-08-10",
+   "last_close": 2215.4,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.46,
+     "direction_hit": 0.567,
+     "direction_base": 0.573,
+     "avg_width_80": 0.18
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.52,
+     "direction_hit": 0.547,
+     "direction_base": 0.627,
+     "avg_width_80": 0.367
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.46,
+     "direction_hit": 0.7,
+     "direction_base": 0.74,
+     "avg_width_80": 0.621
+    }
+   }
+  },
+  {
+   "ticker": "INTC",
+   "name": "Intel Corporation",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "1980-03-17",
+   "last_close": 119.33,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.467,
+     "direction_hit": 0.48,
+     "direction_base": 0.54,
+     "avg_width_80": 0.14
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.433,
+     "direction_hit": 0.567,
+     "direction_base": 0.573,
+     "avg_width_80": 0.326
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.393,
+     "direction_hit": 0.547,
+     "direction_base": 0.627,
+     "avg_width_80": 0.467
+    }
+   }
+  },
+  {
+   "ticker": "CSCO",
+   "name": "Cisco Systems, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1990-02-16",
+   "last_close": 112.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.433,
+     "direction_hit": 0.44,
+     "direction_base": 0.56,
+     "avg_width_80": 0.094
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.413,
+     "direction_hit": 0.587,
+     "direction_base": 0.593,
+     "avg_width_80": 0.18
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.46,
+     "direction_hit": 0.673,
+     "direction_base": 0.727,
+     "avg_width_80": 0.346
+    }
+   }
+  },
+  {
+   "ticker": "IBM",
+   "name": "International Business Machines Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 222.64,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.853,
+     "inside_50": 0.56,
+     "direction_hit": 0.467,
+     "direction_base": 0.547,
+     "avg_width_80": 0.086
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.4,
+     "direction_hit": 0.52,
+     "direction_base": 0.593,
+     "avg_width_80": 0.187
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.88,
+     "inside_50": 0.593,
+     "direction_hit": 0.513,
+     "direction_base": 0.633,
+     "avg_width_80": 0.328
+    }
+   }
+  },
+  {
+   "ticker": "FIG",
+   "name": "Figma, Inc.",
+   "groups": [
+    "growth",
+    "volatile"
+   ],
+   "first_date": "2025-07-31",
+   "last_close": 21.36,
+   "h": {
+    "5": {
+     "n": 24,
+     "inside_80": 0.75,
+     "inside_50": 0.458,
+     "direction_hit": 0.542,
+     "direction_base": 0.583,
+     "avg_width_80": 0.323
+    },
+    "21": {},
+    "63": {}
+   }
+  },
+  {
+   "ticker": "CRWV",
+   "name": "CoreWeave, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2025-03-28",
+   "last_close": 89.62,
+   "h": {
+    "5": {
+     "n": 79,
+     "inside_80": 0.747,
+     "inside_50": 0.443,
+     "direction_hit": 0.519,
+     "direction_base": 0.557,
+     "avg_width_80": 0.363
+    },
+    "21": {
+     "n": 47,
+     "inside_80": 0.872,
+     "inside_50": 0.574,
+     "direction_hit": 0.617,
+     "direction_base": 0.617,
+     "avg_width_80": 0.873
+    },
+    "63": {
+     "n": 16,
+     "inside_80": 0.75,
+     "inside_50": 0.438,
+     "direction_hit": 0.75,
+     "direction_base": 0.688,
+     "avg_width_80": 1.498
+    }
+   }
+  },
+  {
+   "ticker": "RIOT",
+   "name": "Riot Platforms, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2016-03-31",
+   "last_close": 19.73,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.447,
+     "direction_hit": 0.467,
+     "direction_base": 0.553,
+     "avg_width_80": 0.371
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.407,
+     "direction_hit": 0.52,
+     "direction_base": 0.567,
+     "avg_width_80": 0.77
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.42,
+     "direction_hit": 0.567,
+     "direction_base": 0.633,
+     "avg_width_80": 1.189
+    }
+   }
+  },
+  {
+   "ticker": "UPST",
+   "name": "Upstart Holdings, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2020-12-16",
+   "last_close": 22.81,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.373,
+     "direction_hit": 0.473,
+     "direction_base": 0.54,
+     "avg_width_80": 0.368
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.453,
+     "direction_hit": 0.553,
+     "direction_base": 0.567,
+     "avg_width_80": 0.711
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.853,
+     "inside_50": 0.607,
+     "direction_hit": 0.607,
+     "direction_base": 0.613,
+     "avg_width_80": 1.359
+    }
+   }
+  },
+  {
+   "ticker": "AFRM",
+   "name": "Affirm Holdings, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-01-13",
+   "last_close": 70.77,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.513,
+     "direction_hit": 0.56,
+     "direction_base": 0.547,
+     "avg_width_80": 0.288
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.56,
+     "direction_hit": 0.553,
+     "direction_base": 0.62,
+     "avg_width_80": 0.66
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.413,
+     "direction_hit": 0.713,
+     "direction_base": 0.66,
+     "avg_width_80": 1.12
+    }
+   }
+  },
+  {
+   "ticker": "IONQ",
+   "name": "IonQ, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-01-04",
+   "last_close": 43.77,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.46,
+     "direction_hit": 0.58,
+     "direction_base": 0.547,
+     "avg_width_80": 0.322
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.547,
+     "direction_base": 0.607,
+     "avg_width_80": 0.675
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.607,
+     "inside_50": 0.287,
+     "direction_hit": 0.693,
+     "direction_base": 0.647,
+     "avg_width_80": 1.32
+    }
+   }
+  },
+  {
+   "ticker": "RGTI",
+   "name": "Rigetti Computing, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-04-22",
+   "last_close": 15.25,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.513,
+     "direction_hit": 0.5,
+     "direction_base": 0.553,
+     "avg_width_80": 0.407
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.453,
+     "direction_hit": 0.567,
+     "direction_base": 0.6,
+     "avg_width_80": 0.81
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.44,
+     "direction_hit": 0.587,
+     "direction_base": 0.66,
+     "avg_width_80": 1.532
+    }
+   }
+  },
+  {
+   "ticker": "QBTS",
+   "name": "D-Wave Quantum Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2020-12-11",
+   "last_close": 15.77,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.44,
+     "direction_hit": 0.527,
+     "direction_base": 0.547,
+     "avg_width_80": 0.458
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.593,
+     "direction_hit": 0.487,
+     "direction_base": 0.58,
+     "avg_width_80": 0.794
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.467,
+     "direction_hit": 0.487,
+     "direction_base": 0.627,
+     "avg_width_80": 1.359
+    }
+   }
+  },
+  {
+   "ticker": "SOUN",
+   "name": "SoundHound AI, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2022-04-28",
+   "last_close": 5.84,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.52,
+     "direction_hit": 0.453,
+     "direction_base": 0.54,
+     "avg_width_80": 0.423
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.487,
+     "direction_hit": 0.507,
+     "direction_base": 0.567,
+     "avg_width_80": 0.772
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.507,
+     "direction_hit": 0.727,
+     "direction_base": 0.633,
+     "avg_width_80": 1.367
+    }
+   }
+  },
+  {
+   "ticker": "ACHR",
+   "name": "Archer Aviation Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2020-12-18",
+   "last_close": 4.89,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.5,
+     "direction_hit": 0.533,
+     "direction_base": 0.54,
+     "avg_width_80": 0.334
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.433,
+     "direction_hit": 0.507,
+     "direction_base": 0.56,
+     "avg_width_80": 0.653
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.407,
+     "direction_hit": 0.567,
+     "direction_base": 0.607,
+     "avg_width_80": 1.178
+    }
+   }
+  },
+  {
+   "ticker": "JOBY",
+   "name": "Joby Aviation, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2020-11-09",
+   "last_close": 5.95,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.433,
+     "direction_hit": 0.453,
+     "direction_base": 0.553,
+     "avg_width_80": 0.309
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.44,
+     "direction_hit": 0.553,
+     "direction_base": 0.58,
+     "avg_width_80": 0.574
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.68,
+     "inside_50": 0.44,
+     "direction_hit": 0.66,
+     "direction_base": 0.66,
+     "avg_width_80": 1.136
+    }
+   }
+  },
+  {
+   "ticker": "LCID",
+   "name": "Lucid Group, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2020-09-18",
+   "last_close": 4.13,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.467,
+     "direction_hit": 0.467,
+     "direction_base": 0.527,
+     "avg_width_80": 0.315
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.487,
+     "direction_hit": 0.553,
+     "direction_base": 0.533,
+     "avg_width_80": 0.537
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.687,
+     "inside_50": 0.373,
+     "direction_hit": 0.42,
+     "direction_base": 0.54,
+     "avg_width_80": 0.956
+    }
+   }
+  },
+  {
+   "ticker": "RIVN",
+   "name": "Rivian Automotive, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-11-10",
+   "last_close": 14.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.46,
+     "direction_hit": 0.473,
+     "direction_base": 0.527,
+     "avg_width_80": 0.287
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.553,
+     "direction_hit": 0.487,
+     "direction_base": 0.533,
+     "avg_width_80": 0.527
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.407,
+     "direction_hit": 0.393,
+     "direction_base": 0.573,
+     "avg_width_80": 1.014
+    }
+   }
+  },
+  {
+   "ticker": "NIO",
+   "name": "NIO Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2018-09-12",
+   "last_close": 6.85,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.46,
+     "direction_hit": 0.587,
+     "direction_base": 0.527,
+     "avg_width_80": 0.31
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.393,
+     "direction_hit": 0.52,
+     "direction_base": 0.567,
+     "avg_width_80": 0.645
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.513,
+     "direction_hit": 0.52,
+     "direction_base": 0.58,
+     "avg_width_80": 0.984
+    }
+   }
+  },
+  {
+   "ticker": "PLUG",
+   "name": "Plug Power Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "1999-10-29",
+   "last_close": 1.9,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.46,
+     "direction_hit": 0.573,
+     "direction_base": 0.52,
+     "avg_width_80": 0.377
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.66,
+     "inside_50": 0.407,
+     "direction_hit": 0.507,
+     "direction_base": 0.533,
+     "avg_width_80": 0.716
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.473,
+     "direction_hit": 0.593,
+     "direction_base": 0.6,
+     "avg_width_80": 1.242
+    }
+   }
+  },
+  {
+   "ticker": "CVNA",
+   "name": "Carvana Co.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2017-04-28",
+   "last_close": 63.77,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.48,
+     "direction_hit": 0.493,
+     "direction_base": 0.567,
+     "avg_width_80": 0.38
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.48,
+     "direction_hit": 0.66,
+     "direction_base": 0.62,
+     "avg_width_80": 0.721
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.62,
+     "inside_50": 0.387,
+     "direction_hit": 0.66,
+     "direction_base": 0.707,
+     "avg_width_80": 1.299
+    }
+   }
+  },
+  {
+   "ticker": "GME",
+   "name": "GameStop Corp.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2002-02-13",
+   "last_close": 24.7,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.453,
+     "direction_hit": 0.56,
+     "direction_base": 0.553,
+     "avg_width_80": 0.375
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.407,
+     "direction_hit": 0.547,
+     "direction_base": 0.58,
+     "avg_width_80": 0.778
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.46,
+     "direction_hit": 0.64,
+     "direction_base": 0.64,
+     "avg_width_80": 1.228
+    }
+   }
+  },
+  {
+   "ticker": "DKNG",
+   "name": "DraftKings Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2019-05-13",
+   "last_close": 38.75,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.427,
+     "direction_hit": 0.46,
+     "direction_base": 0.56,
+     "avg_width_80": 0.239
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.533,
+     "direction_hit": 0.513,
+     "direction_base": 0.593,
+     "avg_width_80": 0.445
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.407,
+     "direction_hit": 0.647,
+     "direction_base": 0.633,
+     "avg_width_80": 0.889
+    }
+   }
+  },
+  {
+   "ticker": "CELH",
+   "name": "Celsius Holdings, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2006-04-04",
+   "last_close": 58.4,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.487,
+     "direction_hit": 0.487,
+     "direction_base": 0.553,
+     "avg_width_80": 0.27
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.46,
+     "direction_hit": 0.52,
+     "direction_base": 0.62,
+     "avg_width_80": 0.489
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.553,
+     "direction_hit": 0.667,
+     "direction_base": 0.727,
+     "avg_width_80": 1.064
+    }
+   }
+  },
+  {
+   "ticker": "ASTS",
+   "name": "AST SpaceMobile, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2019-11-01",
+   "last_close": 58.45,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.473,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.353
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.447,
+     "direction_hit": 0.58,
+     "direction_base": 0.593,
+     "avg_width_80": 0.866
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.687,
+     "inside_50": 0.447,
+     "direction_hit": 0.627,
+     "direction_base": 0.66,
+     "avg_width_80": 1.464
+    }
+   }
+  },
+  {
+   "ticker": "BBAI",
+   "name": "BigBear.ai Holdings, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-04-05",
+   "last_close": 2.65,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.427,
+     "direction_hit": 0.513,
+     "direction_base": 0.533,
+     "avg_width_80": 0.389
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.4,
+     "direction_hit": 0.507,
+     "direction_base": 0.553,
+     "avg_width_80": 0.913
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.467,
+     "direction_hit": 0.627,
+     "direction_base": 0.593,
+     "avg_width_80": 1.418
+    }
+   }
+  },
+  {
+   "ticker": "SMR",
+   "name": "NuScale Power Corporation",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2022-03-01",
+   "last_close": 7.75,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.567,
+     "direction_hit": 0.533,
+     "direction_base": 0.553,
+     "avg_width_80": 0.389
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.44,
+     "direction_hit": 0.46,
+     "direction_base": 0.6,
+     "avg_width_80": 0.837
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.48,
+     "direction_hit": 0.647,
+     "direction_base": 0.673,
+     "avg_width_80": 1.295
+    }
+   }
+  },
+  {
+   "ticker": "LUNR",
+   "name": "Intuitive Machines, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2021-11-17",
+   "last_close": 14.71,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.4,
+     "direction_hit": 0.5,
+     "direction_base": 0.533,
+     "avg_width_80": 0.358
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.493,
+     "direction_hit": 0.52,
+     "direction_base": 0.6,
+     "avg_width_80": 0.821
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.513,
+     "direction_hit": 0.72,
+     "direction_base": 0.607,
+     "avg_width_80": 1.351
+    }
+   }
+  },
+  {
+   "ticker": "CHWY",
+   "name": "Chewy, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2019-06-14",
+   "last_close": 36.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.487,
+     "direction_hit": 0.5,
+     "direction_base": 0.547,
+     "avg_width_80": 0.221
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.58,
+     "direction_hit": 0.52,
+     "direction_base": 0.58,
+     "avg_width_80": 0.406
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.453,
+     "direction_hit": 0.527,
+     "direction_base": 0.627,
+     "avg_width_80": 0.739
+    }
+   }
+  },
+  {
+   "ticker": "CAT",
+   "name": "Caterpillar Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 845.42,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.447,
+     "direction_hit": 0.54,
+     "direction_base": 0.547,
+     "avg_width_80": 0.117
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.567,
+     "direction_hit": 0.607,
+     "direction_base": 0.613,
+     "avg_width_80": 0.226
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.453,
+     "direction_hit": 0.64,
+     "direction_base": 0.66,
+     "avg_width_80": 0.425
+    }
+   }
+  },
+  {
+   "ticker": "DE",
+   "name": "Deere & Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 687,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.507,
+     "direction_hit": 0.527,
+     "direction_base": 0.573,
+     "avg_width_80": 0.108
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.493,
+     "direction_hit": 0.593,
+     "direction_base": 0.6,
+     "avg_width_80": 0.221
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.52,
+     "direction_hit": 0.68,
+     "direction_base": 0.693,
+     "avg_width_80": 0.335
+    }
+   }
+  },
+  {
+   "ticker": "GE",
+   "name": "GE Aerospace",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 309.56,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.46,
+     "direction_hit": 0.54,
+     "direction_base": 0.567,
+     "avg_width_80": 0.108
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.493,
+     "direction_hit": 0.627,
+     "direction_base": 0.593,
+     "avg_width_80": 0.259
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.447,
+     "direction_hit": 0.56,
+     "direction_base": 0.66,
+     "avg_width_80": 0.414
+    }
+   }
+  },
+  {
+   "ticker": "HON",
+   "name": "Honeywell International Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 213.99,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.52,
+     "direction_hit": 0.533,
+     "direction_base": 0.547,
+     "avg_width_80": 0.079
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.473,
+     "direction_hit": 0.62,
+     "direction_base": 0.593,
+     "avg_width_80": 0.163
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.513,
+     "direction_hit": 0.52,
+     "direction_base": 0.64,
+     "avg_width_80": 0.316
+    }
+   }
+  },
+  {
+   "ticker": "BA",
+   "name": "The Boeing Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 193.56,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.487,
+     "direction_hit": 0.48,
+     "direction_base": 0.54,
+     "avg_width_80": 0.126
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.447,
+     "direction_hit": 0.56,
+     "direction_base": 0.6,
+     "avg_width_80": 0.235
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.373,
+     "direction_hit": 0.52,
+     "direction_base": 0.64,
+     "avg_width_80": 0.456
+    }
+   }
+  },
+  {
+   "ticker": "UNP",
+   "name": "Union Pacific Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1980-01-02",
+   "last_close": 278.28,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.447,
+     "direction_hit": 0.62,
+     "direction_base": 0.56,
+     "avg_width_80": 0.088
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.46,
+     "direction_hit": 0.627,
+     "direction_base": 0.6,
+     "avg_width_80": 0.196
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.4,
+     "direction_hit": 0.727,
+     "direction_base": 0.673,
+     "avg_width_80": 0.323
+    }
+   }
+  },
+  {
+   "ticker": "UPS",
+   "name": "United Parcel Service, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1999-11-10",
+   "last_close": 93.02,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.507,
+     "direction_hit": 0.567,
+     "direction_base": 0.533,
+     "avg_width_80": 0.089
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.86,
+     "inside_50": 0.58,
+     "direction_hit": 0.587,
+     "direction_base": 0.573,
+     "avg_width_80": 0.222
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.66,
+     "inside_50": 0.347,
+     "direction_hit": 0.527,
+     "direction_base": 0.633,
+     "avg_width_80": 0.36
+    }
+   }
+  },
+  {
+   "ticker": "LMT",
+   "name": "Lockheed Martin Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 505.41,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.493,
+     "direction_hit": 0.533,
+     "direction_base": 0.553,
+     "avg_width_80": 0.087
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.513,
+     "direction_hit": 0.573,
+     "direction_base": 0.607,
+     "avg_width_80": 0.168
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.513,
+     "direction_hit": 0.667,
+     "direction_base": 0.713,
+     "avg_width_80": 0.278
+    }
+   }
+  },
+  {
+   "ticker": "RTX",
+   "name": "RTX Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-04-02",
+   "last_close": 184.68,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.527,
+     "direction_hit": 0.54,
+     "direction_base": 0.553,
+     "avg_width_80": 0.096
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.44,
+     "direction_hit": 0.633,
+     "direction_base": 0.62,
+     "avg_width_80": 0.19
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.453,
+     "direction_hit": 0.633,
+     "direction_base": 0.653,
+     "avg_width_80": 0.29
+    }
+   }
+  },
+  {
+   "ticker": "NEE",
+   "name": "NextEra Energy, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1973-02-21",
+   "last_close": 76.83,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.873,
+     "inside_50": 0.567,
+     "direction_hit": 0.52,
+     "direction_base": 0.56,
+     "avg_width_80": 0.093
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.533,
+     "direction_hit": 0.593,
+     "direction_base": 0.58,
+     "avg_width_80": 0.18
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.927,
+     "inside_50": 0.593,
+     "direction_hit": 0.66,
+     "direction_base": 0.673,
+     "avg_width_80": 0.338
+    }
+   }
+  },
+  {
+   "ticker": "DUK",
+   "name": "Duke Energy Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1980-03-17",
+   "last_close": 114.13,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.52,
+     "direction_hit": 0.527,
+     "direction_base": 0.553,
+     "avg_width_80": 0.064
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.487,
+     "direction_hit": 0.493,
+     "direction_base": 0.587,
+     "avg_width_80": 0.146
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.407,
+     "direction_hit": 0.573,
+     "direction_base": 0.64,
+     "avg_width_80": 0.228
+    }
+   }
+  },
+  {
+   "ticker": "SO",
+   "name": "The Southern Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 94.6,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.527,
+     "direction_hit": 0.507,
+     "direction_base": 0.56,
+     "avg_width_80": 0.062
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.467,
+     "direction_hit": 0.6,
+     "direction_base": 0.593,
+     "avg_width_80": 0.146
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.513,
+     "direction_hit": 0.593,
+     "direction_base": 0.667,
+     "avg_width_80": 0.24
+    }
+   }
+  },
+  {
+   "ticker": "VZ",
+   "name": "Verizon Communications Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1983-11-21",
+   "last_close": 45.92,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.507,
+     "direction_hit": 0.48,
+     "direction_base": 0.547,
+     "avg_width_80": 0.079
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.547,
+     "direction_hit": 0.52,
+     "direction_base": 0.573,
+     "avg_width_80": 0.142
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.42,
+     "direction_hit": 0.507,
+     "direction_base": 0.633,
+     "avg_width_80": 0.267
+    }
+   }
+  },
+  {
+   "ticker": "T",
+   "name": "AT&T Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1983-11-21",
+   "last_close": 24.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.487,
+     "direction_hit": 0.507,
+     "direction_base": 0.547,
+     "avg_width_80": 0.091
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.527,
+     "direction_hit": 0.48,
+     "direction_base": 0.58,
+     "avg_width_80": 0.154
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.687,
+     "inside_50": 0.38,
+     "direction_hit": 0.527,
+     "direction_base": 0.627,
+     "avg_width_80": 0.311
+    }
+   }
+  },
+  {
+   "ticker": "DIS",
+   "name": "The Walt Disney Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1962-01-02",
+   "last_close": 102.19,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.473,
+     "direction_hit": 0.567,
+     "direction_base": 0.54,
+     "avg_width_80": 0.099
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.447,
+     "direction_hit": 0.527,
+     "direction_base": 0.587,
+     "avg_width_80": 0.243
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.673,
+     "inside_50": 0.373,
+     "direction_hit": 0.573,
+     "direction_base": 0.673,
+     "avg_width_80": 0.423
+    }
+   }
+  },
+  {
+   "ticker": "MCD",
+   "name": "McDonald's Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1966-07-05",
+   "last_close": 231.89,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.407,
+     "direction_hit": 0.52,
+     "direction_base": 0.547,
+     "avg_width_80": 0.068
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.48,
+     "direction_hit": 0.587,
+     "direction_base": 0.587,
+     "avg_width_80": 0.139
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.627,
+     "direction_hit": 0.773,
+     "direction_base": 0.7,
+     "avg_width_80": 0.253
+    }
+   }
+  },
+  {
+   "ticker": "NKE",
+   "name": "NIKE, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1980-12-02",
+   "last_close": 33.87,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.48,
+     "direction_hit": 0.533,
+     "direction_base": 0.533,
+     "avg_width_80": 0.114
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.48,
+     "direction_hit": 0.567,
+     "direction_base": 0.553,
+     "avg_width_80": 0.239
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.433,
+     "direction_hit": 0.56,
+     "direction_base": 0.62,
+     "avg_width_80": 0.433
+    }
+   }
+  },
+  {
+   "ticker": "SBUX",
+   "name": "Starbucks Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1992-06-26",
+   "last_close": 94.71,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.493,
+     "direction_hit": 0.5,
+     "direction_base": 0.54,
+     "avg_width_80": 0.107
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.46,
+     "direction_hit": 0.587,
+     "direction_base": 0.6,
+     "avg_width_80": 0.212
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.513,
+     "direction_hit": 0.613,
+     "direction_base": 0.64,
+     "avg_width_80": 0.345
+    }
+   }
+  },
+  {
+   "ticker": "TGT",
+   "name": "Target Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1973-02-21",
+   "last_close": 156,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.527,
+     "direction_hit": 0.533,
+     "direction_base": 0.547,
+     "avg_width_80": 0.113
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.553,
+     "direction_hit": 0.513,
+     "direction_base": 0.567,
+     "avg_width_80": 0.233
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.507,
+     "direction_hit": 0.593,
+     "direction_base": 0.613,
+     "avg_width_80": 0.409
+    }
+   }
+  },
+  {
+   "ticker": "LOW",
+   "name": "Lowe's Companies, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 258.7,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.507,
+     "direction_hit": 0.48,
+     "direction_base": 0.56,
+     "avg_width_80": 0.1
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.893,
+     "inside_50": 0.627,
+     "direction_hit": 0.6,
+     "direction_base": 0.62,
+     "avg_width_80": 0.195
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.453,
+     "direction_hit": 0.66,
+     "direction_base": 0.72,
+     "avg_width_80": 0.33
+    }
+   }
+  },
+  {
+   "ticker": "AMGN",
+   "name": "Amgen Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1983-06-17",
+   "last_close": 403.04,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.413,
+     "direction_hit": 0.527,
+     "direction_base": 0.553,
+     "avg_width_80": 0.09
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.447,
+     "direction_hit": 0.54,
+     "direction_base": 0.6,
+     "avg_width_80": 0.182
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.533,
+     "direction_hit": 0.54,
+     "direction_base": 0.653,
+     "avg_width_80": 0.315
+    }
+   }
+  },
+  {
+   "ticker": "PFE",
+   "name": "Pfizer Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 27.8,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.507,
+     "direction_hit": 0.5,
+     "direction_base": 0.547,
+     "avg_width_80": 0.087
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.447,
+     "direction_hit": 0.513,
+     "direction_base": 0.56,
+     "avg_width_80": 0.189
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.48,
+     "direction_hit": 0.4,
+     "direction_base": 0.587,
+     "avg_width_80": 0.31
+    }
+   }
+  },
+  {
+   "ticker": "GILD",
+   "name": "Gilead Sciences, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1992-01-22",
+   "last_close": 118.4,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.453,
+     "direction_hit": 0.613,
+     "direction_base": 0.547,
+     "avg_width_80": 0.094
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.46,
+     "direction_hit": 0.633,
+     "direction_base": 0.62,
+     "avg_width_80": 0.189
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.653,
+     "inside_50": 0.347,
+     "direction_hit": 0.733,
+     "direction_base": 0.7,
+     "avg_width_80": 0.293
+    }
+   }
+  },
+  {
+   "ticker": "BMY",
+   "name": "Bristol-Myers Squibb Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 46.85,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.467,
+     "direction_hit": 0.427,
+     "direction_base": 0.54,
+     "avg_width_80": 0.08
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.587,
+     "direction_hit": 0.507,
+     "direction_base": 0.58,
+     "avg_width_80": 0.173
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.6,
+     "direction_hit": 0.473,
+     "direction_base": 0.593,
+     "avg_width_80": 0.306
+    }
+   }
+  },
+  {
+   "ticker": "CVS",
+   "name": "CVS Health Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 74.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.533,
+     "direction_hit": 0.473,
+     "direction_base": 0.553,
+     "avg_width_80": 0.116
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.493,
+     "direction_hit": 0.667,
+     "direction_base": 0.627,
+     "avg_width_80": 0.246
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.86,
+     "inside_50": 0.56,
+     "direction_hit": 0.6,
+     "direction_base": 0.673,
+     "avg_width_80": 0.389
+    }
+   }
+  },
+  {
+   "ticker": "GS",
+   "name": "The Goldman Sachs Group, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1999-05-04",
+   "last_close": 902.56,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.473,
+     "direction_hit": 0.56,
+     "direction_base": 0.56,
+     "avg_width_80": 0.106
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.553,
+     "direction_hit": 0.573,
+     "direction_base": 0.613,
+     "avg_width_80": 0.222
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.553,
+     "direction_hit": 0.713,
+     "direction_base": 0.707,
+     "avg_width_80": 0.41
+    }
+   }
+  },
+  {
+   "ticker": "MS",
+   "name": "Morgan Stanley",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1993-02-23",
+   "last_close": 190.31,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.5,
+     "direction_hit": 0.473,
+     "direction_base": 0.56,
+     "avg_width_80": 0.128
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.54,
+     "direction_hit": 0.573,
+     "direction_base": 0.62,
+     "avg_width_80": 0.242
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.42,
+     "direction_hit": 0.633,
+     "direction_base": 0.667,
+     "avg_width_80": 0.403
+    }
+   }
+  },
+  {
+   "ticker": "WFC",
+   "name": "Wells Fargo & Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 80.45,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.507,
+     "direction_hit": 0.487,
+     "direction_base": 0.54,
+     "avg_width_80": 0.101
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.447,
+     "direction_hit": 0.547,
+     "direction_base": 0.587,
+     "avg_width_80": 0.223
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.513,
+     "direction_hit": 0.693,
+     "direction_base": 0.647,
+     "avg_width_80": 0.367
+    }
+   }
+  },
+  {
+   "ticker": "AXP",
+   "name": "American Express Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 302.78,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.58,
+     "direction_hit": 0.447,
+     "direction_base": 0.547,
+     "avg_width_80": 0.098
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.513,
+     "direction_hit": 0.54,
+     "direction_base": 0.587,
+     "avg_width_80": 0.219
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.487,
+     "direction_hit": 0.753,
+     "direction_base": 0.713,
+     "avg_width_80": 0.424
+    }
+   }
+  },
+  {
+   "ticker": "C",
+   "name": "Citigroup Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1977-01-03",
+   "last_close": 128.5,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.46,
+     "direction_hit": 0.513,
+     "direction_base": 0.547,
+     "avg_width_80": 0.12
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.513,
+     "direction_hit": 0.6,
+     "direction_base": 0.58,
+     "avg_width_80": 0.259
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.58,
+     "direction_hit": 0.593,
+     "direction_base": 0.633,
+     "avg_width_80": 0.466
+    }
+   }
+  },
+  {
+   "ticker": "BLK",
+   "name": "BlackRock, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1999-10-01",
+   "last_close": 1162.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.513,
+     "direction_hit": 0.52,
+     "direction_base": 0.547,
+     "avg_width_80": 0.109
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.56,
+     "direction_hit": 0.54,
+     "direction_base": 0.6,
+     "avg_width_80": 0.218
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.747,
+     "inside_50": 0.44,
+     "direction_hit": 0.68,
+     "direction_base": 0.66,
+     "avg_width_80": 0.358
+    }
+   }
+  },
+  {
+   "ticker": "SCHW",
+   "name": "The Charles Schwab Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1987-09-22",
+   "last_close": 96.7,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.353,
+     "direction_hit": 0.553,
+     "direction_base": 0.553,
+     "avg_width_80": 0.128
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.473,
+     "direction_hit": 0.607,
+     "direction_base": 0.587,
+     "avg_width_80": 0.261
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.467,
+     "direction_hit": 0.553,
+     "direction_base": 0.653,
+     "avg_width_80": 0.441
+    }
+   }
+  },
+  {
+   "ticker": "COP",
+   "name": "ConocoPhillips",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1981-12-31",
+   "last_close": 126.75,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.533,
+     "direction_hit": 0.48,
+     "direction_base": 0.547,
+     "avg_width_80": 0.106
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.5,
+     "direction_hit": 0.527,
+     "direction_base": 0.633,
+     "avg_width_80": 0.211
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.813,
+     "inside_50": 0.533,
+     "direction_hit": 0.527,
+     "direction_base": 0.633,
+     "avg_width_80": 0.396
+    }
+   }
+  },
+  {
+   "ticker": "SLB",
+   "name": "SLB N.V.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1981-12-31",
+   "last_close": 48.74,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.793,
+     "inside_50": 0.467,
+     "direction_hit": 0.54,
+     "direction_base": 0.54,
+     "avg_width_80": 0.121
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.427,
+     "direction_hit": 0.553,
+     "direction_base": 0.587,
+     "avg_width_80": 0.237
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.353,
+     "direction_hit": 0.507,
+     "direction_base": 0.62,
+     "avg_width_80": 0.469
+    }
+   }
+  },
+  {
+   "ticker": "LIN",
+   "name": "Linde plc",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1992-06-17",
+   "last_close": 466.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.52,
+     "direction_hit": 0.54,
+     "direction_base": 0.587,
+     "avg_width_80": 0.067
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.82,
+     "inside_50": 0.54,
+     "direction_hit": 0.507,
+     "direction_base": 0.613,
+     "avg_width_80": 0.164
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.693,
+     "inside_50": 0.433,
+     "direction_hit": 0.82,
+     "direction_base": 0.68,
+     "avg_width_80": 0.229
+    }
+   }
+  },
+  {
+   "ticker": "FDX",
+   "name": "FedEx Corporation",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1978-04-12",
+   "last_close": 238.9,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.54,
+     "direction_hit": 0.567,
+     "direction_base": 0.54,
+     "avg_width_80": 0.118
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.52,
+     "direction_hit": 0.613,
+     "direction_base": 0.607,
+     "avg_width_80": 0.229
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.52,
+     "direction_hit": 0.653,
+     "direction_base": 0.687,
+     "avg_width_80": 0.445
+    }
+   }
+  },
+  {
+   "ticker": "KHC",
+   "name": "The Kraft Heinz Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "2015-07-06",
+   "last_close": 26.15,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.513,
+     "direction_hit": 0.467,
+     "direction_base": 0.533,
+     "avg_width_80": 0.078
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.867,
+     "inside_50": 0.58,
+     "direction_hit": 0.5,
+     "direction_base": 0.587,
+     "avg_width_80": 0.161
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.46,
+     "direction_hit": 0.533,
+     "direction_base": 0.627,
+     "avg_width_80": 0.293
+    }
+   }
+  },
+  {
+   "ticker": "MMM",
+   "name": "3M Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1970-01-02",
+   "last_close": 156.4,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.467,
+     "direction_hit": 0.473,
+     "direction_base": 0.553,
+     "avg_width_80": 0.086
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.453,
+     "direction_hit": 0.527,
+     "direction_base": 0.573,
+     "avg_width_80": 0.205
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.847,
+     "inside_50": 0.573,
+     "direction_hit": 0.58,
+     "direction_base": 0.653,
+     "avg_width_80": 0.326
+    }
+   }
+  },
+  {
+   "ticker": "F",
+   "name": "Ford Motor Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1972-06-01",
+   "last_close": 12.35,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.48,
+     "direction_hit": 0.453,
+     "direction_base": 0.547,
+     "avg_width_80": 0.141
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.48,
+     "direction_hit": 0.507,
+     "direction_base": 0.607,
+     "avg_width_80": 0.293
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.787,
+     "inside_50": 0.473,
+     "direction_hit": 0.713,
+     "direction_base": 0.66,
+     "avg_width_80": 0.438
+    }
+   }
+  },
+  {
+   "ticker": "GM",
+   "name": "General Motors Company",
+   "groups": [
+    "other"
+   ],
+   "first_date": "2010-11-18",
+   "last_close": 61.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.507,
+     "direction_hit": 0.553,
+     "direction_base": 0.54,
+     "avg_width_80": 0.137
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.407,
+     "direction_hit": 0.587,
+     "direction_base": 0.6,
+     "avg_width_80": 0.263
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.767,
+     "inside_50": 0.38,
+     "direction_hit": 0.66,
+     "direction_base": 0.647,
+     "avg_width_80": 0.421
+    }
+   }
+  },
+  {
+   "ticker": "ISRG",
+   "name": "Intuitive Surgical, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2000-06-16",
+   "last_close": 391.95,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.867,
+     "inside_50": 0.54,
+     "direction_hit": 0.58,
+     "direction_base": 0.58,
+     "avg_width_80": 0.118
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.527,
+     "direction_hit": 0.52,
+     "direction_base": 0.627,
+     "avg_width_80": 0.223
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.7,
+     "inside_50": 0.447,
+     "direction_hit": 0.613,
+     "direction_base": 0.733,
+     "avg_width_80": 0.465
+    }
+   }
+  },
+  {
+   "ticker": "VRTX",
+   "name": "Vertex Pharmaceuticals Incorporated",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1991-07-24",
+   "last_close": 504.73,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.833,
+     "inside_50": 0.527,
+     "direction_hit": 0.527,
+     "direction_base": 0.567,
+     "avg_width_80": 0.107
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.78,
+     "inside_50": 0.433,
+     "direction_hit": 0.553,
+     "direction_base": 0.6,
+     "avg_width_80": 0.192
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.513,
+     "direction_hit": 0.7,
+     "direction_base": 0.727,
+     "avg_width_80": 0.36
+    }
+   }
+  },
+  {
+   "ticker": "NVO",
+   "name": "Novo Nordisk A/S",
+   "groups": [
+    "other"
+   ],
+   "first_date": "1981-04-30",
+   "last_close": 58.1,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.84,
+     "inside_50": 0.473,
+     "direction_hit": 0.46,
+     "direction_base": 0.54,
+     "avg_width_80": 0.147
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.867,
+     "inside_50": 0.587,
+     "direction_hit": 0.467,
+     "direction_base": 0.573,
+     "avg_width_80": 0.265
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.407,
+     "direction_hit": 0.673,
+     "direction_base": 0.653,
+     "avg_width_80": 0.531
+    }
+   }
+  },
+  {
+   "ticker": "AXON",
+   "name": "Axon Enterprise, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2001-05-08",
+   "last_close": 731.6,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.467,
+     "direction_hit": 0.493,
+     "direction_base": 0.58,
+     "avg_width_80": 0.157
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.46,
+     "direction_hit": 0.6,
+     "direction_base": 0.633,
+     "avg_width_80": 0.372
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.827,
+     "inside_50": 0.56,
+     "direction_hit": 0.68,
+     "direction_base": 0.727,
+     "avg_width_80": 0.641
+    }
+   }
+  },
+  {
+   "ticker": "CMG",
+   "name": "Chipotle Mexican Grill, Inc.",
+   "groups": [
+    "growth"
+   ],
+   "first_date": "2006-01-26",
+   "last_close": 32.36,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.553,
+     "direction_hit": 0.507,
+     "direction_base": 0.547,
+     "avg_width_80": 0.131
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.753,
+     "inside_50": 0.42,
+     "direction_hit": 0.58,
+     "direction_base": 0.613,
+     "avg_width_80": 0.241
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.88,
+     "inside_50": 0.62,
+     "direction_hit": 0.667,
+     "direction_base": 0.667,
+     "avg_width_80": 0.409
+    }
+   }
+  },
+  {
+   "ticker": "ELF",
+   "name": "e.l.f. Beauty, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2016-09-22",
+   "last_close": 118.3,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.72,
+     "inside_50": 0.427,
+     "direction_hit": 0.453,
+     "direction_base": 0.547,
+     "avg_width_80": 0.241
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.733,
+     "inside_50": 0.433,
+     "direction_hit": 0.48,
+     "direction_base": 0.593,
+     "avg_width_80": 0.513
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.707,
+     "inside_50": 0.367,
+     "direction_hit": 0.607,
+     "direction_base": 0.687,
+     "avg_width_80": 0.99
+    }
+   }
+  },
+  {
+   "ticker": "ENPH",
+   "name": "Enphase Energy, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2012-03-30",
+   "last_close": 36.45,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.76,
+     "inside_50": 0.473,
+     "direction_hit": 0.56,
+     "direction_base": 0.547,
+     "avg_width_80": 0.273
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.673,
+     "inside_50": 0.387,
+     "direction_hit": 0.66,
+     "direction_base": 0.58,
+     "avg_width_80": 0.637
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.553,
+     "direction_hit": 0.567,
+     "direction_base": 0.627,
+     "avg_width_80": 1.156
+    }
+   }
+  },
+  {
+   "ticker": "ROKU",
+   "name": "Roku, Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2017-09-28",
+   "last_close": 98.2,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.713,
+     "inside_50": 0.38,
+     "direction_hit": 0.533,
+     "direction_base": 0.54,
+     "avg_width_80": 0.278
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.74,
+     "inside_50": 0.48,
+     "direction_hit": 0.647,
+     "direction_base": 0.573,
+     "avg_width_80": 0.51
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.487,
+     "direction_hit": 0.56,
+     "direction_base": 0.62,
+     "avg_width_80": 0.873
+    }
+   }
+  },
+  {
+   "ticker": "PYPL",
+   "name": "PayPal Holdings, Inc.",
+   "groups": [
+    "other"
+   ],
+   "first_date": "2015-07-06",
+   "last_close": 52.8,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.44,
+     "direction_hit": 0.5,
+     "direction_base": 0.527,
+     "avg_width_80": 0.115
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.8,
+     "inside_50": 0.453,
+     "direction_hit": 0.547,
+     "direction_base": 0.56,
+     "avg_width_80": 0.29
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.673,
+     "inside_50": 0.413,
+     "direction_hit": 0.533,
+     "direction_base": 0.6,
+     "avg_width_80": 0.497
+    }
+   }
+  },
+  {
+   "ticker": "SNAP",
+   "name": "Snap Inc.",
+   "groups": [
+    "volatile"
+   ],
+   "first_date": "2017-03-02",
+   "last_close": 8.15,
+   "h": {
+    "5": {
+     "n": 150,
+     "inside_80": 0.807,
+     "inside_50": 0.507,
+     "direction_hit": 0.513,
+     "direction_base": 0.527,
+     "avg_width_80": 0.291
+    },
+    "21": {
+     "n": 150,
+     "inside_80": 0.773,
+     "inside_50": 0.493,
+     "direction_hit": 0.447,
+     "direction_base": 0.567,
+     "avg_width_80": 0.579
+    },
+    "63": {
+     "n": 150,
+     "inside_80": 0.727,
+     "inside_50": 0.413,
+     "direction_hit": 0.54,
+     "direction_base": 0.553,
+     "avg_width_80": 1.016
+    }
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "ticker": "CHYM",
+   "reason": "under 1 year of history"
+  },
+  {
+   "ticker": "SQ",
+   "reason": "Yahoo returned no data (the company now trades as XYZ)"
+  },
+  {
+   "ticker": "ANSS",
+   "reason": "no prices after 2025-07-17 (acquired by Synopsys)"
+  },
+  {
+   "ticker": "WBA",
+   "reason": "no prices after 2025-08-28 (taken private)"
+  }
+ ],
+ "notes": [
+  "Each stock is tested on up to 150 past dates spread across its history, each forecast using only prices up to that date (no look-ahead).",
+  "Free Yahoo data: delisted companies are missing (survivorship bias), which flatters any backtest a little."
+ ]
+}

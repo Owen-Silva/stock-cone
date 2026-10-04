@@ -436,6 +436,7 @@ class Engine:
         self.name_failed = set()
         self.track = {}
         self.track_threads = {}
+        self.track_width = {}   # track key -> {h: avg_width_80}; accuracy scoreboard only
         self.version = 0
         if raw is None:
             self._load_json_caches()
@@ -458,6 +459,23 @@ class Engine:
         with open(tmp, "w", encoding="utf-8") as fh:
             json.dump(obj, fh)
         os.replace(tmp, path)
+
+    def save_track(self):
+        """Write the track cache, first merging in entries another process
+        (e.g. `python accuracy.py`) wrote since we loaded, so neither clobbers
+        the other. Entries are keyed by ticker + last bar, so a merge never
+        mixes records from different data."""
+        if self.raw is not None:
+            return
+        with self.lock:
+            try:
+                with open(TRACK_PATH, encoding="utf-8") as fh:
+                    disk = json.load(fh)
+            except (OSError, ValueError):
+                disk = {}
+            for k, v in disk.items():
+                self.track.setdefault(k, v)
+            self._save_json(TRACK_PATH, dict(self.track))
 
     def _prices(self, t):
         if self.raw is not None:
@@ -824,8 +842,8 @@ class Engine:
         last = day_str(td.day[-1]) if td is not None else "?"
         return f"{t}|{last}|v2"
 
-    def compute_track(self, t):
-        """Walk-forward record for every horizon at once (distances are shared).
+    def track_records(self, t):
+        """Walk-forward records for every horizon at once (distances are shared).
         Split over TRACK_THREADS threads: numpy releases the GIL in the big
         array loops, so this roughly halves the wall time on a first request."""
         td = self.get_ticker(t)
@@ -844,7 +862,24 @@ class Engine:
             th.join()
         if any(p is None for p in parts):
             raise RuntimeError("a track worker thread failed")
-        return {str(h): self.score([r for p in parts for r in p[h]]) for h in HORIZONS}
+        return {h: [r for p in parts for r in p[h]] for h in HORIZONS}
+
+    @staticmethod
+    def avg_width_80(recs):
+        """Mean 80% band width (p90 / p10 - 1) over walk-forward records. Used
+        only by the accuracy scoreboard; never part of `track`."""
+        if not recs:
+            return None
+        aq = np.array([x["aq"] for x in recs])
+        return r4(np.mean(np.expm1(aq[:, 4] - aq[:, 0])))
+
+    def compute_track(self, t):
+        """The track record for every horizon: score() of track_records().
+        Side effect for the accuracy scoreboard: the mean 80% band width from
+        the same pass goes to self.track_width (never into the track itself)."""
+        recs = self.track_records(t)
+        self.track_width[self._track_key(t)] = {str(h): self.avg_width_80(recs[h]) for h in HORIZONS}
+        return {str(h): self.score(recs[h]) for h in HORIZONS}
 
     def get_track(self, t, h, wait=0.0):
         """Cached track record, or start computing it in the background and
@@ -860,7 +895,7 @@ class Engine:
                         t0 = time.time()
                         res = self.compute_track(t)
                         self.track[key] = res
-                        self._save_json(TRACK_PATH, self.track)
+                        self.save_track()
                         if not self.quiet:
                             log(f"track {t}: {res} ({time.time() - t0:.1f}s)")
                     except Exception as e:
