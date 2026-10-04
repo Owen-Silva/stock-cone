@@ -163,3 +163,17 @@ ticker + horizon (same function, same cache), so clicking through never disagree
   and returns `status: "building"` with whatever is done so far. Never block a request.
 - The universe lives in `universe.py` (hand-curated, grouped). It does NOT change the
   analog pool: adding the scoreboard must not change any forecast.
+
+## Optional `event` field on /api/forecast (added 2026-10-04 overnight)
+
+```jsonc
+"event": {                       // null when no known event falls inside the horizon, or for replays
+  "type": "earnings",
+  "date": "2026-10-23",          // next scheduled earnings date (Yahoo calendar), live forecasts only
+  "in_window": true,
+  "widen": 1.18                  // factor applied to the cone's spread at the horizon end because of it
+}
+```
+
+Applied only to the live (latest-bar) forecast: past earnings dates are not known
+point-in-time, so replays and the track record never use it.
