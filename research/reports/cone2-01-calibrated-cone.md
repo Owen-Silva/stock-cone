@@ -1,5 +1,7 @@
 # cone2-01: a calibrated cone (centre + HAR width + calibration + analog blend)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane `cone-combo`, 2026-10-03/04. Code: `research/models_cone2.py` (final model `cone2`,
 parameters frozen as literals between `# FROZEN FINAL` markers). Data outputs:
 `research/results/cone2_*`. DEV and VAL only; TEST was never opened.

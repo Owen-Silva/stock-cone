@@ -1,5 +1,7 @@
 # Expectancy 01: does payoff asymmetry make money, and where does it come from?
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane `payoff`, 2026-10-04. Script `research/expectancy.py` (runs in about 10 s), results
 `research/results/expectancy_summary.json`.
 

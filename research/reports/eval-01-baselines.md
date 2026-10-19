@@ -1,5 +1,7 @@
 # eval-01: the harness, and three baselines on DEV and VAL
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane `cone-harness`, 2026-10-03. Files: `research/splits.py`, `research/harness.py`,
 `research/models_base.py`, outputs in `research/results/`.
 

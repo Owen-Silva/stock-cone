@@ -1,5 +1,7 @@
 # test-02 — The locked 2019+ check of the cone (coordinator, 2026-10-04 ~01:30)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 The second and last TEST open of the night. Every model was frozen before this run, and
 the product model (`cone2_f_conf_dev`) was pre-registered in `research/PLAN.md` (commit
 170c130) before TEST was opened. Nothing was tuned on these numbers.

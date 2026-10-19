@@ -24,8 +24,8 @@ stock-cone/
   web/mock-forecast.json   a response matching this contract; index.html uses it ONLY with ?mock=1
 ```
 
-Python: `python` (3.13, has
-yfinance 1.2, pandas 3.0, numpy 2.2; NO flask). In Git Bash, bare `python` is a Store stub, so use the full path.
+Python: 3.13 (yfinance 1.2, pandas 3.0, numpy 2.2; NO flask; see `requirements.txt`). On
+Windows, bare `python` can be the Microsoft Store stub: use `py -3` or a full path.
 
 ## GET /api/forecast
 

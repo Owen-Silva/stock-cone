@@ -1,5 +1,7 @@
 # timing-01: Market timing and risk regimes on the S&P 500
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane: cone-timing, 2026-10-03. Code: `research/timing.py`. Data outputs: `research/results/timing_*`.
 Nothing here was computed on 2019+ data. TEST has not been run.
 

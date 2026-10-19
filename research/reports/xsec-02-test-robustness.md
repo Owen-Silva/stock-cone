@@ -1,5 +1,7 @@
 # xsec-02: how much of the TEST momentum result is survivorship?
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane cone-xrobust, 2026-10-04. Code: `research/xsec_robust_test.py`. Data: `research/results/xrobust_*`. Measurement only: the frozen `mom_12_1` signal (orient +1, trade at the next close, 10 bps per side, top quintile, equal weight) run on TEST (2019-01..2026-10). Nothing was designed, tuned or chosen on TEST.
 
 **Short answer.** The TEST headline (+32%/yr weekly, +15%/yr monthly over the equal-weight universe) is mostly about which stocks are in the list. Restrict to stocks that were already large and liquid, or that were not picked for recent runs, and the excess falls to **+4 to +13%/yr with t 1.0 to 2.1**. Then drop the five biggest contributors and it falls to about **0 to +6%**. Half the full-universe excess comes from 10 names, led by GME, the crypto miners, PLUG and CVNA.

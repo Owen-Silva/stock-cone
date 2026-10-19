@@ -27,7 +27,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 import engine  # noqa: E402  (BASKET constant only)
-from universe import UNIVERSE  # noqa: E402
+from universe import UNIVERSE, WATCHLIST_ID  # noqa: E402
 from research import backtest as bt  # noqa: E402
 from research import splits  # noqa: E402
 from research import xsec  # noqa: E402
@@ -115,7 +115,7 @@ def main():
         "b_analog_pool": set(T) & set(engine.BASKET),
         "c_mega": in_g("mega"),
         "d_other": in_g("other"),
-        "e_ex_volatile_traded": set(T) - in_g("volatile") - in_g("watchlist"),
+        "e_ex_volatile_traded": set(T) - in_g("volatile") - in_g(WATCHLIST_ID),  # label kept for result-file continuity
         "f_volatile": in_g("volatile"),
     }
 

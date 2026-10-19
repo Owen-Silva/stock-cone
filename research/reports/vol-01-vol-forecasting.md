@@ -1,5 +1,7 @@
 # vol-01 — Volatility forecasting for the cone (DEV fit, VAL choose; no 2019+ data)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Written by the coordinator from the vol lane's final report (subagents cannot write .md
 files here). Code: `research/volforecast.py` (`selfcheck` passes: no look-ahead on 150
 points, frozen coefficients == DEV fit). Harness models: `vol_har`, `vol_har_drift`

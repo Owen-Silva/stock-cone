@@ -1,0 +1,8 @@
+# Runtime (server.py, engine.py, accuracy.py, forward.py, calibrate.py, cone_model.py)
+yfinance>=1.0,<2
+pandas>=2.2
+numpy>=2.0
+tzdata>=2024.1; sys_platform == "win32"   # zoneinfo has no time-zone database on Windows without it
+
+# Optional: nicer markdown tables in research/xsec.py reports
+# tabulate>=0.9

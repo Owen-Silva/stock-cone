@@ -1,5 +1,7 @@
 # event-01: widening the cone around earnings-like events (from price and volume only)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane `cone-event`, 2026-10-04. Code: `research/models_event.py`. Outputs: `research/results/event_*`.
 The base model is `vol_har_drift` (HAR sigma from `research/volforecast.py`, own walk-forward
 drift, frozen "drift" z). DEV was used for fitting, VAL for choosing between variants. TEST was never opened.

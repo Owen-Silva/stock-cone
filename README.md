@@ -1,5 +1,14 @@
 # Stock Cone
 
+A local web app that draws a calibrated price-range cone for any stock, and keeps an honest scoreboard of how often it was right.
+
+> **Not financial advice.** This is an educational research tool. The cone is a range of past
+> outcomes, not a prediction, a signal or a recommendation to buy or sell anything. Its own
+> research finds **no directional edge** (see "How the cone works now"). No warranty: see `LICENSE`.
+
+![Stock Cone chart view](docs/screenshot.png)
+<!-- TODO: add docs/screenshot.png (a real capture of the Chart view with Future on). -->
+
 Type a ticker, see its chart. Flip **Future** and a cone is drawn forward from the
 last close: the typical path plus 50% and 80% bands, from a calibrated volatility
 forecast blended with what happened after the most similar past setups (see "How
@@ -9,15 +18,47 @@ the cone, then reveals what really happened. The page shows the cone's own track
 It is a local prototype. Free Yahoo data, no accounts, nothing leaves your machine
 except the price downloads.
 
+**Data.** Prices are downloaded by each user from Yahoo Finance through
+[yfinance](https://github.com/ranaroussi/yfinance) and cached in `data/` (gitignored).
+No Yahoo data is redistributed in this repo; Yahoo's terms allow personal use only.
+`web/mock-forecast.json` is synthetic (a seeded random walk from
+`tools/make_mock_forecast.py`).
+
+## Requirements
+
+- Python 3.11+ (developed on 3.13), on Windows, macOS or Linux.
+- `pip install -r requirements.txt` (yfinance, pandas, numpy; tzdata on Windows).
+- A network connection for the first price downloads.
+
+## Install
+
+```
+git clone https://github.com/Owen-Silva/stock-cone.git
+cd stock-cone
+python -m pip install -r requirements.txt
+```
+
 ## Run it
 
-Double-click `run.bat`. It starts the server and opens http://127.0.0.1:8642.
-
-Or by hand:
-
 ```
-"python" server.py
+python server.py
 ```
+
+then open http://127.0.0.1:8642. On Windows you can double-click `run.bat` instead: it
+starts the server and opens the page. It uses `%STOCK_CONE_PYTHON%` if you set it to a
+`python.exe` path, otherwise the `py -3` launcher, otherwise `python` on PATH.
+
+Add `?mock=1` to the address to see the page with synthetic data and no server calls.
+
+## Configure
+
+- **Watchlist.** The Accuracy scoreboard's first group is a watchlist. The repo ships a
+  neutral default in `universe.py`. To use your own, create `universe.local.json` next to
+  it (gitignored), for example
+  `{"label": "My watchlist", "tickers": "AAPL MSFT NVDA"}`. Optional keys: `id` (group
+  id, default `watchlist`) and `exclude` (extra ETF tickers the guard rejects). Delete
+  `data/accuracy.json` afterwards so the scoreboard rebuilds.
+- **Python on Windows.** `STOCK_CONE_PYTHON` picks the interpreter `run.bat` uses.
 
 The first start downloads the analog pool (44 tickers plus the S&P 500 index,
 about 40 seconds, progress in the console) into `data/`. After that, prices are
@@ -39,8 +80,8 @@ plus `GET /api/health` (warm-up progress).
 ## Accuracy scoreboard
 
 `GET /api/accuracy` (and the Accuracy page) shows the walk-forward track record
-for about 160 hand-picked individual stocks at all three horizons: the stocks
-on the watchlist, mega caps, growth and semis, volatile small caps, and other
+for about 160 hand-picked individual stocks at all three horizons: a watchlist
+(see "Configure"), mega caps, growth and semis, volatile small caps, and other
 sectors. No ETFs. The list and its groups live in `universe.py`; it does not touch
 the analog pool, so forecasts are unchanged.
 
@@ -68,12 +109,17 @@ Accuracy page shows it under "Live test"; `GET /api/forward` returns it. By hand
 `--selfcheck` (logs 2026-05-01 into a temp folder and checks it against real
 prices). Early results are a small, correlated sample: give it months.
 
+**Status: paused.** The forward log only grows while the server is running, and it has
+not been running since 2026-10-02, so there are no live results yet, for the cone or for
+the momentum check below.
+
 The live test also runs one pre-registered direction check (rules frozen in
 `research/PLAN.md`, 2026-10-04): an equal-weight top fifth of the 155 stocks by 12-1 month
 momentum, held a month, scored after costs against all 155 and SPY
 (`data/forward/mom-<asof>.json`; the `momentum` section of `/api/forward`). No verdict
 before 12 monthly results; if the average after-cost lead over all 155 is not above zero
-by then, the tilt is declared dead.
+by then, the tilt is declared dead. **This momentum test is not running** (see "Status"
+above), so it has no results; nothing here claims the tilt works.
 
 ## How the cone works now (v2, since 2026-10-04)
 
@@ -217,3 +263,31 @@ and the edge mostly disappears (+0.2% / +0.1% / +0.9% holdout, negative in dev a
 direction at every horizon. Treat the cone as a well-calibrated range, not as a
 directional signal. Full numbers, including per-ticker skill, are in
 `data/calibration.json`.
+
+## How it works / why it's built this way
+
+- **One process, no framework.** `server.py` is the standard library's `http.server`
+  serving one hand-written page (`web/index.html`, inline SVG, no chart library, no CDN).
+  Fewer moving parts means the numbers on the page are easy to trace back to code.
+- **The cone is a frozen research model.** `cone_model.py` is a copy of the model chosen
+  in `research/` on a dev split, then checked once on a held-out test split. Freezing it
+  stops quiet re-tuning against results, and `python cone_model.py --vs-research` proves
+  the served cone still equals the research model.
+- **No look-ahead, proved rather than promised.** `engine.py --selfcheck` rebuilds the
+  engine from data truncated at the as-of date and requires identical output, so a cone
+  for a past date can only use what was known then.
+- **Score everything, including failures.** The Accuracy scoreboard runs the same code
+  path as the chart for ~160 stocks and reports coverage and direction against a fair
+  baseline, with luck bands. The finding that the cone has no directional edge is shown,
+  not hidden.
+- **Ranges, not calls.** Quantile bands are scored with pinball loss and coverage, which
+  rewards honest width rather than confident guesses.
+
+## Licence
+
+MIT, see `LICENSE`. Dependencies keep their own licences (yfinance Apache-2.0, pandas and
+numpy BSD-3-Clause).
+
+## Contributing
+
+Issues welcome; pull requests are not accepted right now.

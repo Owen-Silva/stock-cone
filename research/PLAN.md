@@ -1,5 +1,7 @@
 # Overnight accuracy research — shared plan (2026-10-03/04)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Owen: "do whatever you want to make this the most accurate and whatever you think is
 best by yourself all night while I sleep."
 
@@ -62,8 +64,8 @@ Baselines always reported alongside: `naive0` (random walk, zero drift, trailing
 
 - Own only the files named in your prompt. New code goes in `research/` as its own file.
   Only the final integration lane edits `engine.py`.
-- Python: `python`
-  (bare `python` in Git Bash is a broken Store stub). stdlib + numpy + pandas + yfinance.
+- Python: 3.13 via `py -3` or a full path
+  (bare `python` in Git Bash can be a broken Store stub). stdlib + numpy + pandas + yfinance.
 - Reuse the engine's cached data in `data/prices/`; don't re-download what is cached.
 - Save partial results as you go (a Windows reboot or a crash should not cost the run).
 - Reports go in `research/reports/` as markdown: Method, Results (tables), What it means,

@@ -17,3 +17,12 @@ node_modules/
 *.key
 *credential*
 *token*
+
+# personal config and local junk (open-source prep)
+universe.local.json
+*.local.json
+.cloudtest/
+research/results/*_log_*.txt
+research/results/test2_harness_summary.txt
+.venv/
+venv/

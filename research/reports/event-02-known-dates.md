@@ -1,5 +1,7 @@
 # event-02: what knowing the earnings date is worth (and shipping it for live cones)
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane `cone-earn`, 2026-10-04. Code: `research/models_event_oracle.py`. Outputs: `research/results/event2_*`.
 The base model is the product cone `cone2_f_conf_dev` (`cone_model.py`). DEV was used for fitting, VAL to
 confirm and to choose between two add-on forms. TEST was never opened.

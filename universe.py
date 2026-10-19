@@ -4,25 +4,60 @@ Individual stocks only: no ETFs, no leveraged or inverse products. It does NOT
 change the analog pool (engine.POOL); it only lists which tickers the scoreboard
 runs the walk-forward track record for. A stock can be in several groups.
 
-`watchlist` is a personal watchlist (ETFs and leveraged/inverse products removed). Some of those are tiny, renamed or very new;
-accuracy.py skips any that Yahoo does not know or that have too little history,
-and says why.
+The first group is a personal watchlist. The repo ships a neutral default
+(DEFAULT_WATCHLIST below). To use your own, put a `universe.local.json` next to
+this file (it is gitignored):
+
+    {
+      "id": "watchlist",              optional group id, default "watchlist"
+      "label": "Watchlist",           optional label shown in the page
+      "tickers": "AAPL MSFT NVDA",    a space-separated string or a JSON list
+      "exclude": "TQQQ SQQQ"          optional extra tickers the guard rejects
+    }
+
+Some tickers in a personal list may be tiny, renamed or very new; accuracy.py
+skips any that Yahoo does not know or that have too little history, and says why.
 
 This is a list of stocks that exist (and mostly did well enough to be talked
 about) today, so it carries survivorship bias like the analog basket does.
 """
 
+import json
+import os
+
+LOCAL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "universe.local.json")
+
+# Neutral public default: well-known, liquid US stocks across sectors.
+DEFAULT_WATCHLIST = """
+AAPL MSFT NVDA AMZN GOOGL META TSLA AMD JPM XOM UNH COST NFLX PLTR COIN
+""".split()
+
+
+def _tickers(v):
+    return v.split() if isinstance(v, str) else [str(t) for t in v]
+
+
+def _load_local(path=LOCAL_FILE):
+    """The personal watchlist file, or None when it is absent."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+_local = _load_local()
+WATCHLIST_ID = (_local or {}).get("id", "watchlist")
+WATCHLIST_LABEL = (_local or {}).get("label", "Watchlist")
+WATCHLIST = _tickers(_local["tickers"]) if _local and "tickers" in _local else DEFAULT_WATCHLIST
+_LOCAL_EXCLUDE = _tickers((_local or {}).get("exclude", ""))
+
 GROUPS = [
-    {"id": "watchlist", "label": "Watchlist"},
+    {"id": WATCHLIST_ID, "label": WATCHLIST_LABEL},
     {"id": "mega", "label": "Mega caps"},
     {"id": "growth", "label": "Growth & tech"},
     {"id": "volatile", "label": "Volatile & small"},
     {"id": "other", "label": "Other sectors"},
 ]
-
-WATCHLIST = """
-AAPL MSFT NVDA AMZN GOOGL META TSLA AMD JPM XOM UNH COST NFLX PLTR COIN
-""".split()
 
 # Category groups. Order inside a group is the display order hint only.
 MEGA = """
@@ -54,14 +89,14 @@ NEE DUK O PLD AMT VZ T
 FCX GOLD
 """.split()
 
-# Category given to a traded stock that no other list names (none today, kept
-# so every stock always has a category besides "watchlist").
+# Category given to a watchlist stock that no other list names, so every stock
+# always has a category besides the watchlist.
 _FALLBACK = "volatile"
 
 
 def build():
     """[(ticker, [group ids])], each ticker once, groups in display order."""
-    lists = [("watchlist", WATCHLIST), ("mega", MEGA), ("growth", GROWTH),
+    lists = [(WATCHLIST_ID, WATCHLIST), ("mega", MEGA), ("growth", GROWTH),
              ("volatile", VOLATILE), ("other", OTHER)]
     order, groups = [], {}
     for gid, tickers in lists:
@@ -72,7 +107,7 @@ def build():
             if gid not in groups[t]:
                 groups[t].append(gid)
     for t in order:
-        if groups[t] == ["watchlist"]:
+        if groups[t] == [WATCHLIST_ID]:
             groups[t].append(_FALLBACK)
     return [(t, groups[t]) for t in order]
 
@@ -80,7 +115,10 @@ def build():
 UNIVERSE = build()
 
 # Guard: no ETFs or leveraged/inverse products sneak in.
-EXCLUDED = set("SPY QQQ DIA IWM TQQQ SQQQ SOXL SOXS TECS TSLL TSLT IBIT SLV BITX".split())
+EXCLUDED = set("""
+SPY QQQ DIA IWM VOO VTI TQQQ SQQQ SPXL SPXS UPRO SOXL SOXS TECL TECS TNA TZA
+UVXY SVXY GLD SLV IBIT FBTC BITX TSLL TSLT
+""".split()) | set(_LOCAL_EXCLUDE)
 assert not EXCLUDED & {t for t, _ in UNIVERSE}, "an ETF or leveraged product is in the universe"
 
 

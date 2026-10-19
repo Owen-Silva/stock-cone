@@ -74,8 +74,8 @@ def targets():
     out = []
     for t, g in U.UNIVERSE:
         if is_train(t):
-            prim = [x for x in g if x != "watchlist"]
-            out.append((t, prim[0] if prim else "watchlist"))
+            prim = [x for x in g if x != U.WATCHLIST_ID]
+            out.append((t, prim[0] if prim else U.WATCHLIST_ID))
     return out, groups
 
 

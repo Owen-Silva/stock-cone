@@ -1,5 +1,7 @@
 # xsec-01: is there a cross-sectional direction edge?
 
+> **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
+
 Lane cone-xsec, 2026-10-03/04. Code: `research/backtest.py`, `research/xsec.py`. Data: `research/results/xsec_*`. TEST (2019+, all tickers) has **not** been opened.
 
 **Short answer.** One family survives the rule: 12-1 month momentum, plus the trend signals and models built from it. Its sign agrees on DEV and VAL, and its VAL IC t is about 3.
