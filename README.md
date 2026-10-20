@@ -6,8 +6,9 @@ A local web app that draws a calibrated price-range cone for any stock, and keep
 > outcomes, not a prediction, a signal or a recommendation to buy or sell anything. Its own
 > research finds **no directional edge** (see "How the cone works now"). No warranty: see `LICENSE`.
 
-![Stock Cone chart view](docs/screenshot.png)
-<!-- TODO: add docs/screenshot.png (a real capture of the Chart view with Future on). -->
+![Stock Cone Chart view: SPY over the last 3 months with Future on, a one-month cone drawn forward from the last close, the odds, position risk for $1,000 and the cone's track record on SPY](docs/screenshot.png)
+
+*The Chart view with Future on: SPY with a one-month cone. A real capture of the app running locally (prices to Oct 19, 2026).*
 
 Type a ticker, see its chart. Flip **Future** and a cone is drawn forward from the
 last close: the typical path plus 50% and 80% bands, from a calibrated volatility
