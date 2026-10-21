@@ -2,7 +2,7 @@
 
 > **Not financial advice.** This is a research log from building an educational tool. Backtest numbers are hypothetical, carry survivorship bias, and say nothing certain about the future. Nothing here is a recommendation to buy, sell or hold anything.
 
-Owen: "do whatever you want to make this the most accurate and whatever you think is
+The brief: "do whatever you want to make this the most accurate and whatever you think is
 best by yourself all night while I sleep."
 
 Starting point (v0 = commit 4d9b581): the 80% cone covers 79% / 77% / 76% at 1W / 1M / 3M
